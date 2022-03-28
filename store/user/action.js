@@ -4,9 +4,13 @@ export const USER = 'USER';
 export const SET_CREDENTIAL = 'SET_CREDENTIAL';
 export const SET_ERROR = 'SET_ERROR';
 export const SET_PROFILE = 'SET_PROFILE';
+export const CUSTOMERDASHBOARD = 'CUSTOMERDASHBOARD';
 
 export const setCredential = (data) => {
     return { type: SET_CREDENTIAL, data: data };
+}
+export const setCustomerDashboard = (data) => {
+    return { type: CUSTOMERDASHBOARD, data: data };
 }
 export const setError = (data) => {
     return { type: SET_ERROR, data: data };
@@ -18,7 +22,6 @@ export const logout = (token) => {
     return dispatch => {
         api.User.logout(token).then(response => {
             if (response.data.success) {
-                console.log('logout')
                 AsyncStorage.removeItem('data');
                 dispatch(setCredential(null));
             } else {
@@ -30,24 +33,36 @@ export const logout = (token) => {
 export const getUserProfile = (token) => {
     return dispatch => {
         api.User.getUserProfile(token).then(response => {
-            console.log('kjhgfd')
             if (response.data) {
-                console.log(response.data)
                 dispatch(setProfile(response.data.success));
             } else {
-                console.log('error')
+                alert(response.data.error);
             }
         })
     }
 }
-export const UpdateUserProfile = (data, token) => {
+export const UpdateUserProfile = (data, token, callback) => {
     console.log('dl')
     return dispatch => {
         api.User.UpdateUserProfile(data, token).then(response => {
+            callback(response.data)
             if (response.data) {
                 console.log(response)
             } else {
                 console.log(response.data.error)
+            }
+        })
+    }
+}
+export const getDashboardCustomer = (token) => {
+    console.log('dl')
+    return dispatch => {
+        api.User.getDashboardCustomer(token).then(response => {
+            if (response.data) {
+                //dispatch(setError(response));
+                console.log(response)
+            } else {
+                alert(response.data.error)
             }
         })
     }

@@ -128,9 +128,8 @@ export const User = {
     logout: async (token) => {
         let result = await axios.get('/user-revoke', {
             headers: {
+                Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
-                Accept: "application/json",
             }
         });
         return result;
@@ -138,9 +137,17 @@ export const User = {
     getUserProfile: async (token) => {
         let result = await axios.get('/front-end-customer', {
             headers: {
+                Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
-                Accept: "application/json",
+            }
+        });
+        return result;
+    },
+    getDashboardCustomer: async (token) => {
+        let result = await axios.get('/dashboard-customer', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
             }
         });
         return result;
@@ -148,9 +155,8 @@ export const User = {
     UpdateUserProfile: async (data, token) => {
         let result = await axios.post('/customer-update', data, {
             headers: {
+                Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
-                Accept: "application/json",
             }
         });
         return result;

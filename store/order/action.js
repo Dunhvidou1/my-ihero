@@ -6,8 +6,8 @@ export const setOrder = (data) => {
 export const getOrderCustomer = (token) => {
     return dispatch => {
         api.Order.getOrderCustomer(token).then(response => {
-            if (response.data.success) {
-                console.log(response.data.success.data);
+            if (response.data) {
+                //console.log(response.data.success.data.length, token);
                 dispatch(setOrder(response.data.success.data));
             }
         })

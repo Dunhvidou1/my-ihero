@@ -1,48 +1,56 @@
-import React, { useState, useEffect } from 'react'
-import { StyleSheet, ScrollView, Image, View, Text, TouchableOpacity } from 'react-native';
-import { List, NativeBaseProvider, Switch, } from "native-base";
-import { AntDesign, FontAwesome5, } from '@expo/vector-icons';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react'
 import Color from '../../constant/Color';
 import { logout } from '../../store/user/action';
+import { List, NativeBaseProvider, } from "native-base";
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserProfile, getDashboardCustomer } from '../../store/user/action';
+import { AntDesign, Ionicons, FontAwesome5, Fontisto, Feather } from '@expo/vector-icons';
+import { StyleSheet, ScrollView, Image, View, Text, TouchableOpacity } from 'react-native';
+import { getOrderCustomer } from '../../store/order/action';
 const Dashboard = ({ route, navigation }) => {
-    const userData = useSelector(state => state.users.userData);
+    const userData = useSelector(state => state.users);
+    const ColorTheme = useSelector(state => state.ColorThemes);
     const dispatch = useDispatch();
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener("focus", () => {
+            if (userData) {
+                dispatch(getUserProfile(userData.userData.token));
+                dispatch(getOrderCustomer(userData.userData.token));
+                dispatch(getDashboardCustomer(userData.userData.token));
+            }
+        })
+        return unsubscribe;
+    }, [])
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <View style={{ flex: 2, flexDirection: 'row', alignItems: 'flex-start' }}>
-                    <View style={{ flex: 1, width: '100%', height: '100%', padding: 10, paddingLeft: 30 }}>
-                        <Image source={{ uri: userData.user.profile }}
+                    <View style={{ flex: 1, width: '100%', height: '100%', paddingLeft: 30 }}>
+                        <Image source={{ uri: userData.userData.user.profile }}
                             style={styles.userImg}></Image>
                     </View>
                     <View style={styles.header_Detail} >
-                        <Text style={styles.username} onPress={() => console.log(userData.user.profile)}>{userData.user.name}</Text>
-                        <Text style={styles.useremail}>{userData.user.email}</Text>
-                        <Text style={styles.useremail}>{userData.user.address}</Text>
+                        <Text style={styles.username} onPress={() => console.log(userData.userData.user.profile)}>{userData.userData.user.name}</Text>
+                        <Text style={styles.useremail}>{userData.userData.user.email}</Text>
+                        <Text style={styles.useremail}>{userData.userData.user.address}</Text>
                     </View>
                 </View>
             </View>
             <View style={{ flex: 7, backgroundColor: Color.bgPrimary, alignItems: 'center' }}>
                 <View style={{ flex: 1, backgroundColor: '#e6e6e6', width: '100%', borderTopLeftRadius: 300, alignItems: 'center' }}>
                     <View style={{ backgroundColor: '#fff', width: '90%', height: '17%', borderRadius: 20, top: -30, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly', padding: 10 }}>
-                        <View style={{ flex: 1, height: '90%', alignItems: 'center', flexDirection: 'column' }}>
-
-                            <Image source={{ uri: 'https://image.flaticon.com/icons/png/512/619/619043.png' }}
-                                style={styles.titleCart} />
-                            <Text style={{ color: '#4d4d4d' }}>Delivery</Text>
-                        </View>
-
-                        <View style={{ flex: 1, height: '90%', alignItems: 'center', flexDirection: 'column' }}>
-                            <Image source={{ uri: 'https://image.flaticon.com/icons/png/512/3566/3566511.png' }}
-                                style={styles.titleCart} />
-                            <Text style={{ color: '#4d4d4d' }}>Cart</Text>
-                        </View>
-                        <View style={{ flex: 1, height: '90%', alignItems: 'center', flexDirection: 'column' }}>
-                            <Image source={{ uri: 'https://image.flaticon.com/icons/png/512/3799/3799960.png' }}
-                                style={styles.titleCart} />
-                            <Text style={{ color: '#4d4d4d' }}>History</Text>
-                        </View>
+                        <TouchableOpacity style={{ flex: 1, height: '90%', alignItems: 'center', flexDirection: 'column' }}>
+                            <Feather name="shopping-cart" size={24} color="black" />
+                            <Text style={{ color: '#4d4d4d', fontWeight: "600" }}>Cart (9)</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ flex: 1, height: '90%', alignItems: 'center', flexDirection: 'column' }}>
+                            <Fontisto name="motorcycle" size={24} color="black" />
+                            <Text style={{ color: '#4d4d4d', fontWeight: "600" }}>Pick up (5)</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ flex: 1, height: '90%', alignItems: 'center', flexDirection: 'column' }}>
+                            <Ionicons name="receipt" size={24} color="black" />
+                            <Text style={{ color: '#4d4d4d', fontWeight: "600" }}>Amount (14)</Text>
+                        </TouchableOpacity>
 
                     </View>
                     <View style={{ backgroundColor: '#fff', width: '90%', height: '85%', borderRadius: 10, top: -20 }}>
@@ -82,7 +90,7 @@ const Dashboard = ({ route, navigation }) => {
                                         </List.Item>
                                     </TouchableOpacity>
 
-                                    <TouchableOpacity onPress={() => dispatch(logout(userData.token))}>
+                                    <TouchableOpacity onPress={() => dispatch(logout(userData.userData.token))}>
                                         <List.Item style={styles.borderitem}>
                                             <FontAwesome5 style={styles.leftIcon} name="history" />
                                             <Text style={styles.textLogout}>Log Out </Text>
