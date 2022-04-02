@@ -1,4 +1,4 @@
-import { CUSTOMERDASHBOARD, SET_CREDENTIAL, SET_ERROR, USER, SET_PROFILE } from "./action"
+import { SEARCHDATA, CUSTOMERDASHBOARD, SET_CREDENTIAL, SET_ERROR, USER, SET_PROFILE } from "./action"
 
 const initialState = {
     data: null,
@@ -6,9 +6,11 @@ const initialState = {
     error: null,
     profileData: null,
     customerDashboard: null,
+    searchData: null,
 }
 const UserReducer = (state = initialState, action) => {
     switch (action.type) {
+        case SEARCHDATA: return { ...state, searchData: action.data };
         case CUSTOMERDASHBOARD: return { ...state, customerDashboard: action.data };
         case USER: return { ...state, data: action.data };
         case SET_CREDENTIAL: return { ...state, userData: action.data };

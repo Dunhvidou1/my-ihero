@@ -11,8 +11,9 @@ import { useSelector } from "react-redux";
 import Color from "../constant/Color";
 const Tabs = () => {
     const userData = useSelector(state => state.users.userData);
+    const ColorTheme = useSelector(state => state.ColorThemes);
     return (
-        <Tab.Navigator activeColor="#f2f2f2"
+        <Tab.Navigator activeColor={ColorTheme.gold}
             inactiveColor={Color.textPrimary}
             barStyle={{ backgroundColor: Color.bgPrimary }}>
             <Tab.Screen
@@ -21,7 +22,7 @@ const Tabs = () => {
                 options={{
                     tabBarLabel: 'Home',
                     tabBarIcon: ({ color }) => (
-                        <Entypo name="home" size={24} color={Color.textPrimary} />
+                        <Entypo name="home" size={24} color={ColorTheme.gold} />
                     ),
                 }}
             />
@@ -31,7 +32,7 @@ const Tabs = () => {
                 options={{
                     tabBarLabel: 'Cart',
                     tabBarIcon: ({ color }) => (
-                        <Feather name="shopping-cart" size={25} color={Color.textPrimary} />
+                        <Feather name="shopping-cart" size={25} color={ColorTheme.gold} />
                     ),
                 }}
             />
@@ -41,7 +42,7 @@ const Tabs = () => {
                 options={{
                     tabBarLabel: 'Restaurants',
                     tabBarIcon: ({ color }) => (
-                        <FontAwesome5 name="store" size={20} color={Color.textPrimary} />
+                        <FontAwesome5 name="store" size={20} color={ColorTheme.gold} />
                     ),
                 }}
             />
@@ -51,7 +52,7 @@ const Tabs = () => {
                 options={{
                     tabBarLabel: 'Profile',
                     tabBarIcon: ({ color }) => (
-                        <FontAwesome5 name="user-alt" size={22} color={Color.textPrimary} />
+                        <FontAwesome5 name="user-alt" size={22} color={ColorTheme.gold} />
                     ),
                 }}
             />) : (<Tab.Screen
@@ -60,7 +61,7 @@ const Tabs = () => {
                 options={{
                     tabBarLabel: 'Login',
                     tabBarIcon: ({ color }) => (
-                        <FontAwesome5 name="user-alt" size={22} color={Color.textPrimary} />
+                        <FontAwesome5 name="user-alt" size={22} color={ColorTheme.gold} />
                     ),
                 }}
             />)}

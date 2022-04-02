@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, ScrollView, Image, View, Text, } from 'react-native';
 import Datajson from '../Components/Datajson_Short';
 import Cart from '../Components/Food/Cart';
 import { NativeBaseProvider, } from "native-base";
 import { AntDesign } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import Color from '../../constant/Color';
+import { StyleSheet, ScrollView, Image, View, Text, TouchableOpacity } from 'react-native';
 const ScreenCart = ({ navigation }) => {
     const [loading, setLoading] = useState(9);
     const [Data, setList] = useState([]);
@@ -69,6 +68,7 @@ const ScreenCart = ({ navigation }) => {
                     </View>
                 </ScrollView>
                 <TouchableOpacity
+                    onPress={() => navigation.navigate('Card')}
                     style={{
                         position: "absolute",
                         bottom: 0.4,

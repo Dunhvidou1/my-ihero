@@ -1,69 +1,60 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, Text, ScrollView } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 import { NativeBaseProvider, List } from "native-base";
-import { AntDesign, Ionicons, FontAwesome } from "@expo/vector-icons";
+import { setSearchData } from "../../store/user/action";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { View, StyleSheet, TouchableOpacity, Text, ActivityIndicator, ScrollView, Image } from "react-native";
 const Search = ({ navigation }) => {
-    const [data, setDate] = React.useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
-    const [ActiveList, setActiveList] = React.useState(1)
+    const dispatch = useDispatch();
+    const [Loading, setLoading] = React.useState(true)
+    const userData = useSelector(state => state.users);
+    const ColorTheme = useSelector(state => state.ColorThemes);
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener("focus", () => {
+            setLoading(false)
+        })
+        return () => {
+            unsubscribe
+            dispatch(setSearchData(null));
+        };
+    }, [])
     return (
-        <View style={styles.content}>
-            <ScrollView style={
-                { width: '100%' }}>
-                <NativeBaseProvider>
-                    <ScrollView style={{ marginHorizontal: 20, marginVertical: 10 }} showsVerticalScrollIndicator={false}>
-                        <List borderColor='#f2f2f2' >
-                            <Text style={{ fontSize: 17, fontWeight: '500', paddingLeft: 10 }}>History</Text>
-                            <TouchableOpacity onPress={() => navigation.navigate("UserProfile")}>
-                                <List.Item style={styles.borderitem} >
-                                    <Text style={styles.textCenter}>Profile</Text>
-                                    <AntDesign style={styles.rightIcon} name="close" />
-                                </List.Item>
-                            </TouchableOpacity>
-                            <TouchableOpacity  >
-                                <List.Item style={styles.borderitem} >
-                                    <Text style={styles.textCenter}>My Product</Text>
-                                    <AntDesign style={styles.rightIcon} name="close" />
-                                </List.Item>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity onPress={() => navigation.navigate("PaymentHistory")}>
-                                <List.Item style={styles.borderitem}>
-                                    <Text style={styles.textCenter} >Payment History</Text>
-                                    <AntDesign style={styles.rightIcon} name="close" />
-
-                                </List.Item>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => navigation.navigate("UserProfile")}>
-                                <List.Item style={styles.borderitem} >
-                                    <Text style={styles.textCenter}>Profile</Text>
-                                    <AntDesign style={styles.rightIcon} name="close" />
-                                </List.Item>
-                            </TouchableOpacity>
-                            <TouchableOpacity  >
-                                <List.Item style={styles.borderitem} >
-                                    <Text style={styles.textCenter}>My Product</Text>
-                                    <AntDesign style={styles.rightIcon} name="close" />
-                                </List.Item>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity onPress={() => navigation.navigate("PaymentHistory")}>
-                                <List.Item >
-                                    <Text style={styles.viewmore} >View more</Text>
-                                    <AntDesign name="down" size={24} style={styles.viewmore} />
-
-
-                                </List.Item>
-                            </TouchableOpacity>
-
-
-                        </List>
-                    </ScrollView>
-                </NativeBaseProvider>
-
-
-            </ScrollView>
-
-        </View>
+        <NativeBaseProvider>
+            {Loading ?
+                <View style={{ flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                    <ActivityIndicator
+                        size='large'
+                        color="gray"
+                    />
+                </View> :
+                <View style={styles.container}>
+                    {userData.searchData && userData.searchData.length > 0
+                        ? <ScrollView stysle={{ margin: 10, width: '100%' }} showsVerticalScrollIndicator={false}>
+                            <View style={{ width: '100%', height: '100%', justifyContent: 'center', paddingHorizontal: 10 }}>
+                                <Text style={styles.TitleResults}>Result</Text>
+                                {userData.searchData.map((ele, idx) => (
+                                    <TouchableOpacity style={styles.box} key={idx} onPress={() => navigation.navigate("ShopProfile", ele)} >
+                                        <View style={styles.RootImg}>
+                                            <ActivityIndicator size='small' color="gray"
+                                                style={{ position: 'absolute' }} />
+                                            <Image source={{ uri: ele ? ele.logo : '' }} style={{ width: '100%', height: '100%', borderRadius: 10 }} />
+                                        </View>
+                                        <View style={styles.RootDetail}>
+                                            <Text style={styles.ShopName} >{ele ? ele.name : 'Unknow name'}</Text>
+                                            <AntDesign name='right' size={15} color='gray' style={{ position: 'absolute', right: 10 }} />
+                                        </View>
+                                    </TouchableOpacity>
+                                ))}
+                            </View>
+                        </ScrollView>
+                        : <View style={{ flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                            <Ionicons name="md-folder-open-outline" size={100} color={ColorTheme.textGray} />
+                            <Text style={{ ...styles.DataEmpty, color: ColorTheme.textGray }}>Result is Emty</Text>
+                        </View>
+                    }
+                </View >
+            }
+        </NativeBaseProvider >
     );
 };
 const styles = StyleSheet.create({
@@ -71,49 +62,42 @@ const styles = StyleSheet.create({
         flex: 1,
         height: '100%',
     },
-    header: {
-        flex: 1,
+    box: {
         width: '100%',
+        minHeight: 80,
+        flexDirection: "row",
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        borderBottomWidth: 0.3,
+        borderColor: 'gray'
     },
-    content: {
-        flex: 6,
+    RootImg: {
+        width: 60, height: 60,
+        borderRadius: 10,
+        backgroundColor: 'rgba(0,0,0,.3)',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
-    borderitem: {
-        borderBottomWidth: 1,
-        color: 'gray',
-        height: 50,
-        flex: 1,
-        justifyContent: 'space-between',
+    RootDetail: {
+        flex: 1, width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        padding: 10
     },
-    leftIcon:
-    {
-        fontSize: 17,
-        color: '#339966',
-        marginLeft: 2,
-        marginRight: 10
+    TitleResults: {
+        fontSize: 18,
+        fontWeight: '700',
+        color: 'black',
+        margin: 10
     },
-    textCenter: {
-        fontSize: 15,
+    ShopName: {
         fontWeight: '500',
-        color: 'gray'
+        fontSize: 16,
+        color: '#000000'
     },
-    textLogout: {
-        fontSize: 15,
-        color: '#ff8566',
-        fontWeight: '500'
-    },
-    rightIcon: {
-        color: 'gray',
-        position: 'absolute',
-        right: 10,
-        top: 3,
-        fontSize: 17
-    },
-    viewmore: {
-        color: '#ff6600',
-        paddingRight: 7,
-        fontSize: 17,
-        fontWeight: '600'
+    DataEmpty: {
+        fontSize: 25, fontWeight: '300'
+
     }
 
 });

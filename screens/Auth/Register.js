@@ -1,84 +1,140 @@
-import * as React from 'react';
-import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import {
-    NativeBaseProvider,
-    Box,
-    Text,
-    Heading,
-    VStack,
-    FormControl,
-    Input,
-    Link,
-    Button,
-    Icon,
-    IconButton,
-    HStack,
-    Image,
-    Divider, 
+  Input,
+  Icon,
+  NativeBaseProvider,
 } from 'native-base';
+import * as React from 'react';
 import { AntDesign } from '@expo/vector-icons';
-import {Pressable,ImageBackground} from 'react-native'
+import { useDispatch, useSelector } from 'react-redux';
+import { showMessage } from "react-native-flash-message";
+import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
+import { setFirstname, setLastname, setEmail } from '../../store/auth/action';
+import { ImageBackground, View, Text, TouchableOpacity, Keyboard, Pressable } from 'react-native'
 const Register = ({ navigation }) => {
-    return (
-        <NativeBaseProvider>
-           <ImageBackground source={require('../Assets/Background/Authentication.jpg')} style={{flex:1,}}>
-            <Box flex={1} p={1} w="93%" mx='auto' justifyContent="center"  >
-                <Text style={{fontSize:29,fontWeight:'700' ,color: 'white',paddingVertical:20}}>Create Account</Text>
-                <Text style={{fontSize:16,color:"#e6e6e6",paddingBottom:20}}>Enter Your Username ,Email and passworto sign up.
+  const dispatch = useDispatch();
+  const ColorTheme = useSelector(state => state.ColorThemes);
+  const Data = useSelector(state => state.authData);
+  const Next = () => {
+    let reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (Data.regisFirstname && Data.regisLastname && Data.regisEmail) {
+      if (reg.test(Data.regisEmail) == true) {
+        navigation.navigate('RegisterNext');
+      } else {
+        alertMessage(0, 'Invalid email!')
+      }
+    } else {
+      alertMessage(0, 'Field required!')
+    }
+  }
+  const alertMessage = (Type, data) => {
+    showMessage({
+      message: "",
+      hideOnPress: 'true',
+      renderCustomContent: () => (
+        <View style={{
+          width: '100%',
+          height: '100%',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          paddingBottom: 10
+        }}>
+          <View style={{ backgroundColor: Type == 0 ? 'red' : 'green', borderRadius: 20, padding: 10 }}>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 13,
+                fontWeight: '500',
+                alignSelf: 'center',
+                color: '#ffffff',
+                marginHorizontal: 30,
+              }}>
+              {data}
+            </Text>
+          </View>
+        </View >
+      ),
+      style: {
+        width: '100%',
+        minHeight: '100%',
+        alignSelf: 'center',
+        backgroundColor: "red",
+        backgroundColor: "rgba(0, 0, 0,.1)",
+        borderRadius: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }
+    });
+  }
+  return (
+    <NativeBaseProvider>
+      <Pressable onPress={Keyboard.dismiss} style={{ flex: 1 }}>
+        <ImageBackground source={require('../Assets/Background/Authentication.jpg')} style={{ flex: 1, }}>
+          <View style={{ flex: 1, width: '100%', justifyContent: 'flex-start', padding: 10, paddingTop: 30, backgroundColor: 'rgba(0,0,0,.4)' }}>
+            <Text style={{ color: ColorTheme.gold, fontSize: 25, fontWeight: '700', paddingVertical: 10 }}>Create Account</Text>
+            <Text style={{ fontSize: 14, color: "#e6e6e6", paddingBottom: 20 }}>Enter Your Username ,Email and passworto sign up.
+            </Text>
+            <View style={{ width: '100%' }}>
+              <View style={{ borderColor: 'white', borderWidth: 0.3, marginBottom: 10, borderRadius: 5 }}>
+                <Input
+                  onChangeText={text => dispatch(setFirstname(text))}
+                  style={{ color: 'white', height: 45 }}
+                  variant='unstyled'
+                  placeholder='First Name'
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  autoComplete={false}
+                  InputLeftElement={<Icon size='sm' ml={1} color="gray.400" as={<AntDesign name="user" />} />}
+                />
+              </View>
+              <View style={{ borderColor: 'white', borderWidth: 0.3, marginBottom: 10, borderRadius: 5 }}>
+                <Input
+                  onChangeText={text => dispatch(setLastname(text))}
+                  style={{ color: 'white', height: 45 }}
+                  type='email'
+                  variant='unstyled'
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  autoComplete={false}
+                  placeholder='Last Mame'
+                  InputLeftElement={<Icon size='sm' ml={1} color="gray.400" as={<MaterialCommunityIcons name="email-edit-outline" />} />}
+                />
+              </View>
+              <View style={{ borderColor: 'white', borderWidth: 0.3, marginBottom: 10, borderRadius: 5 }}>
+                <Input
+                  onChangeText={text => dispatch(setEmail(text))}
+                  style={{ color: 'white', height: 45 }}
+                  variant='unstyled'
+                  placeholder='Email'
+                  keyboardType='email-address'
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  autoComplete={false}
+                  InputLeftElement={<Icon size='sm' ml={1} color="gray.400" as={<Ionicons name="mail-outline" />} />}
+                />
+              </View>
+
+              <TouchableOpacity style={{ width: '100%', backgroundColor: 'cyan', height: 45, borderRadius: 1, backgroundColor: ColorTheme.gold, justifyContent: 'center', alignItems: 'center', marginVertical: 10 }}
+                onPress={() => Next()}>
+                <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                  Next
                 </Text>
-                <VStack space={2} mt={5}>
-                    <FormControl>
-                        <Input sborder=' 0.2px solid gray' placeholder='User Name' height={50}
-                        InputLeftElement={<Icon size='sm' ml={1} size={7} color="gray.400" as={<AntDesign name="user" />} />}
-                                   
-                                   />
-                    </FormControl>
-                    <FormControl>
-                    <Input type='email' sborder=' 0.2px solid gray' placeholder='Email' height={50}
-                            InputLeftElement={<Icon size='sm' ml={1} size={7} color="gray.400" as={<MaterialCommunityIcons name="email-edit-outline"/>} />}
-                         />
-                    </FormControl>
-                    <FormControl mb={5}>
-                         <Input type='password' sborder=' 0.2px solid gray' placeholder='password' height={50}
-                            InputLeftElement={<Icon size='sm' ml={1} size={7} color="gray.400" as={<Feather name="lock" />} />}
-                         />
-
-                    </FormControl>
-                    <VStack space={2}>
-                        <Button colorScheme="teal" _text={{ color: 'white' }} onPress={() => navigation.navigate('Profile')}>
-                            Sign In
-                        </Button>
-                        <HStack justifyContent="center" alignItem='center'>
-            <IconButton
-              variant='unstyled'
-              startIcon={
-                <Icon as={< MaterialCommunityIcons name="facebook" />} color='muted.700' size='sm' /> }
-            />
-            <IconButton
-              variant='unstyled'
-              startIcon={
-                <Icon as={< MaterialCommunityIcons name="google" />} color='muted.700' size="sm" /> }
-            />
-            <IconButton
-              variant='unstyled'
-              startIcon={
-                <Icon as={< MaterialCommunityIcons name="github" />} color='muted.700' size="sm" /> }
-            />
-          </HStack>
-
-                    </VStack>
-                    <HStack justifyContent="center">
-            <Text fontSize='sm' color='#e6e6e6' fontWeight={400}>Do you have any Account?. </Text> 
-            <Pressable onPress={() => navigation.navigate('Login')}> 
-              <Text style={{ color: 'cyan' }}>
-                sign in
-              </Text>
-            </Pressable>
-          </HStack>
-                </VStack>
-            </Box>
-            </ImageBackground>
-        </NativeBaseProvider>
-    );
+              </TouchableOpacity>
+              <View style={{
+                width: '100%', alignItems: 'center',
+                justifyContent: 'center', flexDirection: 'row'
+              }}>
+                <Text style={{ fontSize: 16, fontWeight: '600', color: 'white' }}>Do you have any Account?. </Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                  <Text style={{ fontSize: 16, fontWeight: '600', color: ColorTheme.gold }}>
+                    sign in
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </ImageBackground>
+      </Pressable>
+    </NativeBaseProvider>
+  );
 }
 export default Register;

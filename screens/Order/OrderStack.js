@@ -1,24 +1,32 @@
-import * as React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
 import Cart from "./Cart";
 import Card from './Card';
-import Checkout from "./Checkout";
-import Confirmation from "./Confirmation";
+import * as React from 'react';
 import Payment from './Payment';
-import { View, TouchableOpacity } from 'react-native';
+import Checkout from "./Checkout";
+import { View } from 'react-native';
 import Color from '../../constant/Color';
-import { FontAwesome, Feather } from '@expo/vector-icons';
+import Confirmation from "./Confirmation";
+import { useSelector } from 'react-redux';
+import { FontAwesome } from '@expo/vector-icons';
+import { createStackNavigator } from '@react-navigation/stack';
 const OrderStack = createStackNavigator();
 const Orders = () => {
+    const ColorTheme = useSelector(state => state.ColorThemes);
     return (
         <OrderStack.Navigator >
             <OrderStack.Screen name="Cart" component={Cart}
                 options={{
                     headerTintColor: Color.textPrimary,
                     headerTitle: 'Cart',
-                    headerTitleAlign: 'center',
+                    headerTitleAlign: 'left',
                     headerStyle: {
                         backgroundColor: Color.bgPrimary
+                    },
+                    headerTitleStyle: {
+                        fontSize: 20,
+                        fontWeight: '700',
+                        color: ColorTheme.gold
+
                     }
                 }} />
             <OrderStack.Screen name="Payment" component={Payment}

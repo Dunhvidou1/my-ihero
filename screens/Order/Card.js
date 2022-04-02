@@ -30,13 +30,13 @@ const Brand = ({ navigation }) => {
                 <View style={{ flex: 1, width: '100%' }}>
 
 
-                    <LinearGradient 
+                    <LinearGradient
                         colors={['#0A8791', 'cyan']}
-                        style={{ flex: 1, width: '100%',height:'90%', justifyContent: 'center', alignItems: 'center' ,borderBottomRightRadius:100}} >
-                        <Text>Hello world of mother </Text>
+                        style={{ flex: 1, width: '100%', height: '90%', justifyContent: 'center', alignItems: 'center', borderBottomRightRadius: 100 }} >
+                        <Text>Hello world</Text>
                     </LinearGradient>
                 </View>
-                
+
             </View>
         </View>
 

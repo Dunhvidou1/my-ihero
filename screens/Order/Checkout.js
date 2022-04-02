@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { View, Text, ScrollView, SafeAreaView, StyleSheet } from 'react-native';
 import {
     NativeBaseProvider,
     Box,
@@ -9,6 +8,7 @@ import {
     Input,
     Button,
 } from 'native-base';
+import { View, Text, ScrollView, SafeAreaView, StyleSheet } from 'react-native';
 const Checkout = ({ navigation }) => {
     return (
         <ScrollView style={styles.container}>
@@ -17,14 +17,14 @@ const Checkout = ({ navigation }) => {
                     <Box flex={1} p={1} w="90%" mx='auto' justifyContent="center"  >
                         <Heading size="xl" color='#0A8791'>CheckOut</Heading>
                         <VStack space={2} mt={5}>
-                            <FormControl style={{flexDirection: 'row', justifyContent:'space-between'}}>
-                                <View style={{width:'49%'}}>
-                                    <FormControl.Label _text={{ color: 'muted.700', fontSize: 'sm', fontWeight: 500, marginRight:4 }}  >
+                            <FormControl style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <View style={{ width: '49%' }}>
+                                    <FormControl.Label _text={{ color: 'muted.700', fontSize: 'sm', fontWeight: 500, marginRight: 4 }}  >
                                         First Name
                                     </FormControl.Label>
                                     <Input sborder=' 0.2px solid gray' placeholder='Enter First Name' />
                                 </View>
-                                <View style={{width:'49%'}}>
+                                <View style={{ width: '49%' }}>
                                     <FormControl.Label _text={{ color: 'muted.700', fontSize: 'sm', fontWeight: 500 }}  >
                                         Last Name
                                     </FormControl.Label>
@@ -33,7 +33,7 @@ const Checkout = ({ navigation }) => {
                             </FormControl>
                             <FormControl>
                                 <FormControl.Label _text={{ color: 'muted.700', fontSize: 'sm', fontWeight: 600 }}>
-                                Phone Number 
+                                    Phone Number
                                 </FormControl.Label>
                                 <Input sborder=' 0.2px solid gray' placeholder='Enter Phone Number' />
                             </FormControl>
@@ -49,7 +49,7 @@ const Checkout = ({ navigation }) => {
                                 </FormControl.Label>
                                 <Input sborder=' 0.2px solid gray' placeholder='Enter Address ' />
                             </FormControl>
-                            <FormControl style={{flexDirection: 'row'}}>
+                            <FormControl style={{ flexDirection: 'row' }}>
                                 <View>
                                     <FormControl.Label _text={{ color: 'muted.700', fontSize: 'sm', fontWeight: 500 }}  >
                                         Country

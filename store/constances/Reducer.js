@@ -8,7 +8,7 @@ const initialState = {
     locationX: 0,
     locationY: 0,
     gold: '#FBD336',
-    bgTab: '#033156',
+    bgTab: '#241e20',
     textGray: "gray",
     bgLight: '#ffffff',
     textLight: "#ffffff",

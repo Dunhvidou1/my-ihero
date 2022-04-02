@@ -121,8 +121,20 @@ export const Address = {
     },
 }
 export const User = {
+    register: async (data) => {
+        let result = await axios.post('/register', data);
+        return result;
+    },
+    forgotpassword: async (data) => {
+        let result = await axios.post('/forgot/password', data);
+        return result;
+    },
     checkLogin: async (credential) => {
         let result = await axios.post('/login', credential);
+        return result;
+    },
+    searchData: async (data) => {
+        let result = await axios.get('/front_home_restaurant_searct/' + data + '?sort=asc');
         return result;
     },
     logout: async (token) => {

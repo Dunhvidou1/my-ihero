@@ -8,28 +8,36 @@ import MyProfile from "./MyProfile"
 import OrderReport from './OrderReport';
 import Affiliate from './Affiliate';
 import WithDraw from './WithDraw';
+import { useSelector } from 'react-redux';
 const ProfileStack = createStackNavigator();
 const Profile = ({ navigation }) => {
+    const ColorTheme = useSelector(state => state.ColorThemes);
     return (
         <ProfileStack.Navigator >
-
             <ProfileStack.Screen name="Dashboard" component={Dashboard}
                 options={{
-                    headerRight: () => (
-                        <View style={{ flexDirection: 'row', justifyContent: "center", alignItems: "center", paddingRight: 12 }}>
-                            <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
-                                <Ionicons name="notifications-outline" size={24} color={Color.textPrimary} />
-                            </TouchableOpacity>
-                        </View>
-                    ),
+                    //headerRight: () => (
+                    //    <View style={{ flexDirection: 'row', justifyContent: "center", alignItems: "center", paddingRight: 12 }}>
+                    //        <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
+                    //            <Ionicons name="notifications-outline" size={24} color={Color.textPrimary} />
+                    //        </TouchableOpacity>
+                    //    </View>
+                    //),
                     headerTintColor: Color.textPrimary,
-                    title: "Restaurants",
+                    title: "Profile",
                     headerStyle: {
                         backgroundColor: Color.bgPrimary,
                         elevation: 0,
                         shadowOpacity: 0,
                         borderBottomWidth: 0,
-                    }
+                    },
+                    headerTitleStyle: {
+                        fontSize: 20,
+                        fontWeight: '700',
+                        color: ColorTheme.gold
+
+                    },
+                    headerTitleAlign: 'left',
                 }} />
             <ProfileStack.Screen name="MyProfile" component={MyProfile} options={{
                 headerBackTitle: " ",

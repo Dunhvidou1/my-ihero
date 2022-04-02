@@ -5,9 +5,13 @@ export const SET_CREDENTIAL = 'SET_CREDENTIAL';
 export const SET_ERROR = 'SET_ERROR';
 export const SET_PROFILE = 'SET_PROFILE';
 export const CUSTOMERDASHBOARD = 'CUSTOMERDASHBOARD';
+export const SEARCHDATA = 'SEARCHDATA';
 
 export const setCredential = (data) => {
     return { type: SET_CREDENTIAL, data: data };
+}
+export const setSearchData = (data) => {
+    return { type: SEARCHDATA, data: data };
 }
 export const setCustomerDashboard = (data) => {
     return { type: CUSTOMERDASHBOARD, data: data };
@@ -42,12 +46,11 @@ export const getUserProfile = (token) => {
     }
 }
 export const UpdateUserProfile = (data, token, callback) => {
-    console.log('dl')
     return dispatch => {
         api.User.UpdateUserProfile(data, token).then(response => {
-            callback(response.data)
             if (response.data) {
-                console.log(response)
+                console.log(response.data)
+                callback(response.data)
             } else {
                 console.log(response.data.error)
             }
@@ -55,21 +58,19 @@ export const UpdateUserProfile = (data, token, callback) => {
     }
 }
 export const getDashboardCustomer = (token) => {
-    console.log('dl')
     return dispatch => {
         api.User.getDashboardCustomer(token).then(response => {
             if (response.data) {
-                //dispatch(setError(response));
-                console.log(response)
             } else {
                 alert(response.data.error)
             }
         })
     }
 }
-export const checkLogin = (credential) => {
+export const checkLogin = (credential, callback) => {
     return dispatch => {
         api.User.checkLogin(credential).then(response => {
+            callback(response.data)
             if (response.data.success) {
                 console.log(response.data.success)
                 dispatch(setCredential(response.data.success));
@@ -77,6 +78,31 @@ export const checkLogin = (credential) => {
             } else {
                 console.log('Error')
                 dispatch(setError(response.data.error));
+            }
+        });
+    }
+}
+export const searchData = (data, callback) => {
+    return dispatch => {
+        api.User.searchData(data).then(response => {
+            callback(response.data)
+        });
+    }
+}
+export const register = (data, callback) => {
+    return dispatch => {
+        api.User.register(data).then(response => {
+            if (response.data) {
+                callback(response.data)
+            }
+        });
+    }
+}
+export const forgotpassword = (data, callback) => {
+    return dispatch => {
+        api.User.forgotpassword(data).then(response => {
+            if (response.data) {
+                callback(response.data)
             }
         });
     }

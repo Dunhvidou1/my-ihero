@@ -10,7 +10,6 @@ import { useNavigation } from "@react-navigation/native";
 import Color from '../../../constant/Color'
 import { Ionicons } from '@expo/vector-icons';
 import { RadioButton } from "react-native-paper";
-import { setCart } from '../../../store/add_to_cart/action'
 import { useDispatch, useSelector } from 'react-redux';
 const ProductList = props => {
     const navigation = useNavigation();
@@ -22,11 +21,10 @@ const ProductList = props => {
         setData(val);
     }
     const AddToCart = (data) => {
-        dispatch(setCart(data));
     }
     return props.DataFood.map
         (ele => (
-            <TouchableOpacity style={props.DataFood, styles.boxItem} key={ele.id}  >
+            <TouchableOpacity style={styles.boxItem} key={ele.id}  >
                 <View style={styles.menuBrand}>
                     <View style={styles.Pro_image}>
                         <Image source={{ uri: ele.image }} style={styles.imagestyle} />
@@ -105,7 +103,7 @@ const styles = StyleSheet.create({
         width: '98%',
         borderRadius: 7,
         padding: 3,
-        marginVertical: 2,
+        marginVertical: 10,
         marginHorizontal: 5,
         backgroundColor: '#fafafa',
         shadowColor: '#000',

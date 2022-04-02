@@ -6,8 +6,10 @@ import { View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { TouchableOpacity } from "react-native"
 import Color from '../../constant/Color';
+import { useSelector } from 'react-redux';
 const ShopStack = createStackNavigator();
 const Shops = ({ navigation }) => {
+    const ColorTheme = useSelector(state => state.ColorThemes);
     return (
         <ShopStack.Navigator initialRouteName="Shop">
             <ShopStack.Screen
@@ -28,12 +30,20 @@ const Shops = ({ navigation }) => {
                         elevation: 0,
                         shadowOpacity: 0,
                         borderBottomWidth: 0,
-                    }
+                    },
+                    headerTitleStyle: {
+                        fontSize: 20,
+                        fontWeight: '700',
+                        color: ColorTheme.gold
+
+                    },
+                    headerTitleAlign: 'left',
                 }} />
             <ShopStack.Screen
                 name="ShopProfile"
                 component={ShopProfile}
                 options={{
+                    headerBackTitle: ' ',
                     headerTintColor: Color.textPrimary,
                     title: "Restaurants",
                     headerStyle: {

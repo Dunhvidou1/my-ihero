@@ -1,14 +1,14 @@
 import * as React from "react";
-import { View, StyleSheet, Text, TouchableOpacity,Image } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import Star from 'react-native-star-view';
-const HomeproductRental = props => { 
+const HomeproductRental = props => {
     return props.ProRent_List.map
         (ele =>
-            <TouchableOpacity style={props.ProRent_List, styles.boxItem} key={ele.id} onPress={() => editColor(ele)} >
+            <TouchableOpacity style={styles.boxItem} key={ele.id} onPress={() => editColor(ele)} >
                 <View style={styles.menuBrand}>
                     <View style={styles.Pro_image}>
-                        <Image source={{url:ele.product_image[0].path}} style={styles.imagestyle} />
+                        <Image source={{ url: ele.product_image[0].path }} style={styles.imagestyle} />
                     </View>
                     <View style={styles.Pro_detail}>
                         <Text style={styles.nameBrand}>{ele.name}</Text>
@@ -16,21 +16,21 @@ const HomeproductRental = props => {
                         <Star score={4} style={styles.starStyle} />
                         <Entypo name="dots-three-vertical" size={14} color="black" style={{ paddingTop: 5 }} />
                     </View>
-                </View> 
+                </View>
             </TouchableOpacity>
         )
 }
 const styles = StyleSheet.create({
-  
+
     boxItem: {
         height: 240,
         width: 160,
         borderRadius: 5,
-        marginVertical  : 5,
-        marginHorizontal:5,
+        marginVertical: 5,
+        marginHorizontal: 5,
         backgroundColor: '#fafafa',
-        borderWidth:0.26,
-        borderColor:'#e6e6e6'
+        borderWidth: 0.26,
+        borderColor: '#e6e6e6'
     },
     menuBrand: {
         flex: 1,
@@ -66,5 +66,5 @@ const styles = StyleSheet.create({
         height: 20,
         marginBottom: 20,
     }
-    });
+});
 export default HomeproductRental;

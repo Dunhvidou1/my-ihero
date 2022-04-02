@@ -1,4 +1,9 @@
 import {
+    Input,
+    Select,
+    NativeBaseProvider,
+} from "native-base";
+import {
     View,
     Text,
     Keyboard,
@@ -10,11 +15,6 @@ import {
     ActivityIndicator,
     TouchableWithoutFeedback
 } from "react-native";
-import {
-    Input,
-    Select,
-    NativeBaseProvider,
-} from "native-base";
 import * as ImagePicker from "expo-image-picker";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,24 +22,15 @@ import { showMessage } from "react-native-flash-message";
 import { UpdateUserProfile } from '../../store/user/action'
 import { MaterialCommunityIcons, Foundation, FontAwesome, Ionicons, Entypo } from "@expo/vector-icons";
 const height = Dimensions.get('window').height;
-
 const MyProfile = ({ navigation }) => {
     const [Loading, setLoading] = useState(true)
     const [FirstName, setFirstName] = useState(null)
     const [LastName, setLastName] = useState(null)
     const [Email, setEmail] = useState(null)
     const [Phone, setPhone] = useState(null)
+    const [Age, setAge] = useState(null)
     const [Gender, setGender] = useState(3)
     const [Showimage, setShowimage] = useState(null)
-    const [Age, setAge] = useState(null)
-
-    const [FirstNameErr, setFirstNameErr] = useState(null)
-    const [LastNameErr, setLastNameErr] = useState(null)
-    const [EmailErr, setEmailErr] = useState(null)
-    const [PhoneErr, setPhoneErr] = useState(null)
-    const [GenderErr, setGenderErr] = useState(1)
-    const [ShowimageErr, setShowimageErr] = useState(null)
-    const [AgeErr, setAgeErr] = useState(null)
     const ColorTheme = useSelector(state => state.ColorThemes);
     const userData = useSelector(state => state.users.userData);
     const dataProfile = useSelector(state => state.users.profileData);
@@ -59,27 +50,30 @@ const MyProfile = ({ navigation }) => {
         })
         return unsubscribe;
     }, [])
-
     const Update = () => {
-        setLoading(true);
-        let fd = new FormData();
-        fd.append("first_name", FirstName);
-        fd.append("name", FirstName + '-' + LastName);
-        fd.append("last_name", LastName);
-        fd.append("email", Email);
-        fd.append("phone", Phone);
-        fd.append("gender", Gender);
-        fd.append("age", Age);
-        fd.append("profile", Showimage);
-        dispatch(UpdateUserProfile(fd, userData.token, result => {
-            if (result.error) {
-                alertMessage(0, result.error);
-                setLoading(false);
-            } else {
-                alertMessage(1, 'Success');
-                setLoading(false);
-            }
-        }));
+        if (FirstName && LastName && Email && Phone && Gender && Age && Showimage) {
+            setLoading(true);
+            let fd = new FormData();
+            fd.append("name", FirstName + '-' + LastName);
+            fd.append("first_name", FirstName);
+            fd.append("last_name", LastName);
+            fd.append("email", Email);
+            fd.append("phone", Phone);
+            fd.append("gender", Gender);
+            fd.append("age", Age);
+            fd.append("profile", Showimage);
+            dispatch(UpdateUserProfile(fd, userData.token, result => {
+                if (result.error) {
+                    alertMessage(0, result.error);
+                    setLoading(false);
+                } else {
+                    alertMessage(1, 'Success');
+                    setLoading(false);
+                }
+            }));
+        } else {
+            alertMessage(0, 'Field required')
+        }
     }
     useEffect(() => {
         (async () => {

@@ -5,14 +5,14 @@ const Homebrand = props => {
     const navigation = useNavigation()
     return props.BrandList.map
         (ele =>
-            <TouchableOpacity style={props.BrandList, styles.boxItem} key={ele.id}
-            onPress={() => navigation.navigate("ProductStack", { screen: "ProducList" })}>
+            <TouchableOpacity style={styles.boxItem} key={ele.id}
+                onPress={() => navigation.navigate("ProductStack", { screen: "ProducList" })}>
                 <ImageBackground source={{ uri: ele.logo }} style={styles.img} >
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     </View>
                 </ImageBackground>
-            </TouchableOpacity> 
-    )
+            </TouchableOpacity>
+        )
 }
 const styles = StyleSheet.create({
     boxItem: { borderRadius: 6, padding: 2, margin: 2.6, backgroundColor: '#e6e6e6' },

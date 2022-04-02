@@ -1,29 +1,49 @@
-import * as React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import Category from "./Categories";
-import Brand from "./Brand";
 import Home from "./Home";
-import Product from '../Product/ProductStack';
-import Filter from '../Home/Filter';
-import { Ionicons, Feather, EvilIcons } from "@expo/vector-icons";
-import { View, TouchableOpacity, Text, Dimensions } from 'react-native'
-import {
-    NativeBaseProvider,
-    Input
-} from 'native-base';
-const width = Dimensions.get("window").width;
-import Color from '../../constant/Color';
-import Notification from './Notification'
+import * as React from 'react';
+//import Product from '../Product/ProductStack';
+import { useDispatch, useSelector } from "react-redux";
+import { NativeBaseProvider, Input } from 'native-base';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Feather, EvilIcons, AntDesign } from "@expo/vector-icons";
+import { View, TouchableOpacity, Text, Dimensions, ActivityIndicator } from 'react-native'
 import Search from './Search'
 import StartUp from './StartUp';
+import Color from '../../constant/Color';
+import Notification from './Notification';
 import ShopProfile from '../Shop/ShopProfile';
+import { searchData, setSearchData } from '../../store/user/action';
+import { height } from "styled-system";
+const width = Dimensions.get("window").width;
 const HomeStack = createStackNavigator();
 const Homes = ({ navigation }) => {
+    const dispatch = useDispatch();
+    const [value, setValue] = React.useState(null)
+    const [loading, setloading] = React.useState(false)
+    const ColorTheme = useSelector(state => state.ColorThemes);
+    const userData = useSelector(state => state.users);
+    const Enter = (search) => {
+        if (search) {
+            let val = search.trim();
+            if (val) {
+                setloading(true);
+                dispatch(searchData(val, result => {
+                    if (result.error) {
+                        alert(result.error);
+                        setloading(false);
+                    } else {
+                        setValue(null)
+                        dispatch(setSearchData(result.success));
+                        setloading(false);
+                    }
+                }));
+            }
+        }
+    }
     return (
         <HomeStack.Navigator>
             <HomeStack.Screen name="StartUp" component={StartUp} options={{
-                header:()=>null
-            }}/>
+                header: () => null
+            }} />
             <HomeStack.Screen
                 name="Home"
                 component={Home}
@@ -40,9 +60,6 @@ const Homes = ({ navigation }) => {
                             <TouchableOpacity onPress={() => navigation.navigate('Search')} >
                                 <Feather name="search" size={24} color={Color.textPrimary} style={{ marginHorizontal: 5 }} />
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => navigation.navigate('Notification')} >
-                                <Ionicons name="notifications-outline" size={24} color={Color.textPrimary} />
-                            </TouchableOpacity>
                         </TouchableOpacity>),
                     title: "",
                     headerStyle: {
@@ -52,9 +69,6 @@ const Homes = ({ navigation }) => {
                         borderBottomWidth: 0,
                     }
                 }} />
-            <HomeStack.Screen name="Filter" component={Filter} options={{ header: () => null }} />
-            <HomeStack.Screen name="Category" component={Category} />
-            <HomeStack.Screen name="Brand" component={Brand} />
             <HomeStack.Screen name="Notification"
                 component={Notification}
                 options={{
@@ -73,7 +87,7 @@ const Homes = ({ navigation }) => {
                 name="ShopProfile"
                 component={ShopProfile}
                 options={{
-
+                    headerBackTitle: ' ',
                     headerTintColor: Color.textPrimary,
                     title: "Restaurants",
                     headerStyle: {
@@ -82,7 +96,7 @@ const Homes = ({ navigation }) => {
                         shadowOpacity: 0,
                         borderBottomWidth: 0,
                     },
-                    headerTitleAlign:"center"
+                    headerTitleAlign: "center"
                 }} />
             <HomeStack.Screen
                 name="Search"
@@ -90,34 +104,66 @@ const Homes = ({ navigation }) => {
                 options={{
                     headerBackTitle: " ",
                     headerStyle: {
-                        backgroundColor: Color.bgPrimary,
-                        elevation: 0,
-                        shadowOpacity: 0,
-                        borderBottomWidth: 0,
+                        backgroundColor: ColorTheme.bgTab,
                     },
-                    headerTintColor: Color.textPrimary,
-                    headerBackTitleStyle: {
-                        bottom: 1
-                    },
-
+                    headerTitle: "",
+                    headerTintColor: ColorTheme.gold,
                     headerRight: (props) => (
                         <NativeBaseProvider>
-                            <View style={{ width: width - (0.12 * width), alignSelf: 'flex-end', right: 5, height: '100%', justifyContent: 'center' }}>
-                                <Input
-                                    variant='unstyled'
-                                    placeholder="Search here..."
-                                    px={3}
-                                    py={2}
-                                    width="100%"
-                                    borderRadius={0}
-                                    style={{ backgroundColor: '#e6e6e6' }}
-                                />
+                            <View style={{ width: width - (0.12 * width), left: -1, height: '100%', justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
+                                <TouchableOpacity style={{
+                                    width: '90%', borderColor: 'rgba(128,128,128,.2)', borderRadius: 10,
+                                    backgroundColor: 'rgba(128,128,128,.2)',
+                                    height: 40,
+                                }}>
+                                    <Input
+                                        style={{ color: ColorTheme.gold }}
+                                        autoFocus={true}
+                                        variant='unstyled'
+                                        placeholder="Search Shop here..."
+                                        color={ColorTheme.ColorDark}
+                                        width="100%"
+                                        borderRadius={0}
+                                        defaultValue={value}
+                                        onChangeText={(Text) => (setValue(Text), Text == null ? dispatch(setSearchData(null)) : false)}
+                                        onSubmitEditing={(Textvalue) => Enter(value)}
+                                        InputRightElement={(
+                                            value ?
+                                                <TouchableOpacity
+                                                    onPress={() => setValue(null)}
+                                                    style={{
+                                                        height: '100%',
+                                                        justifyContent: 'center',
+                                                        alignItems: "center",
+                                                        flexDirection: "row",
+                                                        paddingHorizontal: 15,
+
+                                                    }}>
+                                                    <AntDesign name="close" size={20} color='gray' />
+                                                </TouchableOpacity>
+                                                : false
+                                        )}
+                                    />
+                                </TouchableOpacity>
+                                {loading ?
+                                    <TouchableOpacity  >
+                                        <ActivityIndicator
+                                            size='small'
+                                            color="gray"
+                                            style={{ marginHorizontal: 5 }}
+                                        />
+                                    </TouchableOpacity>
+                                    :
+                                    <TouchableOpacity onPress={() => Enter(value)}>
+                                        <Feather name="search" size={28} color={ColorTheme.gold} style={{ marginHorizontal: 5 }} />
+                                    </TouchableOpacity>}
                             </View>
+
                         </NativeBaseProvider>
                     ),
                 }}
             />
-            <HomeStack.Screen name="ProductStack" component={Product} options={{ header: () => null }} />
+            {/*<HomeStack.Screen name="ProductStack" component={Product} options={{ header: () => null }} />*/}
         </HomeStack.Navigator>
     )
 }

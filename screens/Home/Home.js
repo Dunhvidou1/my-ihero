@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react'
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
-import { NativeBaseProvider, Tabs } from 'native-base';
 import Product from '../Components/Product';
-import HomeproductBuy from '../Components/HomeproductBuy';
-import { Ionicons, FontAwesome5, SimpleLineIcons, AntDesign } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllShop, getTopRate } from "../../store/shop/action";
 import { getFavorite } from "../../store/item/action";
+import { NativeBaseProvider, Tabs } from 'native-base';
+import { useDispatch, useSelector } from 'react-redux';
+import HomeproductBuy from '../Components/HomeproductBuy';
+import { getAllShop, getTopRate } from "../../store/shop/action";
+import { View, StyleSheet, Text, ScrollView } from 'react-native';
+import { Ionicons, FontAwesome5, SimpleLineIcons } from '@expo/vector-icons';
 import Color from '../../constant/Color';
 const Home = ({ navigation }) => {
     const shopData = useSelector(state => state.shops);
@@ -26,11 +25,11 @@ const Home = ({ navigation }) => {
             <View style={styles.header}>
                 <View style={{ backgroundColor: Color.bgPrimary, flex: 1, borderBottomRightRadius: 50, }}>
                     <View style={styles.box2}>
-                        <TouchableOpacity><Ionicons name="ios-fast-food-outline" size={24} color="#e6e6e6" /></TouchableOpacity>
-                        <TouchableOpacity><FontAwesome5 name="hamburger" size={24} color="#e6e6e6" /></TouchableOpacity>
-                        <TouchableOpacity><Ionicons name="ios-pizza-outline" size={24} color="#e6e6e6" /></TouchableOpacity>
-                        <TouchableOpacity><SimpleLineIcons name="cup" size={24} color="#e6e6e6" /></TouchableOpacity>
-                        <TouchableOpacity><Ionicons name="wine-outline" size={24} color="#e6e6e6" /></TouchableOpacity>
+                        <Ionicons name="ios-fast-food-outline" size={24} color="#e6e6e6" />
+                        <FontAwesome5 name="hamburger" size={24} color="#e6e6e6" />
+                        <Ionicons name="ios-pizza-outline" size={24} color="#e6e6e6" />
+                        <SimpleLineIcons name="cup" size={24} color="#e6e6e6" />
+                        <Ionicons name="wine-outline" size={24} color="#e6e6e6" />
                     </View>
                 </View>
             </View>
@@ -42,7 +41,7 @@ const Home = ({ navigation }) => {
                             <View style={{ flex: 9, marginBottom: 10, paddingHorizontal: 13 }}>
                                 <View style={styles.rootproduct}>
                                     <Text style={{ fontSize: 16, fontWeight: '700' }} color={Color.bgPrimary} paddingLeft={2}>Popular Restaurants</Text>
-                                    <Text style={styles.seemore}>More <AntDesign name="arrowright" style={styles.seemore} size={24} color={Color.textPrimary} /></Text>
+                                    {/*<Text style={styles.seemore}>More <AntDesign name="arrowright" style={styles.seemore} size={24} color={Color.textPrimary} /></Text>*/}
                                 </View>
                                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
                                     <View style={styles.rootcomponent}>
@@ -70,7 +69,7 @@ const Home = ({ navigation }) => {
                                                 </View>
                                             </Tabs.View>
                                             <Tabs.View>
-                                                <View style={styles.Container, { flexWrap: "wrap", width: "50%" }}>
+                                                <View style={{ ...styles.Container, flexWrap: "wrap", width: "50%" }}>
                                                     <HomeproductBuy Pro_List={shopData.topRate} />
                                                 </View>
                                             </Tabs.View>

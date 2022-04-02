@@ -7,11 +7,11 @@ import Color from "../../constant/Color"
 const ProductList = props => {
     const navigation = useNavigation();
     const ProductDetailScreen = (ele) => {
-        navigation.navigate("ShopProfile",ele); 
+        navigation.navigate("ShopProfile", ele);
     }
-    return props.Pro_List?props.Pro_List.map
+    return props.Pro_List ? props.Pro_List.map
         (ele =>
-            <TouchableOpacity style={props.Pro_List, styles.boxItem} key={ele.id} onPress={() => ProductDetailScreen(ele)} >
+            <TouchableOpacity style={styles.boxItem} key={ele.id} onPress={() => ProductDetailScreen(ele)} >
                 <View style={styles.menuBrand}>
                     <View style={styles.Pro_image}>
                         <Image source={{ uri: ele.cover }} style={styles.imagestyle} />
@@ -24,19 +24,19 @@ const ProductList = props => {
                             {ele.city}
                         </Text>
                         <View style={styles.aboutshop}>
-                        <Star score={4} style={styles.starStyle} />
-                        <TouchableOpacity>
-                            <View style={{backgroundColor:Color.textPrimary,padding:5,borderRadius:4}}>
-                            <Text style={{color:"#ffffff",fontSize:12}}>Contact</Text>
-                            </View>
-                        </TouchableOpacity>
-                            
+                            <Star score={4} style={styles.starStyle} />
+                            <TouchableOpacity>
+                                <View style={{ backgroundColor: Color.textPrimary, padding: 5, borderRadius: 4 }}>
+                                    <Text style={{ color: "#ffffff", fontSize: 12 }}>Contact</Text>
+                                </View>
+                            </TouchableOpacity>
+
                         </View>
 
                     </View>
                 </View>
             </TouchableOpacity>
-        ):(false)
+        ) : (false)
 }
 const styles = StyleSheet.create({
     boxItem: {
@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
     nameBrand: {
         fontSize: 16,
         fontWeight: 'bold',
-        padding:6,
-        color:Color.bgPrimary
+        padding: 6,
+        color: Color.bgPrimary
     },
     pro_price: {
         color: 'red',
@@ -99,12 +99,12 @@ const styles = StyleSheet.create({
         width: 100,
         height: 20,
     },
-    aboutshop:{ 
-        color: '#bfbfbf', 
-        fontSize: 12, 
-        justifyContent:'space-between',
-        flexDirection:'row',
-        padding:6
+    aboutshop: {
+        color: '#bfbfbf',
+        fontSize: 12,
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        padding: 6
     }
 });
 export default ProductList;
