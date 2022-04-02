@@ -1,6 +1,6 @@
 import { ORDER } from "./action";
 const initialState = {
-    data: null
+    data: []
 }
 const OrderReducer = (state = initialState, action) => {
     switch (action.type) {

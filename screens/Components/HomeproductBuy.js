@@ -9,7 +9,6 @@ const HomeproductBuy = props => {
     const shopDetail = (ele) => {
         navigation.navigate("ShopProfile", ele);
     }
-
     return props.Pro_List.map
         (ele =>
             <TouchableOpacity style={styles.boxItem} key={ele.id} onPress={() => shopDetail(ele)} >
@@ -19,10 +18,7 @@ const HomeproductBuy = props => {
                     </View>
                     <View style={styles.Pro_detail}>
                         <Text style={styles.nameBrand}>{ele.name}</Text>
-
                         <Text style={{ fontSize: 11, color: Color.textPrimary }}><Entypo name="location-pin" size={15} color={Color.textPrimary} />{ele.city}</Text>
-                        <Star score={4} style={styles.starStyle} />
-
                     </View>
                 </View>
             </TouchableOpacity>

@@ -8,7 +8,7 @@ export const PASSWORD = 'PASSWORD';
 export const FORGOTEMAIL = 'FORGOTEMAIL';
 export const setForgotPass = (data) => {
     return dispatch => {
-        dispatch({ type: FIRSTNAME, data: data });
+        dispatch({ type: FORGOTEMAIL, data: data });
     }
 }
 export const setFirstname = (data) => {

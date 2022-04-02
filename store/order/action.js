@@ -3,12 +3,12 @@ export const ORDER = 'ORDER';
 export const setOrder = (data) => {
     return { type: ORDER, data: data }
 }
-export const getOrderCustomer = (token) => {
+export const getOrderCustomer = (token, Page, callback) => {
     return dispatch => {
-        api.Order.getOrderCustomer(token).then(response => {
+        api.Order.getOrderCustomer(token, Page).then(response => {
+
             if (response.data) {
-                //console.log(response.data.success.data.length, token);
-                dispatch(setOrder(response.data.success.data));
+                callback(response.data.success);
             }
         })
     }

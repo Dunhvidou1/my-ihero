@@ -1,18 +1,16 @@
 import Home from "./Home";
+import Search from './Search';
 import * as React from 'react';
-//import Product from '../Product/ProductStack';
-import { useDispatch, useSelector } from "react-redux";
-import { NativeBaseProvider, Input } from 'native-base';
-import { createStackNavigator } from '@react-navigation/stack';
-import { Feather, EvilIcons, AntDesign } from "@expo/vector-icons";
-import { View, TouchableOpacity, Text, Dimensions, ActivityIndicator } from 'react-native'
-import Search from './Search'
 import StartUp from './StartUp';
 import Color from '../../constant/Color';
 import Notification from './Notification';
 import ShopProfile from '../Shop/ShopProfile';
+import { useDispatch, useSelector } from "react-redux";
+import { NativeBaseProvider, Input } from 'native-base';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Feather, EvilIcons, AntDesign } from "@expo/vector-icons";
 import { searchData, setSearchData } from '../../store/user/action';
-import { height } from "styled-system";
+import { View, TouchableOpacity, Text, Dimensions, ActivityIndicator } from 'react-native'
 const width = Dimensions.get("window").width;
 const HomeStack = createStackNavigator();
 const Homes = ({ navigation }) => {
@@ -110,22 +108,25 @@ const Homes = ({ navigation }) => {
                     headerTintColor: ColorTheme.gold,
                     headerRight: (props) => (
                         <NativeBaseProvider>
-                            <View style={{ width: width - (0.12 * width), left: -1, height: '100%', justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{ width: width - (0.12 * width), height: '100%', justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
                                 <TouchableOpacity style={{
                                     width: '90%', borderColor: 'rgba(128,128,128,.2)', borderRadius: 10,
                                     backgroundColor: 'rgba(128,128,128,.2)',
                                     height: 40,
                                 }}>
                                     <Input
-                                        style={{ color: ColorTheme.gold }}
+                                        style={{ color: ColorTheme.gold, fontSize: 15 }}
                                         autoFocus={true}
                                         variant='unstyled'
-                                        placeholder="Search Shop here..."
-                                        color={ColorTheme.ColorDark}
+                                        px={2}
                                         width="100%"
                                         borderRadius={0}
                                         defaultValue={value}
-                                        onChangeText={(Text) => (setValue(Text), Text == null ? dispatch(setSearchData(null)) : false)}
+                                        color={ColorTheme.ColorDark}
+                                        placeholder="Search here..."
+                                        focusable
+                                        height={9}
+                                        onChangeText={(Text) => setValue(Text)}
                                         onSubmitEditing={(Textvalue) => Enter(value)}
                                         InputRightElement={(
                                             value ?
@@ -139,7 +140,7 @@ const Homes = ({ navigation }) => {
                                                         paddingHorizontal: 15,
 
                                                     }}>
-                                                    <AntDesign name="close" size={20} color='gray' />
+                                                    <AntDesign name="close" size={25} color='gray' />
                                                 </TouchableOpacity>
                                                 : false
                                         )}

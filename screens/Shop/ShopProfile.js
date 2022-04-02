@@ -1,40 +1,39 @@
 
-import React, { useState, useEffect, useRef } from 'react'
-
-import { Tabs, NativeBaseProvider, Center } from 'native-base';
-import { View, Text, Image, ScrollView, Dimensions, StyleSheet, ActivityIndicator } from 'react-native';
 import Star from 'react-native-star-view';
-import ListFood from '../Components/Food/ListFood';
 import { ImageBackground } from 'react-native';
-import { getAllItem, getAllCategory } from '../../store/item/action';
+import { NativeBaseProvider } from 'native-base';
+import ListFood from '../Components/Food/ListFood';
 import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react'
+import { getAllItem, getAllCategory } from '../../store/item/action';
+import { View, Text, Image, ScrollView, Dimensions, StyleSheet, ActivityIndicator } from 'react-native';
 const { width, height } = Dimensions.get("window");
-const ShopProfile = ({ route, navigation }) => {
+const ShopProfile = ({ route }) => {
     const items = useSelector(state => state.items);
     const { params } = route;
+    const [loading, setLoading] = useState(true);
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getAllItem(params.id));
         dispatch(getAllCategory(params.id));
+        setLoading(false)
     }, [dispatch]);
-    const bottomSheet = useRef();
     return (
         <NativeBaseProvider>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={{ flex: 1, flexDirection: "column" }}>
-                    <ImageBackground source={{ uri: params.cover }}
-                        style={{ width: '100%', height: 190 }} borderBottomRightRadius={50} >
-                    </ImageBackground>
-                    <View style={{
-                        flex: 2, width: '100%'
-                    }}>
-                        {!params ?
-                            <View style={{ flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                                <ActivityIndicator
-                                    size='large'
-                                    color="gray"
-                                />
-                            </View> :
+            {loading ?
+                <View style={{ flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                    <ActivityIndicator size='large' color="gray" />
+                </View>
+                :
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <View style={{ flex: 1, flexDirection: "column" }}>
+                        <ImageBackground source={{ uri: params.cover }}
+                            style={{ width: '100%', height: 190 }} borderBottomRightRadius={50} >
+                        </ImageBackground>
+                        <View style={{
+                            flex: 2, width: '100%',
+                            justifyContent: 'center', alignItems: 'center'
+                        }}>
                             <View style={{ width: '100%' }}>
                                 <View style={{ flex: 1, padding: 6, paddingHorizontal: 18, flexDirection: 'row', marginVertical: 10 }}>
                                     <View style={{ height: '100%', justifyContent: 'center', }}>
@@ -43,17 +42,16 @@ const ShopProfile = ({ route, navigation }) => {
                                     <View style={{ flex: 1, width: '100%', paddingHorizontal: 20, justifyContent: 'center' }}>
                                         <Text style={styles.shopname}> {params.name}</Text>
                                         <Text style={styles.shopabout}> {params.city}</Text>
-                                        <Star score={4} style={styles.starStyle} />
                                     </View>
                                 </View>
                                 <View style={{ flex: 1, paddingHorizontal: 10 }}>
                                     <ListFood DataFood={items.allItem} />
                                 </View>
                             </View>
-                        }
+                        </View>
                     </View>
-                </View>
-            </ScrollView>
+                </ScrollView>
+            }
         </NativeBaseProvider >
     )
 }
@@ -118,25 +116,25 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     modalBox: {
+        width,
+        height,
         overflow: "hidden",
         alignItems: "center",
         justifyContent: "center",
-        height,
-        width,
         backgroundColor: "transparent"
     },
     content: {
-        position: "absolute",
+        flex: 1,
         bottom: 0,
-        width: '100%',
         height: 400,
-        borderTopLeftRadius: 20,
-        justifyContent: "center",
+        width: '100%',
         alignItems: "center",
+        position: "absolute",
+        borderTopLeftRadius: 20,
+        flexDirection: 'column',
+        justifyContent: "center",
         borderTopRightRadius: 20,
         backgroundColor: "white",
-        flex: 1,
-        flexDirection: 'column'
     },
     textStyle: {
         fontSize: 22
@@ -156,13 +154,12 @@ const styles = StyleSheet.create({
     box3: {
         flex: 2,
         width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
         justifyContent: 'space-between',
-        flexDirection: 'row'
-        , alignItems: 'center'
     },
     box4: {
         flex: 2,
-
         width: '100%'
     },
     box5: {
@@ -170,7 +167,6 @@ const styles = StyleSheet.create({
         padding: 5,
         width: '100%',
         alignItems: 'center',
-        // backgroundColor:'cyan',
         justifyContent: 'center'
     },
     Shopimage: {

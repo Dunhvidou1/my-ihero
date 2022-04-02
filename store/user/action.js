@@ -61,6 +61,7 @@ export const getDashboardCustomer = (token) => {
     return dispatch => {
         api.User.getDashboardCustomer(token).then(response => {
             if (response.data) {
+                console.log(response.data)
             } else {
                 alert(response.data.error)
             }
@@ -101,9 +102,7 @@ export const register = (data, callback) => {
 export const forgotpassword = (data, callback) => {
     return dispatch => {
         api.User.forgotpassword(data).then(response => {
-            if (response.data) {
-                callback(response.data)
-            }
+            callback(response.data)
         });
     }
 }

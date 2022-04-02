@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import Dashboard from "./Dashboard";
-import { View, TouchableOpacity } from 'react-native';
-import { FontAwesome, Ionicons, AntDesign } from '@expo/vector-icons';
-import Color from '../../constant/Color';
-import MyProfile from "./MyProfile"
-import OrderReport from './OrderReport';
-import Affiliate from './Affiliate';
 import WithDraw from './WithDraw';
+import Dashboard from "./Dashboard";
+import MyProfile from "./MyProfile";
+import Affiliate from './Affiliate';
+import OrderReport from './OrderReport';
+import Color from '../../constant/Color';
 import { useSelector } from 'react-redux';
+import { AntDesign } from '@expo/vector-icons';
+import { View, TouchableOpacity } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 const ProfileStack = createStackNavigator();
 const Profile = ({ navigation }) => {
     const ColorTheme = useSelector(state => state.ColorThemes);
@@ -16,13 +16,6 @@ const Profile = ({ navigation }) => {
         <ProfileStack.Navigator >
             <ProfileStack.Screen name="Dashboard" component={Dashboard}
                 options={{
-                    //headerRight: () => (
-                    //    <View style={{ flexDirection: 'row', justifyContent: "center", alignItems: "center", paddingRight: 12 }}>
-                    //        <TouchableOpacity onPress={() => navigation.navigate('Notification')}>
-                    //            <Ionicons name="notifications-outline" size={24} color={Color.textPrimary} />
-                    //        </TouchableOpacity>
-                    //    </View>
-                    //),
                     headerTintColor: Color.textPrimary,
                     title: "Profile",
                     headerStyle: {

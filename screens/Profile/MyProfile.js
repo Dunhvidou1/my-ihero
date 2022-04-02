@@ -15,12 +15,18 @@ import {
     ActivityIndicator,
     TouchableWithoutFeedback
 } from "react-native";
+import {
+    Entypo,
+    Ionicons,
+    Foundation,
+    FontAwesome,
+    MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { showMessage } from "react-native-flash-message";
 import { UpdateUserProfile } from '../../store/user/action'
-import { MaterialCommunityIcons, Foundation, FontAwesome, Ionicons, Entypo } from "@expo/vector-icons";
 const height = Dimensions.get('window').height;
 const MyProfile = ({ navigation }) => {
     const [Loading, setLoading] = useState(true)

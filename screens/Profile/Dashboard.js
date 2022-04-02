@@ -3,10 +3,9 @@ import Color from '../../constant/Color';
 import { logout } from '../../store/user/action';
 import { useDispatch, useSelector } from 'react-redux';
 import { List, NativeBaseProvider, } from "native-base";
-import { getOrderCustomer } from '../../store/order/action';
 import { getUserProfile, getDashboardCustomer } from '../../store/user/action';
 import { AntDesign, Ionicons, FontAwesome5, Fontisto, Feather } from '@expo/vector-icons';
-import { StyleSheet, ScrollView, Image, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, ScrollView, Image, View, Text, TouchableOpacity, Alert } from 'react-native';
 const Dashboard = ({ route, navigation }) => {
     const userData = useSelector(state => state.users);
     const ColorTheme = useSelector(state => state.ColorThemes);
@@ -15,12 +14,24 @@ const Dashboard = ({ route, navigation }) => {
         const unsubscribe = navigation.addListener("focus", () => {
             if (userData) {
                 dispatch(getUserProfile(userData.userData.token));
-                dispatch(getOrderCustomer(userData.userData.token));
                 dispatch(getDashboardCustomer(userData.userData.token));
             }
         })
         return unsubscribe;
     }, [])
+    const Logout = () =>
+        Alert.alert(
+            "Log out from Life Toolbox ? ",
+            "",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => false,
+                    style: "cancel"
+                },
+                { text: "OK", onPress: () => dispatch(logout(userData.userData.token)) }
+            ]
+        );
     return (
         <View style={styles.container}>
             <View style={styles.container1}>
@@ -86,7 +97,7 @@ const Dashboard = ({ route, navigation }) => {
                                                 <AntDesign style={styles.rightIcon} name="right" />
                                             </List.Item>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => dispatch(logout(userData.userData.token))}>
+                                        <TouchableOpacity onPress={() => Logout()}>
                                             <List.Item style={styles.borderitem}>
                                                 <FontAwesome5 style={styles.leftIcon} name="history" />
                                                 <Text style={styles.textLogout}>Log Out </Text>

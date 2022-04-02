@@ -1,9 +1,9 @@
-import * as React from 'react';
 import Login from "./Login";
+import * as React from 'react';
 import Register from "./Register";
+import RegisterNext from './RegisterNext';
 import Profile from '../Profile/Dashboard';
 import ForgotPassword from "./ForgotPassword";
-import RegisterNext from './RegisterNext';
 import { createStackNavigator } from '@react-navigation/stack';
 const AuthStack = createStackNavigator();
 const AuthStacks = () => {

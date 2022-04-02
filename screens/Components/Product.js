@@ -18,21 +18,17 @@ const ProductList = props => {
                     </View>
                     <View style={styles.Pro_detail}>
                         <Text style={styles.nameBrand}>{ele.name}</Text>
-
                         <Text style={{ color: Color.textPrimary, fontSize: 12 }}>
                             <Entypo name="location-pin" size={15} color={Color.textPrimary} />
                             {ele.city}
                         </Text>
                         <View style={styles.aboutshop}>
-                            <Star score={4} style={styles.starStyle} />
                             <TouchableOpacity>
                                 <View style={{ backgroundColor: Color.textPrimary, padding: 5, borderRadius: 4 }}>
                                     <Text style={{ color: "#ffffff", fontSize: 12 }}>Contact</Text>
                                 </View>
                             </TouchableOpacity>
-
                         </View>
-
                     </View>
                 </View>
             </TouchableOpacity>

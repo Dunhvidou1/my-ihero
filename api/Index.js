@@ -18,55 +18,20 @@ export const Item = {
     getMenuByCategoryId: async (shopId, categoryId) => {
         let result = await axios.get(`/home-front-resturant-menu-catecgories/${shopId}/${categoryId}`);
         return result;
-
     },
-    setWishlist: async (data, token) => {
-        let result = await axios.post('/wishlist', data, {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
-                Accept: "application/json",
-            },
-        });
-        return result;
-    },
-    removeWishlist: async (id, token) => {
-        let result = await axios.delete('/wishlist/' + id, null, {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
-                Accept: "application/json",
-            },
-        });
-        return result;
-    },
-    getWishlist: async (token) => {
-        let result = await axios.get('/wishlist', null, {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
-                Accept: "application/json",
-            },
-        });
-        return result;
-    },
-
-
 }
 export const Notification = {
     getNotificationByUserId: async (id) => {
         let result = await axios.get('/get-notification/' + id);
         return result;
     },
-
 }
 export const Order = {
-    getOrderCustomer: async (token) => {
-        let result = await axios.get('/customer/orderReport', {
+    getOrderCustomer: async (token, Page) => {
+        let result = await axios.get("/customer/orderReport?page=" + Page, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Bearer " + token,
-                Accept: "application/json",
             }
         });
         return result;
@@ -76,12 +41,10 @@ export const Order = {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Bearer " + token,
-                Accept: "application/json",
             },
         });
         return result;
     },
-
 }
 export const Shop = {
     getAllShop: async (sort = 'asc') => {
@@ -100,7 +63,6 @@ export const Shop = {
         let result = await axios.get("/home-front-resturant");
         return result;
     }
-
 }
 export const Address = {
     getProvinc: async () => {
@@ -170,6 +132,33 @@ export const User = {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             }
+        });
+        return result;
+    },
+    getWithdraw: async (data, token) => {
+        let result = await axios.post('/wishlist', data, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+            },
+        });
+        return result;
+    },
+    removeWishlist: async (id, token) => {
+        let result = await axios.delete('/wishlist/' + id, null, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+            },
+        });
+        return result;
+    },
+    getWishlist: async (token) => {
+        let result = await axios.get('/wishlist', null, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+            },
         });
         return result;
     },
