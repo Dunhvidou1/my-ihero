@@ -1,18 +1,16 @@
-import React, { useState, useEffect, useReducer } from "react";
 import {
 	Text,
 	View,
 	ScrollView,
 	StyleSheet,
 } from "react-native";
-import { NativeBaseProvider } from "native-base";
 import Color from "../../constant/Color";
-import { SafeAreaView } from "react-native-safe-area-context";
-import AffiliateComponnent from "../Components/Affliate";
+import { NativeBaseProvider } from "native-base";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
+import AffiliateComponnent from "../Components/Affliate";
 import { getWishlist, } from '../../store/affiliate/action'
 const Affiliate = ({ navigation }) => {
-	const [Data, setData] = useState([1, 2, 3, 4, 5])
 	const userData = useSelector(state => state.users.userData);
 	const dispatch = useDispatch();
 	useEffect(() => {
@@ -21,33 +19,21 @@ const Affiliate = ({ navigation }) => {
 	return (
 		<NativeBaseProvider>
 			<View style={styles.container}>
-				<View style={styles.content}>
-					<SafeAreaView>
-						<ScrollView
-							showsVerticalScrollIndicator={false} >
-							<View style={styles.Header}>
-								<View style={styles.box}>
-									<Text style={{ fontSize: 18, fontWeight: '700', color: Color.textPrimary }}>0 USD</Text>
-									<Text style={{ fontSize: 14, fontWeight: '500', color: Color.textPrimary }}>TOTAL AMOUNTS</Text>
-								</View>
-								<View style={styles.box}>
-									<Text style={{ fontSize: 18, fontWeight: '700', color: Color.textPrimary }}>0</Text>
-									<Text style={{ fontSize: 14, fontWeight: '500', color: Color.textPrimary }}>TOTAL REFERRED</Text>
-								</View>
-							</View>
-							<View
-								style={{
-									flex: 1,
-									flexDirection: "column",
-									justifyContent: "center",
-								}}
-							>
-								<AffiliateComponnent />
-
-							</View>
-						</ScrollView>
-					</SafeAreaView>
-				</View>
+				<ScrollView showsVerticalScrollIndicator={false} >
+					<View style={styles.Header}>
+						<View style={styles.box}>
+							<Text style={{ fontSize: 18, fontWeight: '700', color: Color.textPrimary }}>0 USD</Text>
+							<Text style={{ fontSize: 14, fontWeight: '500', color: Color.textPrimary }}>TOTAL AMOUNTS</Text>
+						</View>
+						<View style={styles.box}>
+							<Text style={{ fontSize: 18, fontWeight: '700', color: Color.textPrimary }}>0</Text>
+							<Text style={{ fontSize: 14, fontWeight: '500', color: Color.textPrimary }}>TOTAL REFERRED</Text>
+						</View>
+					</View>
+					<View style={{ flex: 1, justifyContent: "center" }} >
+						<AffiliateComponnent />
+					</View>
+				</ScrollView>
 			</View>
 		</NativeBaseProvider>
 	);
@@ -64,12 +50,6 @@ const styles = StyleSheet.create({
 		paddingVertical: 10,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		//backgroundColor: 'cyan'
-
-	},
-	content: {
-		flex: 10,
-		width: "100%",
 	},
 	box: {
 		width: '48%',

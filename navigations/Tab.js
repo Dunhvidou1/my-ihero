@@ -1,14 +1,14 @@
 import * as React from "react";
+import Color from "../constant/Color";
+import { useSelector } from "react-redux";
+import Home from "../screens/Home/HomeStack";
+import Shop from "../screens/Shop/ShopStack";
+import Cart from "../screens/Order/OrderStack";
+import AuthStacks from "../screens/Auth/AuthStack";
+import Profile from "../screens/Profile/ProfileStack";
+import { FontAwesome5, Entypo, Feather } from '@expo/vector-icons';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 const Tab = createMaterialBottomTabNavigator();
-import Home from "../screens/Home/HomeStack";
-import Cart from "../screens/Order/OrderStack";
-import Profile from "../screens/Profile/ProfileStack";
-import Shop from "../screens/Shop/ShopStack";
-import AuthStacks from "../screens/Auth/AuthStack";
-import { FontAwesome5, Entypo, FontAwesome, Feather } from '@expo/vector-icons';
-import { useSelector } from "react-redux";
-import Color from "../constant/Color";
 const Tabs = () => {
     const userData = useSelector(state => state.users.userData);
     const ColorTheme = useSelector(state => state.ColorThemes);

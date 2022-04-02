@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from 'react'
-
-import { View, ImageBackground, StyleSheet, Text } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
-import Swiper from 'react-native-swiper'
 import Datajson from '../Components/Datajson';
-import { Image } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 const Brand = ({ navigation }) => {
     const [Data, setData] = useState([]);
@@ -36,10 +33,8 @@ const Brand = ({ navigation }) => {
                         <Text>Hello world</Text>
                     </LinearGradient>
                 </View>
-
             </View>
         </View>
-
     )
 }
 const styles = StyleSheet.create({

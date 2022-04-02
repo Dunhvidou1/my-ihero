@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import { SafeAreaView } from 'react-native';
-import { View, ImageBackground, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { Feather, AntDesign, Ionicons } from '@expo/vector-icons';
 import Datajson from '../Components/Datajson';
+import { AntDesign } from '@expo/vector-icons';
+import React, { useState, useEffect } from 'react';
+import { View, ImageBackground, StyleSheet, Text, TouchableOpacity } from 'react-native';
 const Brand = ({ navigation }) => {
     const [Data, setData] = useState([]);
     useEffect(() => {

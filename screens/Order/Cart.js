@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from 'react'
-import Datajson from '../Components/Datajson_Short';
-import Cart from '../Components/Food/Cart';
-import { NativeBaseProvider, } from "native-base";
-import { AntDesign } from '@expo/vector-icons';
 import Color from '../../constant/Color';
+import Cart from '../Components/Food/Cart';
+import { AntDesign } from '@expo/vector-icons';
+import { NativeBaseProvider, } from "native-base";
+import React, { useState, useEffect } from 'react';
+import Datajson from '../Components/Datajson_Short';
 import { StyleSheet, ScrollView, Image, View, Text, TouchableOpacity } from 'react-native';
 const ScreenCart = ({ navigation }) => {
-    const [loading, setLoading] = useState(9);
     const [Data, setList] = useState([]);
     useEffect(() => {
         setList(Datajson.data.success.data);
     }, []);
     return (
         <View style={styles.container}>
-
             <View style={styles.content}>
                 <ScrollView>
                     <View style={{ flex: 1 }}>
@@ -42,7 +40,6 @@ const ScreenCart = ({ navigation }) => {
                             <View style={{ flex: 1, alignItems: 'flex-end' }}>
                                 <AntDesign name="right" size={24} color="black" style={{}} />
                             </View>
-
                         </View>
                         <View style={styles.amount}>
                             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 26, height: 45, alignItems: 'center', }}>
@@ -91,7 +88,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         flex: 1
-
     },
     header: {
         flex: 1,

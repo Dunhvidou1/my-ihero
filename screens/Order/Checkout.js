@@ -1,14 +1,14 @@
-import * as React from 'react';
 import {
-    NativeBaseProvider,
     Box,
-    Heading,
-    VStack,
-    FormControl,
     Input,
+    VStack,
     Button,
+    Heading,
+    FormControl,
+    NativeBaseProvider,
 } from 'native-base';
-import { View, Text, ScrollView, SafeAreaView, StyleSheet } from 'react-native';
+import * as React from 'react';
+import { View, ScrollView, SafeAreaView, StyleSheet } from 'react-native';
 const Checkout = ({ navigation }) => {
     return (
         <ScrollView style={styles.container}>

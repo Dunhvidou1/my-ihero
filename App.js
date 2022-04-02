@@ -1,15 +1,15 @@
 import * as React from "react";
-import RootStack from "./navigations/Root";
-import { createStore, combineReducers, applyMiddleware } from "redux";
 import ReduxThunk from "redux-thunk";
 import { Provider } from "react-redux";
-import FlashMessage from "react-native-flash-message";
+import RootStack from "./navigations/Root";
 import ShopReducer from "./store/shop/reducer";
 import ItemReducer from "./store/item/reducer";
 import UserReducer from "./store/user/reducer";
-import OrderReducer from "./store/order/reducer";
-import constanceReducer from "./store/constances/Reducer";
 import authReducer from "./store/auth/reducer";
+import OrderReducer from "./store/order/reducer";
+import FlashMessage from "react-native-flash-message";
+import constanceReducer from "./store/constances/Reducer";
+import { createStore, combineReducers, applyMiddleware } from "redux";
 const App = () => {
     const rootReducer = combineReducers({
         shops: ShopReducer,

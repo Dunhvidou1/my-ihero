@@ -26,7 +26,6 @@ const Orders = () => {
                         fontSize: 20,
                         fontWeight: '700',
                         color: ColorTheme.gold
-
                     }
                 }} />
             <OrderStack.Screen name="Payment" component={Payment}
