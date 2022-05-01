@@ -33,7 +33,6 @@ export const setPhone = (data) => {
 }
 export const setGender = (data) => {
     return dispatch => {
-        console.log(data);
         dispatch({ type: GENDER, data: data });
     }
 }

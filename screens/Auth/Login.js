@@ -21,9 +21,9 @@ const windowWidth = Dimensions.get('window').width;
 const HomeScreen = ({ navigation }) => {
   const scrollRef = useRef();
   const dispatch = useDispatch();
-  const [email, setEmail] = useState(null);
+  const [email, setEmail] = useState('customer@gmail.com');
   const [Loading, setLoading] = useState(false);
-  const [password, setPassword] = useState(null);
+  const [password, setPassword] = useState('123123');
   const ColorTheme = useSelector(state => state.ColorThemes);
   const FunLogin = () => {
     if (email && password) {

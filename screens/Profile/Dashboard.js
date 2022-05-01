@@ -21,7 +21,7 @@ const Dashboard = ({ route, navigation }) => {
     }, [])
     const Logout = () =>
         Alert.alert(
-            "Log out from Life Toolbox ? ",
+            "Are you sure ? ",
             "",
             [
                 {
@@ -42,7 +42,7 @@ const Dashboard = ({ route, navigation }) => {
                                 style={styles.userImg}></Image>
                         </View>
                         <View style={styles.header_Detail} >
-                            <Text style={styles.username} onPress={() => console.log(userData.userData.user.profile)}>{userData.userData.user.name}</Text>
+                            <Text style={styles.username}  >{userData.userData.user.name}</Text>
                             <Text style={styles.useremail}>{userData.userData.user.email}</Text>
                             <Text style={styles.useremail}>{userData.userData.user.address}</Text>
                         </View>
@@ -100,7 +100,7 @@ const Dashboard = ({ route, navigation }) => {
                                         <TouchableOpacity onPress={() => Logout()}>
                                             <List.Item style={styles.borderitem}>
                                                 <FontAwesome5 style={styles.leftIcon} name="history" />
-                                                <Text style={styles.textLogout}>Log Out </Text>
+                                                <Text style={styles.textCenter}>Log Out </Text>
                                                 <AntDesign style={styles.rightIcon} name="right" />
                                             </List.Item>
                                         </TouchableOpacity>

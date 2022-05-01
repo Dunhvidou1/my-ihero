@@ -6,7 +6,11 @@ export const SET_ERROR = 'SET_ERROR';
 export const SET_PROFILE = 'SET_PROFILE';
 export const CUSTOMERDASHBOARD = 'CUSTOMERDASHBOARD';
 export const SEARCHDATA = 'SEARCHDATA';
+export const SETAFFLIATE = 'SETAFFLIATE';
 
+export const setAffiliate = (data) => {
+    return { type: SETAFFLIATE, data: data };
+}
 export const setCredential = (data) => {
     return { type: SET_CREDENTIAL, data: data };
 }
@@ -29,7 +33,7 @@ export const logout = (token) => {
                 AsyncStorage.removeItem('data');
                 dispatch(setCredential(null));
             } else {
-                console.log(response.data.error);
+                alert(response.data.error);
             }
         })
     }
@@ -49,10 +53,9 @@ export const UpdateUserProfile = (data, token, callback) => {
     return dispatch => {
         api.User.UpdateUserProfile(data, token).then(response => {
             if (response.data) {
-                console.log(response.data)
                 callback(response.data)
             } else {
-                console.log(response.data.error)
+                alert(response.data.error)
             }
         })
     }
@@ -61,7 +64,6 @@ export const getDashboardCustomer = (token) => {
     return dispatch => {
         api.User.getDashboardCustomer(token).then(response => {
             if (response.data) {
-                console.log(response.data)
             } else {
                 alert(response.data.error)
             }
@@ -73,11 +75,9 @@ export const checkLogin = (credential, callback) => {
         api.User.checkLogin(credential).then(response => {
             callback(response.data)
             if (response.data.success) {
-                console.log(response.data.success)
                 dispatch(setCredential(response.data.success));
                 AsyncStorage.setItem('data', JSON.stringify(response.data.success));
             } else {
-                console.log('Error')
                 dispatch(setError(response.data.error));
             }
         });
@@ -108,4 +108,15 @@ export const forgotpassword = (data, callback) => {
 }
 export const setUser = (data) => {
     return { type: USER, data: data }
+}
+
+export const getAffiliate = (token, Page, callback) => {
+    return dispatch => {
+        api.User.getAffiliate(token, Page).then(response => {
+            if (response.data) {
+                callback(response.data.success);
+            }
+        })
+    }
+
 }

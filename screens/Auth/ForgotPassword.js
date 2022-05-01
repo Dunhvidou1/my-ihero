@@ -27,12 +27,9 @@ const ForgotPassword = ({ navigation }) => {
   const ColorTheme = useSelector(state => state.ColorThemes);
   const send = () => {
     if (Data.forgotEmail) {
-      console.log('work', Data.forgotEmail);
       let fd = new FormData();
       fd.append("email", Data.forgotEmail);
       dispatch(forgotpassword(fd, result => {
-        console.log('work1')
-        console.log(result)
         if (result.error) {
           alert(result.error);
         } else {

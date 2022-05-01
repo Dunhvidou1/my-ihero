@@ -1,11 +1,5 @@
 import axios from "axios";
 axios.defaults.baseURL = "https://ihero.dev.khb.asia/api";
-export const Affiliate = {
-    getAffiliateByUserId: async () => {
-        let result = await axios.get('/referal_log_affiliater');
-        return result;
-    },
-}
 export const Item = {
     getMenuByRestaurantId: async (shopId) => {
         let result = await axios.get('/home-front-resturant-menu/' + shopId);
@@ -83,6 +77,15 @@ export const Address = {
     },
 }
 export const User = {
+    getAffiliate: async (token, Page) => {
+        let result = await axios.get("/referal_log_affiliater?page=" + Page, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+            }
+        });
+        return result;
+    },
     register: async (data) => {
         let result = await axios.post('/register', data);
         return result;

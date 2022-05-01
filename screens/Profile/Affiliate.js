@@ -9,13 +9,46 @@ import { NativeBaseProvider } from "native-base";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import AffiliateComponnent from "../Components/Affliate";
-import { getWishlist, } from '../../store/affiliate/action'
+import { getAffiliate, setAffiliate } from "../../store/user/action";
 const Affiliate = ({ navigation }) => {
+	const [loading, setloading] = useState(true);
+	const [Page, setPage] = useState(1);
+	const [Pause, setPause] = useState(null);
 	const userData = useSelector(state => state.users.userData);
+	const AffliateData = useSelector(state => state.users.Affliate);
 	const dispatch = useDispatch();
+	const getData = () => {
+		if (Pause == null) {
+			dispatch(getAffiliate(userData.token, Page, result => {
+				if (result.error) {
+					setloading(false);
+				} else {
+					console.log(result)
+					setloading(false);
+					if (result.last_page == Page) {
+						setPause(1)
+					}
+					if (result.last_page >= Page) {
+						let P = Page + 1;
+						setPage(P);
+						let Report = [];
+						Report = [...AffliateData, ...result.data];
+						dispatch(setAffiliate(Report));
+
+					}
+				}
+			}));
+		}
+	}
 	useEffect(() => {
-		dispatch(getWishlist(userData.token));
-	}, [dispatch])
+		const unsubscribe = navigation.addListener("focus", async () => {
+			if (userData) { getData(); }
+		})
+		return () => {
+			unsubscribe
+			dispatch(setAffiliate([]));
+		};
+	}, [navigation])
 	return (
 		<NativeBaseProvider>
 			<View style={styles.container}>
@@ -42,6 +75,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		width: "100%",
+		paddingHorizontal: 10
 	},
 	Header: {
 		width: '100%',

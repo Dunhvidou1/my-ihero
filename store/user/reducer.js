@@ -1,4 +1,4 @@
-import { SEARCHDATA, CUSTOMERDASHBOARD, SET_CREDENTIAL, SET_ERROR, USER, SET_PROFILE } from "./action"
+import { SETAFFLIATE, SEARCHDATA, CUSTOMERDASHBOARD, SET_CREDENTIAL, SET_ERROR, USER, SET_PROFILE } from "./action"
 
 const initialState = {
     data: null,
@@ -7,9 +7,11 @@ const initialState = {
     profileData: null,
     customerDashboard: null,
     searchData: null,
+    Affliate: [],
 }
 const UserReducer = (state = initialState, action) => {
     switch (action.type) {
+        case SETAFFLIATE: return { ...state, Affliate: action.data };
         case SEARCHDATA: return { ...state, searchData: action.data };
         case CUSTOMERDASHBOARD: return { ...state, customerDashboard: action.data };
         case USER: return { ...state, data: action.data };

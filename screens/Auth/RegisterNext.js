@@ -44,7 +44,6 @@ const Register = ({ navigation }) => {
           if (result.error) {
             alert(result.error);
           } else {
-            console.log(result)
             navigation.navigate('Login');
             alertMessage(1, 'Create Success!')
           }

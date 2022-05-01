@@ -3,7 +3,6 @@ import Search from './Search';
 import * as React from 'react';
 import StartUp from './StartUp';
 import Color from '../../constant/Color';
-import Notification from './Notification';
 import ShopProfile from '../Shop/ShopProfile';
 import { useDispatch, useSelector } from "react-redux";
 import { NativeBaseProvider, Input } from 'native-base';
@@ -67,20 +66,6 @@ const Homes = ({ navigation }) => {
                         borderBottomWidth: 0,
                     }
                 }} />
-            <HomeStack.Screen name="Notification"
-                component={Notification}
-                options={{
-                    headerBackTitle: " ",
-                    headerStyle: {
-                        backgroundColor: Color.bgPrimary
-                        , elevation: 0,
-                        shadowOpacity: 0,
-                        borderBottomWidth: 0,
-                    },
-                    title: "Notification",
-                    headerTintColor: Color.textPrimary,
-                    headerTitleAlign: "center",
-                }} />
             <HomeStack.Screen
                 name="ShopProfile"
                 component={ShopProfile}
@@ -112,7 +97,6 @@ const Homes = ({ navigation }) => {
                                 <TouchableOpacity style={{
                                     width: '90%', borderColor: 'rgba(128,128,128,.2)', borderRadius: 10,
                                     backgroundColor: 'rgba(128,128,128,.2)',
-                                    height: 40,
                                 }}>
                                     <Input
                                         style={{ color: ColorTheme.gold, fontSize: 15 }}
@@ -138,7 +122,6 @@ const Homes = ({ navigation }) => {
                                                         alignItems: "center",
                                                         flexDirection: "row",
                                                         paddingHorizontal: 15,
-
                                                     }}>
                                                     <AntDesign name="close" size={25} color='gray' />
                                                 </TouchableOpacity>
@@ -159,12 +142,10 @@ const Homes = ({ navigation }) => {
                                         <Feather name="search" size={28} color={ColorTheme.gold} style={{ marginHorizontal: 5 }} />
                                     </TouchableOpacity>}
                             </View>
-
                         </NativeBaseProvider>
                     ),
                 }}
             />
-            {/*<HomeStack.Screen name="ProductStack" component={Product} options={{ header: () => null }} />*/}
         </HomeStack.Navigator>
     )
 }

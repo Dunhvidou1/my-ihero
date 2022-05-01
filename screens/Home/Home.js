@@ -30,8 +30,8 @@ const Home = ({ navigation }) => {
             {loading ?
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <ActivityIndicator size="large" color="gray" />
-                </View>
-                : <View style={styles.container}>
+                </View> :
+                <View style={styles.container}>
                     <View style={styles.header}>
                         <View style={{ backgroundColor: Color.bgPrimary, flex: 1, borderBottomRightRadius: 50, }}>
                             <View style={styles.box2}>
@@ -57,7 +57,7 @@ const Home = ({ navigation }) => {
                                             </View>
                                         </ScrollView>
                                     </View>
-                                    <View style={{ flex: 7, }}>
+                                    <View style={{ flex: 7 }}>
                                         <NativeBaseProvider>
                                             <Tabs align='center' colorScheme="warning" >
                                                 <Tabs.Bar backgroundColor={Color.bgPrimary} >
@@ -67,17 +67,17 @@ const Home = ({ navigation }) => {
                                                 </Tabs.Bar>
                                                 <Tabs.Views>
                                                     <Tabs.View>
-                                                        <View style={styles.Container}>
+                                                        <View style={styles.container}>
                                                             <Product Pro_List={shopData.data} />
                                                         </View>
                                                     </Tabs.View>
                                                     <Tabs.View>
-                                                        <View style={styles.Container}>
+                                                        <View style={styles.container}>
                                                             <Product Pro_List={itemData.favorite.data} />
                                                         </View>
                                                     </Tabs.View>
                                                     <Tabs.View>
-                                                        <View style={{ ...styles.Container, flexWrap: "wrap", width: "50%" }}>
+                                                        <View style={{ ...styles.container, flexWrap: "wrap", width: "50%" }}>
                                                             <HomeproductBuy Pro_List={shopData.topRate} />
                                                         </View>
                                                     </Tabs.View>

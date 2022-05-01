@@ -1,22 +1,21 @@
 import { Feather, AntDesign } from '@expo/vector-icons';
 import * as React from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { List, Image,Modal,Button } from "native-base";
+import { List, Image, Modal, Button } from "native-base";
 import axios from 'axios';
-import { useState } from "react"; 
+import { useState } from "react";
 const Brand = props => {
     const [showModal, setShowModal] = useState(false)
-    const deleteColor=(id)=>{
-        axios.get('https://depot25.dev.khb.asia/api/front-product-brand-destroy/'+id)
+    const deleteColor = (id) => {
+        axios.get('https://depot25.dev.khb.asia/api/front-product-brand-destroy/' + id)
             .then(res => {
-                console.log(' You have Delete brand ID:'+id);
-                setShowModal(false);r
+                setShowModal(false); r
             })
-            .catch(err => { 
-                console.log(err)
+            .catch(err => {
+                alert(err)
             })
-        }
-        const[BrandID, setId]= useState(null);
+    }
+    const [BrandID, setId] = useState(null);
     return props.BrandList.map(ele =>
         <TouchableOpacity style={styles.borderitem} key={ele.id}>
             <List.Item style={props.BrandList}  >
@@ -28,38 +27,38 @@ const Brand = props => {
                     <Text style={styles.Textdate}>{ele.created_at}</Text>
                 </View>
                 <View style={styles.action}>
-                    <TouchableOpacity onPress={() => { setId(ele.id); setShowModal(true);} }>
+                    <TouchableOpacity onPress={() => { setId(ele.id); setShowModal(true); }}>
                         <AntDesign name="close" size={25} color="red" />
                     </TouchableOpacity>
                     <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-                            <Modal.Content maxWidth="400px" style={{backgroundColor:'#060818'}}>
+                        <Modal.Content maxWidth="400px" style={{ backgroundColor: '#060818' }}>
                             <Modal.CloseButton />
-                            <Modal.Header style={{alignItems:'center'}}>
-                            <AntDesign name="exclamationcircleo" size={60} color="#f8bb86" />
+                            <Modal.Header style={{ alignItems: 'center' }}>
+                                <AntDesign name="exclamationcircleo" size={60} color="#f8bb86" />
                             </Modal.Header>
-                            <Modal.Body style={{alignItems:'center',}}>
-                            <Text style={{color:'gray', fontSize:30, fontWeight:'700', paddingTop:15}}> Are You You ?</Text>
-                            <Text style={{color:'gray', fontSize:16,  paddingTop:10}}> You won't be able to revert this!</Text>
+                            <Modal.Body style={{ alignItems: 'center', }}>
+                                <Text style={{ color: 'gray', fontSize: 30, fontWeight: '700', paddingTop: 15 }}> Are You You ?</Text>
+                                <Text style={{ color: 'gray', fontSize: 16, paddingTop: 10 }}> You won't be able to revert this!</Text>
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button.Group variant="ghost" space={2}>
-                                <Button  onPress={()=> {   deleteColor(BrandID); }}  >
-                                    <Text style={{fontSize:'22', color:'#bfbfbf', fontWeight:'700'}}>Yes, delete it  </Text>
-                                </Button>
-                                <Button onPress={() => {
-                                    setShowModal(false)
+                                    <Button onPress={() => { deleteColor(BrandID); }}  >
+                                        <Text style={{ fontSize: '22', color: '#bfbfbf', fontWeight: '700' }}>Yes, delete it  </Text>
+                                    </Button>
+                                    <Button onPress={() => {
+                                        setShowModal(false)
                                     }}>
-                                <Text style={{fontSize:'22', color:'#bfbfbf', fontWeight:'700', paddingLeft:20}}>  Cancel</Text>
-                                </Button> 
+                                        <Text style={{ fontSize: '22', color: '#bfbfbf', fontWeight: '700', paddingLeft: 20 }}>  Cancel</Text>
+                                    </Button>
                                 </Button.Group>
                             </Modal.Footer>
-                            </Modal.Content>
-                        </Modal>
+                        </Modal.Content>
+                    </Modal>
                 </View>
             </List.Item>
         </TouchableOpacity>
 
-    ) 
+    )
 }
 const styles = StyleSheet.create({
     borderitem: {
@@ -80,11 +79,11 @@ const styles = StyleSheet.create({
         height: 100,
         width: '50%',
         marginLeft: -10
-        ,justifyContent:'center',
-        alignItems:"center",
-        borderRightWidth:0.5
+        , justifyContent: 'center',
+        alignItems: "center",
+        borderRightWidth: 0.5
         ,
-        borderRightColor:'gray'
+        borderRightColor: 'gray'
     },
     name:
     {
