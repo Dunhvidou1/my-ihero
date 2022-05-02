@@ -4,6 +4,7 @@ import {
 	StyleSheet,
 	ActivityIndicator,
 } from "react-native";
+import Color from '../../constant/Color';
 import Report from "../Components/Report";
 import { NativeBaseProvider } from "native-base";
 import React, { useState, useEffect } from "react";
@@ -51,7 +52,7 @@ const OrderReport = ({ navigation }) => {
 		<NativeBaseProvider>
 			<View style={styles.container}>
 				{loading ?
-					<ActivityIndicator size="large" color="gray" /> :
+					<ActivityIndicator size="large" color={Color.textPrimary} /> :
 					<ScrollView
 						onScrollEndDrag={() => getData()}
 						showsVerticalScrollIndicator={false}

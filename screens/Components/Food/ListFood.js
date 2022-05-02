@@ -41,7 +41,8 @@ const ProductList = props => {
                         </Text>
                         <View style={styles.aboutshop}>
                             <Text style={styles.pro_price}>$ {ele.price}</Text>
-                            <TouchableOpacity onPress={() => (props.Open(), SetValue(ele))}>
+                            {/*<TouchableOpacity onPress={() => (onOpen(), SetValue(ele))}>*/}
+                            <TouchableOpacity onPress={() => props.Open(ele)}>
                                 <Ionicons name="add-circle-sharp" size={34} color="#ff9900" />
                             </TouchableOpacity>
 
@@ -52,7 +53,7 @@ const ProductList = props => {
                                             <View style={{ width: '100%', minHeight: 80, flexDirection: 'row', alignSelf: 'flex-start', backgroundColor: '#f2f2f2' }}>
                                                 <View style={styles.Shopimage}>
                                                     <ImageBackground source={{ uri: data.image }}
-                                                        style={styles.imgstyle}
+                                                        style={{ width: 70, height: 70 }}
                                                         borderRadius={3}>
                                                     </ImageBackground>
                                                 </View>
@@ -219,12 +220,7 @@ const styles = StyleSheet.create({
     },
     Shopimage: {
     },
-    imgstyle: {
-        width: 70,
-        height: 70,
-        marginHorizontal: 10
 
-    },
     Shopname: {
         flex: 3,
         paddingLeft: 20,

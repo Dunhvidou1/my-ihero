@@ -30,7 +30,7 @@ export const Order = {
         });
         return result;
     },
-    createOrder: async (data, token) => {
+    createOrder: async (token, data) => {
         let result = await axios.post('/home-front-restaurant-order', data, {
             headers: {
                 "Content-Type": "application/json",

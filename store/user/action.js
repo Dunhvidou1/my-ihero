@@ -1,13 +1,12 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as api from "../../api/Index";
 export const USER = 'USER';
-export const SET_CREDENTIAL = 'SET_CREDENTIAL';
 export const SET_ERROR = 'SET_ERROR';
-export const SET_PROFILE = 'SET_PROFILE';
-export const CUSTOMERDASHBOARD = 'CUSTOMERDASHBOARD';
 export const SEARCHDATA = 'SEARCHDATA';
+import * as api from "../../api/Index";
 export const SETAFFLIATE = 'SETAFFLIATE';
-
+export const SET_PROFILE = 'SET_PROFILE';
+export const SET_CREDENTIAL = 'SET_CREDENTIAL';
+export const CUSTOMERDASHBOARD = 'CUSTOMERDASHBOARD';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export const setAffiliate = (data) => {
     return { type: SETAFFLIATE, data: data };
 }
@@ -109,12 +108,22 @@ export const forgotpassword = (data, callback) => {
 export const setUser = (data) => {
     return { type: USER, data: data }
 }
-
 export const getAffiliate = (token, Page, callback) => {
     return dispatch => {
         api.User.getAffiliate(token, Page).then(response => {
             if (response.data) {
+                console.log('Response Is :', response.data);
                 callback(response.data.success);
+            }
+        })
+    }
+
+}
+export const createOrder = (token, data, callback) => {
+    return dispatch => {
+        api.User.createOrder(token, data).then(response => {
+            if (response.data) {
+                callback(response.data);
             }
         })
     }

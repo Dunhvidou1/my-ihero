@@ -5,11 +5,75 @@ import { NativeBaseProvider, } from "native-base";
 import React, { useState, useEffect } from 'react';
 import Datajson from '../Components/Datajson_Short';
 import { StyleSheet, ScrollView, Image, View, Text, TouchableOpacity } from 'react-native';
+import { createOrder } from '../../store/user/action';
+import { useSelector } from 'react-redux';
 const ScreenCart = ({ navigation }) => {
+    const userData = useSelector(state => state.users.userData);
     const [Data, setList] = useState([]);
     useEffect(() => {
         setList(Datajson.data.success.data);
     }, []);
+    //deliveryOrTakeAway: true
+    //order_data: [{id: 11, name: "Salmon Steak with Salad", qty: 1, price: 6.95, option: null,…}]
+    //referrerCode: null
+    //shop_id: "1"
+    //total_data: 6.95
+    //user_order: 1
+    const AddToCart = () => {
+        let fd = new FormData();
+        fd.append("deliveryOrTakeAway", true);
+        fd.append("referrerCode", null);
+        fd.append("shop_id", id);
+        fd.append("total_data", price);
+        fd.append("user_order", id);
+        fd.append("order_data", id);
+        dispatch(createOrder(userData.token, fd, result => {
+            if (result.error) {
+                alertMessage(0, result.error);
+            } else {
+                alertMessage(1, 'Success');
+            }
+        }));
+    }
+    const alertMessage = (Type, data) => {
+        showMessage({
+            message: "",
+            hideOnPress: 'true',
+            renderCustomContent: () => (
+                <View style={{
+                    width: '100%',
+                    height: '100%',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    paddingBottom: 10
+                }}>
+                    <View style={{ backgroundColor: Type == 0 ? 'red' : 'green', borderRadius: 20, padding: 10 }}>
+                        <Text
+                            style={{
+                                textAlign: 'center',
+                                fontSize: 13,
+                                fontWeight: '500',
+                                alignSelf: 'center',
+                                color: '#ffffff',
+                                marginHorizontal: 30,
+                            }}>
+                            {data}
+                        </Text>
+                    </View>
+                </View >
+            ),
+            style: {
+                width: '100%',
+                minHeight: '100%',
+                alignSelf: 'center',
+                backgroundColor: "red",
+                backgroundColor: "rgba(0, 0, 0,.1)",
+                borderRadius: 0,
+                justifyContent: 'center',
+                alignItems: 'center',
+            }
+        });
+    }
     return (
         <View style={styles.container}>
             <View style={styles.content}>

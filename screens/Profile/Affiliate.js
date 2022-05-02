@@ -63,7 +63,8 @@ const Affiliate = ({ navigation }) => {
 						</View>
 					</View>
 					<View style={{ flex: 1, justifyContent: "center" }} >
-						<AffiliateComponnent />
+						{/*<AffiliateComponnent />*/}
+						<Text>Affiliate</Text>
 					</View>
 				</ScrollView>
 			</View>

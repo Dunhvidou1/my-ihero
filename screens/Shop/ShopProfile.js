@@ -1,3 +1,13 @@
+import {
+    View,
+    Text,
+    Image,
+    ScrollView,
+    Dimensions,
+    StyleSheet,
+    TouchableOpacity,
+    ActivityIndicator,
+} from 'react-native';
 import Color from '../../constant/Color';
 import { ImageBackground } from 'react-native';
 import { NativeBaseProvider } from 'native-base';
@@ -6,18 +16,21 @@ import ListFood from '../Components/Food/ListFood';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllItem, getAllCategory } from '../../store/item/action';
-import { View, Text, Image, ScrollView, Dimensions, StyleSheet, ActivityIndicator } from 'react-native';
 const { width, height } = Dimensions.get("window");
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const ShopProfile = ({ route }) => {
     const { params } = route;
+    const [data, setData] = useState([]);
+    const [Variation, setVariation] = useState(0);
+    const [Select, setSelect] = useState(null);
     const [loading, setLoading] = useState(true);
     const items = useSelector(state => state.items);
     const [loadingItems, setLoadingItems] = useState(true);
     const [ShowForumOption, setShowForumOption] = useState(false);
     const dispatch = useDispatch();
-    const OpenForumOption = () => {
+    const OpenForumOption = (value) => {
+        setData(value);
         setShowForumOption(true);
     };
     const CloseForumOption = () => {
@@ -63,7 +76,7 @@ const ShopProfile = ({ route }) => {
                                 {loadingItems ?
                                     <ActivityIndicator size="large" color={Color.textPrimary} /> :
                                     <View style={{ flex: 1, paddingHorizontal: 10 }}>
-                                        <ListFood Open={() => OpenForumOption()} DataFood={items.allItem} />
+                                        <ListFood Open={(ele) => OpenForumOption(ele)} DataFood={items.allItem} />
                                     </View>
                                 }
                             </View>
@@ -87,17 +100,72 @@ const ShopProfile = ({ route }) => {
                 backdropStyle={{
                     backgroundColor: 'red'
                 }}>
-                <View style={{
-                    width: windowWidth,
-                    height: 250,
-                    borderTopLeftRadius: 10,
-                    borderTopRightRadius: 10,
-                    backgroundColor: 'cyan',
-                    marginTop: -20
-                }}>
+                {data ?
+                    <View style={{
+                        marginTop: -20,
+                        paddingTop: 10,
+                        width: windowWidth,
+                        height: windowHeight / 2,
+                        borderTopLeftRadius: 10,
+                        borderTopRightRadius: 10,
+                        backgroundColor: '#ffffff'
+                    }}>
 
-                </View>
-            </Backdrop>
+                        <View style={{ width: '100%', height: windowHeight / 2, justifyContent: 'space-between' }}>
+                            <View style={{
+                                width: '100%',
+                                minHeight: 80,
+                                flexDirection: 'row',
+                                alignSelf: 'flex-start',
+                                borderBottomWidth: 0.3,
+                                borderColor: '#e6e6e6'
+                            }}>
+                                <View style={styles.Shopimage}>
+                                    <Image source={{ uri: data.image }}
+                                        style={{ width: 80, height: 80, borderRadius: 10 }} />
+                                </View>
+                                <View style={styles.Shopname}>
+                                    <Text style={{ fontSize: 17, color: '#262626', fontWeight: '500' }}>{data.name}</Text>
+                                    <Text style={{ fontSize: 15, color: 'red', fontWeight: '700' }}>USD {data.price}</Text>
+                                </View>
+                            </View>
+                            <ScrollView showsVerticalScrollIndicator={false}>
+                                {data.item_option ?
+                                    <View style={{ flex: 1, width: '100%', minHeight: 50, justifyContent: 'center', alignItems: 'center' }}>
+                                        {data.item_option.map((item, idx) =>
+                                            <TouchableOpacity key={idx}
+                                                style={{
+                                                    width: '100%', height: 50, flexDirection: "row", borderBottomWidth: 0.3, borderColor: '#e6e6e6',
+                                                }}>
+                                                <View style={{ width: 80, justifyContent: 'center', alignItems: 'center' }}>
+                                                    <TouchableOpacity onPress={() => (setVariation(item), setSelect(idx))}
+                                                        style={{ width: 25, height: 25, borderRadius: 50, borderWidth: 3, justifyContent: 'center', alignItems: 'center' }}>
+                                                        <View onPress={() => (setVariation(item), setSelect(idx))}
+                                                            style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: Select == idx ? "black" : 'rgba(0,0,0)' }}>
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                </View>
+                                                <View style={{ flex: 2, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                                                    <Text style={{ fontSize: 14, fontWeight: '400' }}>Size : {item.size}</Text>
+                                                </View>
+                                                <View style={{ flex: 2, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                                                    <Text style={{ fontSize: 14, fontWeight: '400' }}>Price : +{item.price}$</Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                        )}
+                                    </View>
+                                    : false}
+                            </ScrollView>
+                            <View style={{ width: '100%', backgroundColor: '#ffffff', height: 40, marginBottom: 10 }}>
+                                <TouchableOpacity style={{ width: '100%', justifyContent: 'center', alignItems: "center", minHeight: 39, backgroundColor: Color.bgPrimary }}
+                                    onPress={() => AddToCart(data)}>
+                                    <Text style={{ fontSize: 17, color: Color.textPrimary }}>Add To Cart</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                    : false}
+            </Backdrop >
         </NativeBaseProvider >
     )
 }
@@ -216,7 +284,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     Shopimage: {
-        flex: 2,
         padding: 6,
         paddingLeft: 20
     },
@@ -226,7 +293,7 @@ const styles = StyleSheet.create({
 
     },
     Shopname: {
-        flex: 3,
+        flex: 1,
         paddingLeft: 20,
         flexDirection: 'column',
         padding: 10,
