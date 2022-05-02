@@ -1,20 +1,36 @@
-
-import Star from 'react-native-star-view';
+import Color from '../../constant/Color';
 import { ImageBackground } from 'react-native';
 import { NativeBaseProvider } from 'native-base';
+import { Backdrop } from "react-native-backdrop";
 import ListFood from '../Components/Food/ListFood';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useState, useEffect } from 'react'
 import { getAllItem, getAllCategory } from '../../store/item/action';
 import { View, Text, Image, ScrollView, Dimensions, StyleSheet, ActivityIndicator } from 'react-native';
 const { width, height } = Dimensions.get("window");
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 const ShopProfile = ({ route }) => {
-    const items = useSelector(state => state.items);
     const { params } = route;
     const [loading, setLoading] = useState(true);
+    const items = useSelector(state => state.items);
+    const [loadingItems, setLoadingItems] = useState(true);
+    const [ShowForumOption, setShowForumOption] = useState(false);
     const dispatch = useDispatch();
+    const OpenForumOption = () => {
+        setShowForumOption(true);
+    };
+    const CloseForumOption = () => {
+        setShowForumOption(false);
+    };
     useEffect(() => {
-        dispatch(getAllItem(params.id));
+        dispatch(getAllItem(params.id, result => {
+            if (result.error) {
+                alert(error);
+            } else {
+                setLoadingItems(false)
+            }
+        }));
         dispatch(getAllCategory(params.id));
         setLoading(false)
     }, [dispatch]);
@@ -35,23 +51,53 @@ const ShopProfile = ({ route }) => {
                             justifyContent: 'center', alignItems: 'center'
                         }}>
                             <View style={{ width: '100%' }}>
-                                <View style={{ flex: 1, padding: 6, paddingHorizontal: 18, flexDirection: 'row', marginVertical: 10 }}>
-                                    <View style={{ height: '100%', justifyContent: 'center', }}>
-                                        <Image source={{ uri: params.logo }} style={{ width: 70, height: 70, borderRadius: 10 }} />
+                                <View style={{ flex: 1, padding: 6, paddingHorizontal: 18, flexDirection: 'row', marginVertical: 10, borderBottomWidth: 0.3, borderColor: '#e6e6e6' }}>
+                                    <View style={{ height: '100%', justifyContent: 'center' }}>
+                                        <Image source={{ uri: params.logo }} style={{ width: 90, height: 90, borderRadius: 10 }} />
                                     </View>
                                     <View style={{ flex: 1, width: '100%', paddingHorizontal: 20, justifyContent: 'center' }}>
                                         <Text style={styles.shopname}> {params.name}</Text>
                                         <Text style={styles.shopabout}> {params.city}</Text>
                                     </View>
                                 </View>
-                                <View style={{ flex: 1, paddingHorizontal: 10 }}>
-                                    <ListFood DataFood={items.allItem} />
-                                </View>
+                                {loadingItems ?
+                                    <ActivityIndicator size="large" color={Color.textPrimary} /> :
+                                    <View style={{ flex: 1, paddingHorizontal: 10 }}>
+                                        <ListFood Open={() => OpenForumOption()} DataFood={items.allItem} />
+                                    </View>
+                                }
                             </View>
                         </View>
                     </View>
                 </ScrollView>
             }
+            <Backdrop
+                visible={ShowForumOption}
+                handleOpen={OpenForumOption}
+                handleClose={CloseForumOption}
+                swipeConfig={{
+                    velocityThreshold: 0.3,
+                    directionalOffsetThreshold: 80,
+                }}
+                animationConfig={{
+                    speed: 10,
+                    bounciness: 4,
+                }}
+                overlayColor="rgba(0,0,0,.3)"
+                backdropStyle={{
+                    backgroundColor: 'red'
+                }}>
+                <View style={{
+                    width: windowWidth,
+                    height: 250,
+                    borderTopLeftRadius: 10,
+                    borderTopRightRadius: 10,
+                    backgroundColor: 'cyan',
+                    marginTop: -20
+                }}>
+
+                </View>
+            </Backdrop>
         </NativeBaseProvider >
     )
 }
@@ -98,8 +144,8 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     shopname: {
-        fontSize: 15,
-        fontWeight: '500',
+        fontSize: 17,
+        fontWeight: '700',
     },
     shopabout: {
         fontSize: 13,

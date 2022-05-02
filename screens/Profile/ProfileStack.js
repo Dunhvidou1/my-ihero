@@ -7,7 +7,7 @@ import OrderReport from './OrderReport';
 import Color from '../../constant/Color';
 import { useSelector } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
-import { View, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 const ProfileStack = createStackNavigator();
 const Profile = ({ navigation }) => {

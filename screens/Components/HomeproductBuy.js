@@ -1,9 +1,8 @@
 import * as React from "react";
-import Star from 'react-native-star-view';
-import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
+import Color from "../../constant/Color";
 import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
-import Color from "../../constant/Color";
+import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 const HomeproductBuy = props => {
     const navigation = useNavigation();
     const shopDetail = (ele) => {

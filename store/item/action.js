@@ -3,10 +3,11 @@ export const ALL_ITEM = 'ITEM';
 export const FAVORITE = 'FAVORITE';
 export const CATEGORIES = 'CATEGORIES';
 export const ITEM_BY_CATEGORY = 'ITEM_BY_CATEGORY';
-export const getAllItem = (shopId) => {
+export const getAllItem = (shopId, callback) => {
     return dispatch => {
         api.Item.getMenuByRestaurantId(shopId).then(response => {
             if (response.data.success) {
+                callback(response.data);
                 dispatch({ type: ALL_ITEM, data: response.data.success })
             }
         });

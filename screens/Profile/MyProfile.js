@@ -29,14 +29,14 @@ import { showMessage } from "react-native-flash-message";
 import { UpdateUserProfile } from '../../store/user/action'
 const height = Dimensions.get('window').height;
 const MyProfile = ({ navigation }) => {
-    const [Loading, setLoading] = useState(true)
-    const [FirstName, setFirstName] = useState(null)
-    const [LastName, setLastName] = useState(null)
-    const [Email, setEmail] = useState(null)
-    const [Phone, setPhone] = useState(null)
-    const [Age, setAge] = useState(null)
-    const [Gender, setGender] = useState(3)
-    const [Showimage, setShowimage] = useState(null)
+    const [Age, setAge] = useState(null);
+    const [Gender, setGender] = useState(3);
+    const [Email, setEmail] = useState(null);
+    const [Phone, setPhone] = useState(null);
+    const [Loading, setLoading] = useState(true);
+    const [LastName, setLastName] = useState(null);
+    const [FirstName, setFirstName] = useState(null);
+    const [Showimage, setShowimage] = useState(null);
     const ColorTheme = useSelector(state => state.ColorThemes);
     const userData = useSelector(state => state.users.userData);
     const dataProfile = useSelector(state => state.users.profileData);
@@ -142,7 +142,7 @@ const MyProfile = ({ navigation }) => {
     return (
         <NativeBaseProvider>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss}>
-                {Loading == false && dataProfile != null ? (
+                {Loading == false && dataProfile != null ?
                     <View style={styles.container}>
                         <ScrollView showsVerticalScrollIndicator={false}>
                             <View style={styles.container}>
@@ -328,9 +328,9 @@ const MyProfile = ({ navigation }) => {
                             </View>
                         </ScrollView>
                     </View >
-                ) : <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }}  >
-                    <ActivityIndicator size="large" color='gray' />
-                </View>}
+                    : <View style={{ flex: 1, justifyContent: "center", alignItems: "center", }}  >
+                        <ActivityIndicator size="large" color='gray' />
+                    </View>}
             </TouchableWithoutFeedback>
         </NativeBaseProvider >
     );
@@ -342,10 +342,10 @@ const styles = StyleSheet.create({
         height: height + 200
     },
     header: {
-        width: "100%",
         height: 120,
-        backgroundColor: '#241e20',
+        width: "100%",
         marginBottom: 40,
+        backgroundColor: '#241e20',
     },
     content: {
         flex: 10,
@@ -354,18 +354,18 @@ const styles = StyleSheet.create({
 
     },
     styleimg: {
-        alignSelf: "center",
-        borderRadius: 50,
         width: 90,
         height: 90,
+        borderRadius: 50,
+        alignSelf: "center",
     },
     BtnSave: {
         width: '100%',
-        flexDirection: 'row',
         minHeight: 45,
+        marginBottom: 10,
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 10
     }
 });
 export default MyProfile;

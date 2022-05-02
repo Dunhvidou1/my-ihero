@@ -6,7 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Color from "../../constant/Color";
 
 const StartUp = ({ navigation }) => {
-    const userData = useSelector(state => state.users.userData);
+  const userData = useSelector(state => state.users.userData);
   const dispatch = useDispatch();
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -25,7 +25,7 @@ const StartUp = ({ navigation }) => {
   }, []);
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <ActivityIndicator size="large" color={Color.textPrimary}/>
+      <ActivityIndicator size="large" color={Color.textPrimary} />
     </View>
   );
 };

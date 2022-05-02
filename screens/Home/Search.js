@@ -1,9 +1,17 @@
+import {
+    Text,
+    View,
+    Image,
+    StyleSheet,
+    ScrollView,
+    TouchableOpacity,
+    ActivityIndicator,
+} from "react-native";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { NativeBaseProvider, List } from "native-base";
+import { NativeBaseProvider } from "native-base";
 import { setSearchData } from "../../store/user/action";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import { View, StyleSheet, TouchableOpacity, Text, ActivityIndicator, ScrollView, Image } from "react-native";
 const Search = ({ navigation }) => {
     const dispatch = useDispatch();
     const [Loading, setLoading] = React.useState(true)

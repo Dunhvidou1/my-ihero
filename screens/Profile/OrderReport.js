@@ -50,13 +50,14 @@ const OrderReport = ({ navigation }) => {
 	return (
 		<NativeBaseProvider>
 			<View style={styles.container}>
-				{loading ? <ActivityIndicator size="large" color="gray" /> :
+				{loading ?
+					<ActivityIndicator size="large" color="gray" /> :
 					<ScrollView
 						onScrollEndDrag={() => getData()}
-						showsVerticalScrollIndicator={false} style={{ flex: 1, width: '100%', paddingTop: 10 }} >
-						<View style={{ flex: 1, height: '100%', width: '100%', }} >
-							{DataReport ?
-								<Report ReportVal={DataReport} /> : false}
+						showsVerticalScrollIndicator={false}
+						style={{ flex: 1, width: '100%', paddingTop: 10 }} >
+						<View style={{ flex: 1, height: '100%', width: '100%' }} >
+							{DataReport ? <Report ReportVal={DataReport} /> : false}
 						</View>
 					</ScrollView>}
 			</View>

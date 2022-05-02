@@ -1,20 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Ionicons } from '@expo/vector-icons';
-import { Image, Box, Heading, Text, View, Icon, IconButton } from "native-base";
-import { StyleSheet, SafeAreaView, ImageBackground } from 'react-native';
-import { AntDesign } from "@expo/vector-icons"
+import React, { useState } from 'react';
 import Color from '../../../constant/Color';
+import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from "@expo/vector-icons";
+import { Image, Box, Text, View } from "native-base";
+import { StyleSheet, SafeAreaView } from 'react-native';
 const CartDetail = (props) => {
     const [num, setNum] = useState(1);
-    const Add = () => {
-        setNum(num + 1);
-    }
-    const Sub = () => {
-        setNum(num - 1);
-    }
-    const price = (value) => {
-        return value * num
-    }
     return (
         <View style={{ flex: 1, marginVertical: 6 }}>
             <SafeAreaView onPress={props.onPress}>
@@ -49,8 +40,8 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
+        marginHorizontal: 5,
         flexDirection: 'row',
-        marginHorizontal: 5
     },
     img: {
         flex: 2,
@@ -66,10 +57,9 @@ const styles = StyleSheet.create({
     },
     text2: {
         flex: 1,
-        justifyContent: 'space-between',
+        flexDirection: 'row',
         alignItems: 'center',
-        flexDirection: 'row'
-
+        justifyContent: 'space-between',
     },
     imgstyle: {
         width: "100%",

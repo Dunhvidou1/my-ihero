@@ -1,6 +1,5 @@
 export default {
-
-data:{
+  data: {
     "success": {
       "current_page": 1,
       "data": [
@@ -98,7 +97,7 @@ data:{
             }
           ],
           "product_tag": [
-            
+
           ],
           "product_variation": [
             {
@@ -230,7 +229,7 @@ data:{
             }
           ],
           "product_tag": [
-            
+
           ],
           "product_variation": [
             {

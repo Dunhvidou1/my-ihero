@@ -1,3 +1,12 @@
+import {
+    Text,
+    View,
+    Image,
+    Alert,
+    StyleSheet,
+    ScrollView,
+    TouchableOpacity,
+} from 'react-native';
 import React from 'react'
 import Color from '../../constant/Color';
 import { logout } from '../../store/user/action';
@@ -5,7 +14,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { List, NativeBaseProvider, } from "native-base";
 import { getUserProfile, getDashboardCustomer } from '../../store/user/action';
 import { AntDesign, Ionicons, FontAwesome5, Fontisto, Feather } from '@expo/vector-icons';
-import { StyleSheet, ScrollView, Image, View, Text, TouchableOpacity, Alert } from 'react-native';
 const Dashboard = ({ route, navigation }) => {
     const userData = useSelector(state => state.users);
     const ColorTheme = useSelector(state => state.ColorThemes);
@@ -41,11 +49,11 @@ const Dashboard = ({ route, navigation }) => {
                             <Image source={{ uri: userData.userData.user.profile }}
                                 style={styles.userImg}></Image>
                         </View>
-                        <View style={styles.header_Detail} >
+                        <TouchableOpacity style={styles.header_Detail} >
                             <Text style={styles.username}  >{userData.userData.user.name}</Text>
                             <Text style={styles.useremail}>{userData.userData.user.email}</Text>
                             <Text style={styles.useremail}>{userData.userData.user.address}</Text>
-                        </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View style={{ flex: 7, backgroundColor: Color.bgPrimary, alignItems: 'center' }}>

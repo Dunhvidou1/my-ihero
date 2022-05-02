@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {  Ionicons  } from '@expo/vector-icons';
-import { Image, Box, Stack, Heading, Text, View   } from "native-base";
-import {  StyleSheet,  SafeAreaView } from 'react-native'; 
+import { Ionicons } from '@expo/vector-icons';
+import { StyleSheet, SafeAreaView } from 'react-native';
+import { Image, Box, Stack, Heading, Text, View } from "native-base";
 const CartCheckout = (props) => {
     return (
         <View style={{ flex: 1 }}>

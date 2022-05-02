@@ -1,11 +1,13 @@
 import * as React from "react";
 import { useNavigation } from "@react-navigation/native";
-import { View, StyleSheet, Text, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
 const Homebrand = props => {
     const navigation = useNavigation()
     return props.BrandList.map
         (ele =>
-            <TouchableOpacity style={styles.boxItem} key={ele.id}
+            <TouchableOpacity
+                key={ele.id}
+                style={styles.boxItem}
                 onPress={() => navigation.navigate("ProductStack", { screen: "ProducList" })}>
                 <ImageBackground source={{ uri: ele.logo }} style={styles.img} >
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -15,17 +17,34 @@ const Homebrand = props => {
         )
 }
 const styles = StyleSheet.create({
-    boxItem: { borderRadius: 6, padding: 2, margin: 2.6, backgroundColor: '#e6e6e6' },
-    menuBrand: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-    nameBrand: { fontSize: 15, fontWeight: 'bold', color: 'black', alignItems: "center" },
-    iconBrand: { width: '60%', height: '60%', },
+    boxItem: {
+        margin: 3,
+        padding: 2,
+        borderRadius: 6,
+        backgroundColor: '#e6e6e6'
+    },
+    menuBrand: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    nameBrand: {
+        fontSize: 15,
+        color: 'black',
+        fontWeight: 'bold',
+        alignItems: "center"
+    },
+    iconBrand: {
+        width: '60%',
+        height: '60%',
+    },
     img: {
-        height: 100,
         width: 100,
-        justifyContent: 'space-evenly',
+        height: 100,
+        borderRadius: 10,
         alignItems: 'center',
         backgroundColor: '#e6e6e6',
-        borderRadius: 10,
+        justifyContent: 'space-evenly',
     },
 })
 export default Homebrand;

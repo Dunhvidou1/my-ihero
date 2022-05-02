@@ -1,11 +1,20 @@
+import {
+    View,
+    Text,
+    Image,
+    StyleSheet,
+    TouchableOpacity,
+} from 'react-native';
 import * as React from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
-import { Entypo } from '@expo/vector-icons';
 import Star from 'react-native-star-view';
+import { Entypo } from '@expo/vector-icons';
 const HomeproductRental = props => {
     return props.ProRent_List.map
         (ele =>
-            <TouchableOpacity style={styles.boxItem} key={ele.id} onPress={() => editColor(ele)} >
+            <TouchableOpacity
+                key={ele.id}
+                style={styles.boxItem}
+                onPress={() => editColor(ele)} >
                 <View style={styles.menuBrand}>
                     <View style={styles.Pro_image}>
                         <Image source={{ url: ele.product_image[0].path }} style={styles.imagestyle} />
@@ -21,25 +30,24 @@ const HomeproductRental = props => {
         )
 }
 const styles = StyleSheet.create({
-
     boxItem: {
         height: 240,
         width: 160,
         borderRadius: 5,
+        borderWidth: 0.26,
         marginVertical: 5,
         marginHorizontal: 5,
+        borderColor: '#e6e6e6',
         backgroundColor: '#fafafa',
-        borderWidth: 0.26,
-        borderColor: '#e6e6e6'
     },
     menuBrand: {
         flex: 1,
+        alignItems: 'center',
         justifyContent: 'center',
-        alignItems: 'center'
     },
     imagestyle: {
         width: '100%',
-        height: '100%'
+        height: '100%',
     },
     Pro_image: {
         flex: 3,
@@ -47,11 +55,11 @@ const styles = StyleSheet.create({
     },
     Pro_detail: {
         flex: 1,
+        padding: 7,
         width: '100%',
-        flexDirection: 'row',
         flexWrap: 'wrap',
+        flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 7
     },
     nameBrand: {
         fontSize: 16,

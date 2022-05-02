@@ -34,7 +34,6 @@ const Affiliate = ({ navigation }) => {
 						let Report = [];
 						Report = [...AffliateData, ...result.data];
 						dispatch(setAffiliate(Report));
-
 					}
 				}
 			}));

@@ -1,3 +1,11 @@
+import {
+    Text,
+    View,
+    StyleSheet,
+    ScrollView,
+    ActivityIndicator
+} from 'react-native';
+import Color from '../../constant/Color';
 import Product from '../Components/Product';
 import React, { useEffect, useState } from 'react'
 import { getFavorite } from "../../store/item/action";
@@ -6,8 +14,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import HomeproductBuy from '../Components/HomeproductBuy';
 import { getAllShop, getTopRate } from "../../store/shop/action";
 import { Ionicons, FontAwesome5, SimpleLineIcons } from '@expo/vector-icons';
-import { View, StyleSheet, Text, ScrollView, ActivityIndicator } from 'react-native';
-import Color from '../../constant/Color';
 const Home = ({ navigation }) => {
     const [loading, setLoading] = useState(true)
     const shopData = useSelector(state => state.shops);
@@ -21,7 +27,9 @@ const Home = ({ navigation }) => {
     }, [dispatch]);
     useEffect(() => {
         const unsubscribe = navigation.addListener("focus", async () => {
-            setLoading(false);
+            setTimeout(() => {
+                setLoading(false);
+            }, 1000);
         })
         return unsubscribe;
     }, [navigation])
@@ -29,7 +37,7 @@ const Home = ({ navigation }) => {
         <View style={styles.Root}>
             {loading ?
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <ActivityIndicator size="large" color="gray" />
+                    <ActivityIndicator size="large" color={Color.textPrimary} />
                 </View> :
                 <View style={styles.container}>
                     <View style={styles.header}>
@@ -62,7 +70,7 @@ const Home = ({ navigation }) => {
                                             <Tabs align='center' colorScheme="warning" >
                                                 <Tabs.Bar backgroundColor={Color.bgPrimary} >
                                                     <Tabs.Tab>All Restaurants</Tabs.Tab>
-                                                    <Tabs.Tab>Favorite</Tabs.Tab>
+                                                    {/*<Tabs.Tab>Favorite</Tabs.Tab>*/}
                                                     <Tabs.Tab>Top Rating</Tabs.Tab>
                                                 </Tabs.Bar>
                                                 <Tabs.Views>
@@ -71,11 +79,11 @@ const Home = ({ navigation }) => {
                                                             <Product Pro_List={shopData.data} />
                                                         </View>
                                                     </Tabs.View>
-                                                    <Tabs.View>
+                                                    {/*<Tabs.View>
                                                         <View style={styles.container}>
                                                             <Product Pro_List={itemData.favorite.data} />
                                                         </View>
-                                                    </Tabs.View>
+                                                    </Tabs.View>*/}
                                                     <Tabs.View>
                                                         <View style={{ ...styles.container, flexWrap: "wrap", width: "50%" }}>
                                                             <HomeproductBuy Pro_List={shopData.topRate} />

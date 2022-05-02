@@ -1,12 +1,12 @@
-import * as React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
 import Shop from "./Shop";
-import ShopProfile from './ShopProfile';
+import * as React from 'react';
 import { View } from 'react-native';
-import { Feather } from '@expo/vector-icons';
-import { TouchableOpacity } from "react-native"
+import ShopProfile from './ShopProfile';
 import Color from '../../constant/Color';
 import { useSelector } from 'react-redux';
+import { Feather } from '@expo/vector-icons';
+import { TouchableOpacity } from "react-native"
+import { createStackNavigator } from '@react-navigation/stack';
 const ShopStack = createStackNavigator();
 const Shops = ({ navigation }) => {
     const ColorTheme = useSelector(state => state.ColorThemes);

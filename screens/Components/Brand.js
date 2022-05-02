@@ -1,11 +1,12 @@
-import { Feather, AntDesign } from '@expo/vector-icons';
-import * as React from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { List, Image, Modal, Button } from "native-base";
 import axios from 'axios';
+import * as React from "react";
 import { useState } from "react";
+import { AntDesign } from '@expo/vector-icons';
+import { List, Image, Modal, Button } from "native-base";
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 const Brand = props => {
-    const [showModal, setShowModal] = useState(false)
+    const [BrandID, setId] = useState(null);
+    const [showModal, setShowModal] = useState(false);
     const deleteColor = (id) => {
         axios.get('https://depot25.dev.khb.asia/api/front-product-brand-destroy/' + id)
             .then(res => {
@@ -15,7 +16,6 @@ const Brand = props => {
                 alert(err)
             })
     }
-    const [BrandID, setId] = useState(null);
     return props.BrandList.map(ele =>
         <TouchableOpacity style={styles.borderitem} key={ele.id}>
             <List.Item style={props.BrandList}  >
@@ -62,48 +62,43 @@ const Brand = props => {
 }
 const styles = StyleSheet.create({
     borderitem: {
+        flex: 1,
         margin: 2,
         height: 100,
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: "center",
-        borderLeftWidth: 1,
         borderTopWidth: 1,
+        borderLeftWidth: 1,
         borderRightWidth: 1,
         borderBottomWidth: 1,
+        alignItems: "center",
         borderColor: '#f2f2f2',
-        backgroundColor: '#f2f2f2'
+        justifyContent: 'center',
+        backgroundColor: '#f2f2f2',
     },
     img: {
         flex: 3,
         height: 100,
         width: '50%',
-        marginLeft: -10
-        , justifyContent: 'center',
+        marginLeft: -10,
         alignItems: "center",
-        borderRightWidth: 0.5
-        ,
-        borderRightColor: 'gray'
-    },
-    name:
-    {
-        flex: 4,
-        width: '50%',
-        height: 100,
+        borderRightWidth: 0.5,
         justifyContent: 'center',
-        padding: 10
-
+        borderRightColor: 'gray',
+    },
+    name: {
+        flex: 4,
+        height: 100,
+        padding: 10,
+        width: '50%',
+        justifyContent: 'center',
     },
     action: {
-
-        paddingRight: 5,
-        paddingTop: 3,
         height: 100,
+        paddingTop: 3,
+        paddingRight: 5,
     },
-    Textname:
-    {
+    Textname: {
+        fontSize: 20,
         fontWeight: 'bold',
-        fontSize: 20
     },
     image1: {
         width: '100%',

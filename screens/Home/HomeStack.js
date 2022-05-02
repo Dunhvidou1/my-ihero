@@ -38,9 +38,12 @@ const Homes = ({ navigation }) => {
     }
     return (
         <HomeStack.Navigator>
-            <HomeStack.Screen name="StartUp" component={StartUp} options={{
-                header: () => null
-            }} />
+            <HomeStack.Screen
+                name="StartUp"
+                component={StartUp}
+                options={{
+                    header: () => null
+                }} />
             <HomeStack.Screen
                 name="Home"
                 component={Home}

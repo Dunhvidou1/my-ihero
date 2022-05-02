@@ -1,38 +1,37 @@
 import * as React from "react"
-import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
-import { useNavigation } from "@react-navigation/native";
+import Color from "../../constant/Color";
 import { Entypo } from '@expo/vector-icons';
-import Star from "react-native-star-view/lib/Star";
-import Color from "../../constant/Color"
+import { useNavigation } from "@react-navigation/native";
+import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 const ProductList = props => {
     const navigation = useNavigation();
     const ProductDetailScreen = (ele) => {
         navigation.navigate("ShopProfile", ele);
     }
     return props.Pro_List ? props.Pro_List.map
-        (ele =>
-            <TouchableOpacity style={styles.boxItem} key={ele.id} onPress={() => ProductDetailScreen(ele)} >
-                <View style={styles.menuBrand}>
-                    <View style={styles.Pro_image}>
-                        <Image source={{ uri: ele.cover }} style={styles.imagestyle} />
-                    </View>
-                    <View style={styles.Pro_detail}>
-                        <Text style={styles.nameBrand}>{ele.name}</Text>
-                        <Text style={{ color: Color.textPrimary, fontSize: 12 }}>
-                            <Entypo name="location-pin" size={15} color={Color.textPrimary} />
-                            {ele.city}
-                        </Text>
-                        <View style={styles.aboutshop}>
-                            <TouchableOpacity>
-                                <View style={{ backgroundColor: Color.textPrimary, padding: 5, borderRadius: 4 }}>
-                                    <Text style={{ color: "#ffffff", fontSize: 12 }}>Contact</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
+        (ele => <TouchableOpacity
+            style={styles.boxItem} key={ele.id}
+            onPress={() => ProductDetailScreen(ele)} >
+            <View style={styles.menuBrand}>
+                <View style={styles.Pro_image}>
+                    <Image source={{ uri: ele.cover }} style={styles.imagestyle} />
+                </View>
+                <View style={styles.Pro_detail}>
+                    <Text style={styles.nameBrand}>{ele.name}</Text>
+                    <Text style={{ color: Color.textPrimary, fontSize: 12 }}>
+                        <Entypo name="location-pin" size={15} color={Color.textPrimary} />
+                        {ele.city}
+                    </Text>
+                    <View style={styles.aboutshop}>
+                        <TouchableOpacity>
+                            <View style={styles.ContainerContact}>
+                                <Text style={{ color: "#ffffff", fontSize: 12 }}>Contact</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                 </View>
-            </TouchableOpacity>
-        ) : (false)
+            </View>
+        </TouchableOpacity>) : false
 }
 const styles = StyleSheet.create({
     boxItem: {
@@ -101,6 +100,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flexDirection: 'row',
         padding: 6
+    },
+    ContainerContact: {
+        padding: 5,
+        borderRadius: 4,
+        backgroundColor: Color.textPrimary,
     }
 });
 export default ProductList;

@@ -1,10 +1,7 @@
 import * as React from "react";
-import { Entypo, AntDesign } from '@expo/vector-icons';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Tabs, NativeBaseProvider, Box, VStack, Button } from 'native-base';
-import axios from 'axios';
-import { useState } from "react";
+import { Box, VStack } from 'native-base';
 import { useNavigation } from "@react-navigation/native";
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 const Report = (props) => {
 	const navigation = useNavigation();
 	return props.ReportVal.map((ele, idx) =>

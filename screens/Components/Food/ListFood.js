@@ -5,12 +5,15 @@ import {
     Actionsheet,
     useDisclose,
 } from "native-base"
-import { View, StyleSheet, Text, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import Color from '../../../constant/Color'
 import { Ionicons } from '@expo/vector-icons';
 import { RadioButton } from "react-native-paper";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+
+import moment from "moment";
+import { View, StyleSheet, Text, TouchableOpacity, Image, ImageBackground, Dimensions } from 'react-native';
+
 const ProductList = props => {
     const navigation = useNavigation();
     const { isOpen, onOpen, onClose } = useDisclose()
@@ -31,13 +34,17 @@ const ProductList = props => {
                     </View>
                     <View style={styles.Pro_detail}>
                         <Text style={styles.nameBrand}>{ele.name}</Text>
-                        <Text style={{ color: 'gray', fontSize: 12 }}>{ele.updated_at}
+                        <Text style={{ color: 'gray', fontSize: 11, fontWeight: '400' }}>
+                            {moment(
+                                ele.updated_at
+                            ).fromNow()}
                         </Text>
                         <View style={styles.aboutshop}>
                             <Text style={styles.pro_price}>$ {ele.price}</Text>
-                            <TouchableOpacity onPress={() => { onOpen(); SetValue(ele) }}>
+                            <TouchableOpacity onPress={() => (props.Open(), SetValue(ele))}>
                                 <Ionicons name="add-circle-sharp" size={34} color="#ff9900" />
                             </TouchableOpacity>
+
                             {data ? (
                                 <Actionsheet isOpen={isOpen} onClose={onClose}  >
                                     <Actionsheet.Content p={0}>
@@ -142,13 +149,15 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15
     },
     nameBrand: {
-        fontSize: 16,
-        fontWeight: 'bold',
+        fontSize: 15,
+        fontWeight: '500',
 
     },
     pro_price: {
         color: 'red',
-        fontWeight: 'bold', paddingTop: 10
+        fontWeight: '700',
+        fontSize: 17,
+        paddingTop: 10
     },
     starStyle: {
         width: 80,
@@ -211,8 +220,8 @@ const styles = StyleSheet.create({
     Shopimage: {
     },
     imgstyle: {
-        width: 80,
-        height: 80,
+        width: 70,
+        height: 70,
         marginHorizontal: 10
 
     },
