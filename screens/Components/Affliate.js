@@ -11,35 +11,35 @@ const AffiliateComponnent = (props) => {
 					<VStack space={1} height={90}>
 						<View style={{ flex: 1, flexDirection: 'column' }} >
 							<View style={{ flex: 1, width: '100%', flexDirection: 'row' }}>
-								<View style={{ flex: 1, justifyContent: 'center' }}>
-									<Text style={styles.title}>Customer Name</Text>
-								</View>
-								<View style={{ flex: 1 }}>
-									<Text style={styles.data}>:  </Text>
-								</View>
-							</View>
-							<View style={{ flex: 1, width: '100%', flexDirection: 'row' }}>
-								<View style={{ flex: 1 }}>
-									<Text style={styles.title}>Restaurant Name</Text>
-								</View>
-								<View style={{ flex: 1 }}>
-									<Text style={styles.data}>:  </Text>
-								</View>
-							</View>
-							<View style={{ flex: 1, width: '100%', flexDirection: 'row' }}>
-								<View style={{ flex: 1 }}>
-									<Text style={styles.title}>Due Amount</Text>
-								</View>
-								<View style={{ flex: 1 }}>
-									<Text style={styles.data}>:  </Text>
-								</View>
-							</View>
-							<View style={{ flex: 1, width: '100%', flexDirection: 'row' }}>
-								<View style={{ flex: 1 }}>
+								<View style={{ flex: 2 }}>
 									<Text style={styles.title}>Invoice ID	</Text>
 								</View>
 								<View style={{ flex: 1 }}>
-									<Text style={styles.data}>:    </Text>
+									<Text style={styles.data}>: {props.Data.invoice_id}   </Text>
+								</View>
+							</View>
+							<View style={{ flex: 1, width: '100%', flexDirection: 'row' }}>
+								<View style={{ flex: 2, justifyContent: 'center' }}>
+									<Text style={styles.title}>Customer Name</Text>
+								</View>
+								<View style={{ flex: 1 }}>
+									<Text style={styles.data}>: {props.Data.buyer_name} </Text>
+								</View>
+							</View>
+							<View style={{ flex: 1, width: '100%', flexDirection: 'row' }}>
+								<View style={{ flex: 2 }}>
+									<Text style={styles.title}>Restaurant Name</Text>
+								</View>
+								<View style={{ flex: 1 }}>
+									<Text style={styles.data}>: {props.Data.restuarant_name}  </Text>
+								</View>
+							</View>
+							<View style={{ flex: 1, width: '100%', flexDirection: 'row' }}>
+								<View style={{ flex: 2 }}>
+									<Text style={styles.title}>Due Amount</Text>
+								</View>
+								<View style={{ flex: 1 }}>
+									<Text style={styles.data}>: USD {props.Data.amount}  </Text>
 								</View>
 							</View>
 						</View>

@@ -1,37 +1,69 @@
+import {
+    View,
+    Text,
+    Image,
+    StyleSheet,
+    ScrollView,
+    Dimensions,
+    TouchableOpacity,
+    ActivityIndicator
+} from 'react-native';
+import moment from 'moment';
 import Color from '../../constant/Color';
-import Cart from '../Components/Food/Cart';
-import { AntDesign } from '@expo/vector-icons';
-import { NativeBaseProvider, } from "native-base";
-import React, { useState, useEffect } from 'react';
-import Datajson from '../Components/Datajson_Short';
-import { StyleSheet, ScrollView, Image, View, Text, TouchableOpacity } from 'react-native';
-import { createOrder } from '../../store/user/action';
-import { useSelector } from 'react-redux';
-const ScreenCart = ({ navigation }) => {
+import { Ionicons } from "@expo/vector-icons";
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setOrderData } from '../../store/user/action';
+import { NativeBaseProvider, Input } from "native-base";
+import { showMessage } from 'react-native-flash-message';
+import { createOrderData } from '../../store/user/action';
+const windowHeight = Dimensions.get('window').height;
+const ScreenCart = ({ route, navigation }) => {
+    const { params } = route;
+    const dispatch = useDispatch();
+    const [Loading, setLoading] = useState(false);
+    const [TotalData, setTotalData] = useState(0);
+    const [Delivery, setDelivery] = useState(true);
+    const [ReferrerCode, setReferrerCode] = useState(null);
+    const ColorTheme = useSelector(state => state.ColorThemes);
     const userData = useSelector(state => state.users.userData);
-    const [Data, setList] = useState([]);
+    const OrderData = useSelector(state => state.users.OrderData);
     useEffect(() => {
-        setList(Datajson.data.success.data);
-    }, []);
-    //deliveryOrTakeAway: true
-    //order_data: [{id: 11, name: "Salmon Steak with Salad", qty: 1, price: 6.95, option: null,…}]
-    //referrerCode: null
-    //shop_id: "1"
-    //total_data: 6.95
-    //user_order: 1
+        const unsubscribe = navigation.addListener("focus", async () => {
+            let sum = 0;
+            for (let i = 0; i < OrderData.length; i++) {
+                sum += OrderData[i].price + OrderData[i].option.price;
+            }
+            setTotalData(sum.toFixed(2));
+        })
+        return () => {
+            unsubscribe
+            dispatch(setOrderData([]));
+        };
+    }, [navigation])
     const AddToCart = () => {
-        let fd = new FormData();
-        fd.append("deliveryOrTakeAway", true);
-        fd.append("referrerCode", null);
-        fd.append("shop_id", id);
-        fd.append("total_data", price);
-        fd.append("user_order", id);
-        fd.append("order_data", id);
-        dispatch(createOrder(userData.token, fd, result => {
+        setLoading(true);
+        let fd = {
+            deliveryOrTakeAway: Delivery,
+            referrerCode: ReferrerCode,
+            total_data: TotalData,
+            shop_id: params,
+            user_order: userData.user.id,
+            order_data: OrderData,
+        };
+        dispatch(createOrderData(userData.token, fd, result => {
+            let ParaData = {
+                price: TotalData,
+                date: moment().format('L'),
+                delivery: Delivery ? 'Delivery' : 'Take Away'
+            }
             if (result.error) {
+                setLoading(false);
                 alertMessage(0, result.error);
             } else {
                 alertMessage(1, 'Success');
+                setLoading(false);
+                navigation.navigate('Thankyou', ParaData);
             }
         }));
     }
@@ -64,7 +96,7 @@ const ScreenCart = ({ navigation }) => {
             ),
             style: {
                 width: '100%',
-                minHeight: '100%',
+                minHeight: windowHeight,
                 alignSelf: 'center',
                 backgroundColor: "red",
                 backgroundColor: "rgba(0, 0, 0,.1)",
@@ -75,83 +107,154 @@ const ScreenCart = ({ navigation }) => {
         });
     }
     return (
-        <View style={styles.container}>
-            <View style={styles.content}>
-                <ScrollView>
-                    <View style={{ flex: 1 }}>
-                        <NativeBaseProvider >
-                            {Data.map(ele => {
-                                return (
-                                    <View style={styles.card} key={ele.id}>
-                                        <Cart
-                                            id={ele.id}
-                                            name={ele.name}
-                                            price={ele.product_variation[0].product_variation_condition[0].price_in_unit}
-                                            image={ele.product_image[0].path}
-                                            size={ele.product_variation[0].size}
-                                            onPress={() => navigation.navigate("productStack", { screen: "ProducDetail" })} />
-                                    </View>);
-                            })}
-                        </NativeBaseProvider>
-                        <View style={styles.promotecode}>
-                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                                <Image source={{ uri: 'https://image.flaticon.com/icons/png/512/368/368200.png' }}
-                                    style={{ width: 40, height: 40 }} />
-
-                                <Text style={{ color: 'gray', fontWeight: '500' }}> Add Promo Coden
-                                </Text>
-                            </View>
-                            <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                                <AntDesign name="right" size={24} color="black" style={{}} />
-                            </View>
-                        </View>
-                        <View style={styles.amount}>
-                            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 26, height: 45, alignItems: 'center', }}>
-                                <Text style={{ fontSize: 16, fontWeight: '500' }}>Item Total</Text>
-                                <Text style={{ fontSize: 16, fontWeight: '500' }}>$ 16.00</Text>
-                            </View>
-                            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 26, height: 45, alignItems: 'center', }}>
-                                <Text style={{ fontSize: 16, fontWeight: '500' }}>Discount</Text>
-                                <Text style={{ fontSize: 16, fontWeight: '500' }}>$2.00</Text>
-                            </View>
-                            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 26, height: 45, alignItems: 'center' }}>
-                                <Text style={{ fontSize: 16, fontWeight: '500', color: Color.textPrimary }}>Delivery</Text>
-                                <Text style={{ fontSize: 16, fontWeight: '500', color: Color.textPrimary }}>free</Text>
-                            </View>
-                            <View style={{
-                                flex: 1, flexDirection: 'row', justifyContent: 'space-between'
-                                , borderColor: '#e6e6e6', borderBottomWidth: 1, borderTopWidth: 1, height: 70, alignItems: 'center', paddingHorizontal: 20
-                            }}>
-                                <Text style={{ fontSize: 18, fontWeight: '500', }}>Total</Text>
-                                <Text style={{ fontSize: 18, fontWeight: '500', }}>$70.00</Text>
-                            </View>
+        <NativeBaseProvider >
+            <View style={styles.container}>
+                <View style={{ flex: 1, height: '100%', width: '100%', backgroundColor: 'rgba(0,0,0,.2)', justifyContent: 'center', alignItems: 'center', position: 'absolute', zIndex: Loading ? 100 : 0 }}>
+                    <ActivityIndicator size='large' color="gray" />
+                </View>
+                {OrderData.length < 1 ?
+                    <View style={{ flex: 1, width: '100%', backgroundColor: '#ffffff' }}>
+                        <View style={{ flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                            <Ionicons name="md-folder-open-outline" size={100} color={ColorTheme.textGray} />
+                            <Text style={{ ...styles.DataEmpty, color: ColorTheme.textGray }}>Result is Empty</Text>
                         </View>
                     </View>
-                </ScrollView>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate('Card')}
-                    style={{
-                        position: "absolute",
-                        bottom: 0.4,
-                        width: '100%',
-                        height: 40,
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: Color.bgPrimary
-                    }}>
-                    <Text style={{ color: 'white', fontSize: 16, fontWeight: '400' }}>CheckOut</Text>
-
-                </TouchableOpacity>
-            </View>
-        </View>
+                    :
+                    <View style={styles.content}>
+                        <ScrollView showsVerticalScrollIndicator={false}>
+                            <View style={{ flex: 1, width: '100%', marginBottom: 100 }}>
+                                <View style={{ width: "100%", paddingHorizontal: 10, paddingVertical: 20 }}>
+                                    {OrderData.length > 0 ?
+                                        OrderData.map((ele, idx) => (
+                                            <View key={idx}
+                                                style={{
+                                                    width: '100%', minHeight: 50, flexDirection: "row", alignItems: 'flex-start', marginBottom: 10,
+                                                    borderBottomWidth: 0.3,
+                                                    borderBottomColor: '#e6e6e6'
+                                                }}>
+                                                <View style={{ width: 90, height: 90, borderRadius: 10, backgroundColor: "gray" }}>
+                                                    <Image source={{ uri: ele.image }}
+                                                        style={{ width: 90, height: 90, borderRadius: 10 }} />
+                                                </View>
+                                                <View style={{
+                                                    flex: 1, minHeight: 80, paddingHorizontal: 20,
+                                                    justifyContent: 'space-between', alignItems: 'flex-start'
+                                                }}>
+                                                    <Text style={{ fontSize: 17, color: '#4d4d4d', fontWeight: '700', marginBottom: 10 }}>{ele.name}</Text>
+                                                    <Text style={{ fontSize: 14, color: 'red', fontWeight: '500', }}>USD {ele.price}</Text>
+                                                    <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 10 }}>
+                                                        <TouchableOpacity style={{ flex: 1, width: '100%', justifyContent: 'center' }}>
+                                                            <Text style={{ fontSize: 15, fontWeight: '500', color: '#4d4d4d' }}>Item:</Text>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity style={{ flex: 1, width: '100%', justifyContent: 'center' }}>
+                                                            <Text style={{ fontSize: 15, fontWeight: '500', color: '#4d4d4d' }}>Size: </Text>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity style={{ flex: 1, width: '100%', justifyContent: 'center' }}>
+                                                            <Text style={{ fontSize: 15, fontWeight: '500', color: '#4d4d4d' }}>Price</Text>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                    <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-start', marginBottom: 5 }}>
+                                                        <TouchableOpacity style={{ flex: 1, width: '100%', justifyContent: 'center' }}>
+                                                            <Text style={{ fontSize: 12, color: 'gray' }}>X {ele.qty}</Text>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity style={{ flex: 1, width: '100%', justifyContent: 'center' }}>
+                                                            <Text style={{ fontSize: 12, color: 'gray' }}>{ele.option.size}</Text>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity style={{ flex: 1, width: '100%', justifyContent: 'center' }}>
+                                                            <Text style={{ fontSize: 12, color: 'gray' }}>+USD {ele.option.price}</Text>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                        ))
+                                        : false}
+                                </View>
+                                <View style={styles.amount}>
+                                    <View style={{ width: '100%', height: 40, flexDirection: 'row', marginVertical: 10 }}>
+                                        <View style={{ flex: 1, width: "100%", flexDirection: 'row', justifyContent: "flex-start", paddingHorizontal: 10, alignItems: "center" }}>
+                                            <TouchableOpacity onPress={() => setDelivery(true)}
+                                                style={{ marginHorizontal: 10, width: 25, height: 25, borderRadius: 50, borderWidth: 2, justifyContent: 'center', alignItems: 'center' }}>
+                                                <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: Delivery ? "black" : 'white' }}>
+                                                </View>
+                                            </TouchableOpacity>
+                                            <Text>Delivery</Text>
+                                        </View>
+                                        <View style={{ flex: 1, width: "100%", flexDirection: 'row', justifyContent: "flex-start", paddingHorizontal: 10, alignItems: "center" }}>
+                                            <TouchableOpacity onPress={() => setDelivery(false)}
+                                                style={{ marginHorizontal: 10, width: 25, height: 25, borderRadius: 50, borderWidth: 2, justifyContent: 'center', alignItems: 'center' }}>
+                                                <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: !Delivery ? "black" : 'white' }}>
+                                                </View>
+                                            </TouchableOpacity>
+                                            <Text>Take Away</Text>
+                                        </View>
+                                    </View>
+                                    <View style={{
+                                        width: "90%",
+                                        borderRadius: 5,
+                                        alignSelf: "center",
+                                        alignItems: 'center',
+                                        backgroundColor: '#e6e6e6',
+                                    }}>
+                                        <Input
+                                            style={{
+                                                ...styles.container_inputInput,
+                                                color: ColorTheme.ColorDark,
+                                            }}
+                                            width='100%'
+                                            variant='unstyled'
+                                            autoComplete={false}
+                                            autoCorrect={false}
+                                            autoCapitalize='none'
+                                            keyboardType='default'
+                                            placeholder="Refferal Code"
+                                            onChangeText={data => setReferrerCode(data)}
+                                        />
+                                    </View>
+                                    <View style={{
+                                        flex: 1, flexDirection: 'row', justifyContent: 'space-between',
+                                        paddingHorizontal: 20, height: 45, alignItems: 'center',
+                                    }}>
+                                        <Text style={styles.Total}>Item Total</Text>
+                                        <Text style={{ ...styles.Total, color: 'red' }}>USD {TotalData}</Text>
+                                    </View>
+                                    <View style={{
+                                        flex: 1, flexDirection: 'row', justifyContent: 'space-between',
+                                        paddingHorizontal: 20, height: 45, alignItems: 'center',
+                                        borderTopWidth: 0.3, borderColor: '#e6e6e6'
+                                    }}>
+                                        <Text style={{ fontSize: 18, fontWeight: '500', color: '#4d4d4d' }}>Total</Text>
+                                        <Text style={{ fontSize: 18, fontWeight: '700', color: 'red' }}>USD {TotalData}</Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </ScrollView>
+                        <TouchableOpacity
+                            onPress={() => AddToCart()}
+                            style={{
+                                position: "absolute",
+                                bottom: 0,
+                                width: '100%',
+                                height: 50,
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                backgroundColor: Color.bgPrimary
+                            }}>
+                            <Text style={{ color: 'white', fontSize: 16, fontWeight: '400' }}>CheckOut</Text>
+                        </TouchableOpacity>
+                    </View>
+                }
+            </View >
+        </NativeBaseProvider >
     )
 }
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         width: '100%',
         height: '100%',
-        flex: 1
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     header: {
         flex: 1,
@@ -163,8 +266,7 @@ const styles = StyleSheet.create({
         width: "100%",
         backgroundColor: 'white'
     },
-    promotecode:
-    {
+    promotecode: {
         flex: 1,
         margin: 4,
         borderColor: '#e6e6e6',
@@ -181,9 +283,28 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         flexDirection: 'column'
-
-
+    },
+    Btn: {
+        width: 30, height: 30,
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 10
+    }, Total: {
+        fontSize: 16,
+        fontWeight: '500',
+        color: '#4d4d4d'
+    },
+    container_inputInput: {
+        height: 45,
+        fontSize: 15,
+        borderRadius: 10,
+        fontWeight: '500',
+        paddingHorizontal: 10,
+    },
+    DataEmpty: {
+        fontSize: 25,
+        fontWeight: '300'
     }
-
 });
 export default ScreenCart;

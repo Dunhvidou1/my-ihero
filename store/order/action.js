@@ -6,7 +6,6 @@ export const setOrder = (data) => {
 export const getOrderCustomer = (token, Page, callback) => {
     return dispatch => {
         api.Order.getOrderCustomer(token, Page).then(response => {
-
             if (response.data) {
                 callback(response.data.success);
             }

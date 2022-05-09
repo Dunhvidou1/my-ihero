@@ -22,7 +22,7 @@ const Search = ({ navigation }) => {
             setLoading(false)
         })
         return () => {
-            unsubscribe
+            unsubscribe;
             dispatch(setSearchData(null));
         };
     }, [])
@@ -57,7 +57,7 @@ const Search = ({ navigation }) => {
                         </ScrollView>
                         : <View style={{ flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
                             <Ionicons name="md-folder-open-outline" size={100} color={ColorTheme.textGray} />
-                            <Text style={{ ...styles.DataEmpty, color: ColorTheme.textGray }}>Result is Emty</Text>
+                            <Text style={{ ...styles.DataEmpty, color: ColorTheme.textGray }}>Result is Empty</Text>
                         </View>
                     }
                 </View >

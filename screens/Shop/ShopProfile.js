@@ -2,6 +2,7 @@ import {
     View,
     Text,
     Image,
+    Animated,
     ScrollView,
     Dimensions,
     StyleSheet,
@@ -9,27 +10,34 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import Color from '../../constant/Color';
+import ListFood from '../Components/ListFood';
 import { ImageBackground } from 'react-native';
 import { NativeBaseProvider } from 'native-base';
 import { Backdrop } from "react-native-backdrop";
-import ListFood from '../Components/Food/ListFood';
+import { FontAwesome5 } from '@expo/vector-icons';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { setOrderData } from '../../store/user/action';
+import { showMessage } from 'react-native-flash-message';
 import { getAllItem, getAllCategory } from '../../store/item/action';
 const { width, height } = Dimensions.get("window");
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const ShopProfile = ({ route }) => {
+const ShopProfile = ({ route, navigation }) => {
     const { params } = route;
     const [data, setData] = useState([]);
-    const [Variation, setVariation] = useState(0);
     const [Select, setSelect] = useState(null);
     const [loading, setLoading] = useState(true);
     const items = useSelector(state => state.items);
+    const [Variation, setVariation] = useState(null);
     const [loadingItems, setLoadingItems] = useState(true);
     const [ShowForumOption, setShowForumOption] = useState(false);
+    const userData = useSelector(state => state.users.userData);
+    const OrderData = useSelector(state => state.users.OrderData);
     const dispatch = useDispatch();
     const OpenForumOption = (value) => {
+        setSelect(null);
+        setVariation(null);
         setData(value);
         setShowForumOption(true);
     };
@@ -37,6 +45,7 @@ const ShopProfile = ({ route }) => {
         setShowForumOption(false);
     };
     useEffect(() => {
+        navigation.setOptions({ title: params.name });
         dispatch(getAllItem(params.id, result => {
             if (result.error) {
                 alert(error);
@@ -47,13 +56,138 @@ const ShopProfile = ({ route }) => {
         dispatch(getAllCategory(params.id));
         setLoading(false)
     }, [dispatch]);
+    const alertMessage = (Type, data) => {
+        showMessage({
+            message: "",
+            hideOnPress: 'true',
+            duration: 1000,
+            renderCustomContent: () => (
+                <View style={{
+                    width: '100%',
+                    height: '100%',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    paddingBottom: 10
+                }}>
+                    <View style={{ backgroundColor: Type == 0 ? 'red' : 'green', borderRadius: 20, padding: 10 }}>
+                        <Text
+                            style={{
+                                textAlign: 'center',
+                                fontSize: 13,
+                                fontWeight: '500',
+                                alignSelf: 'center',
+                                color: '#ffffff',
+                                marginHorizontal: 30,
+                            }}>
+                            {data}
+                        </Text>
+                    </View>
+                </View >
+            ),
+            style: {
+                width: '100%',
+                minHeight: windowHeight,
+                alignSelf: 'center',
+                backgroundColor: "red",
+                backgroundColor: "rgba(0, 0, 0,.1)",
+                borderRadius: 0,
+                justifyContent: 'center',
+                alignItems: 'center',
+            }
+        });
+    }
+    const AddToCart = (value) => {
+        if (Variation) {
+            let newData = OrderData;
+            if (newData.length > 0) {
+                newData.map((element, index) => {
+                    if (value.id == element.id) {
+                        if (element.option.size == Variation.size) {
+                            let Temp = {
+                                "image": element.image,
+                                "affiliate_percent": element.affiliate_percent,
+                                "id": element.id,
+                                "name": element.name,
+                                "option": Variation,
+                                "price": element.price,
+                                "qty": element.qty + 1,
+                            }
+                            newData.push(Temp);
+                            newData.splice(index, 1);
+                            dispatch(setOrderData(newData));
+                            alertMessage(1, 'Successful')
+                        } else if (element.option.size != Variation.size) {
+                            let Temp = {
+                                "image": element.image,
+                                "affiliate_percent": element.affiliate_percent,
+                                "id": element.id,
+                                "name": element.name,
+                                "option": Variation,
+                                "price": element.price,
+                                "qty": element.qty,
+                            }
+                            newData.push(Temp);
+                            dispatch(setOrderData(newData));
+                            alertMessage(1, 'Successful');
+                        }
+                    } else if (index == newData.length - 1) {
+                        let order_data = {
+                            image: value.image,
+                            affiliate_percent: value.affiliate_percent,
+                            id: value.id,
+                            name: value.name,
+                            price: value.price,
+                            qty: 1,
+                            option: Variation,
+                        };
+                        newData.push(order_data);
+                        dispatch(setOrderData(newData));
+                        alertMessage(1, 'Successful')
+                    }
+                })
+            } else {
+                let order_data = {
+                    image: value.image,
+                    affiliate_percent: value.affiliate_percent,
+                    id: value.id,
+                    name: value.name,
+                    price: value.price,
+                    qty: 1,
+                    option: Variation,
+                };
+                newData.push(order_data);
+                dispatch(setOrderData(newData));
+                alertMessage(1, 'Successful')
+            }
+            CloseForumOption();
+        } else {
+            alertMessage(0, 'Please, Select Option first!');
+        }
+    }
     return (
         <NativeBaseProvider>
+            {OrderData.length > 0 ?
+                <TouchableOpacity style={styles.Tick} onPress={() => navigation.navigate('Cart', params.id)} >
+                    <View style={styles.Tick_1}>
+                        <View>
+                            < FontAwesome5 name="cart-arrow-down" size={20} color={'white'} />
+                            {OrderData ?
+                                <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: 'red', position: "absolute", bottom: -5, right: -5, justifyContent: "center", alignItems: 'center' }}>
+                                    <Text style={{
+                                        fontSize: 12,
+                                        fontWeight: '500',
+                                        color: 'white',
+                                    }}>{OrderData.length}</Text>
+                                </View>
+                                : false}
+                        </View>
+                    </View>
+                </TouchableOpacity>
+                : false}
             {loading ?
                 <View style={{ flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
                     <ActivityIndicator size='large' color="gray" />
-                </View>
-                :
+                </View> :
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{ flex: 1, flexDirection: "column" }}>
                         <ImageBackground source={{ uri: params.cover }}
@@ -68,22 +202,22 @@ const ShopProfile = ({ route }) => {
                                     <View style={{ height: '100%', justifyContent: 'center' }}>
                                         <Image source={{ uri: params.logo }} style={{ width: 90, height: 90, borderRadius: 10 }} />
                                     </View>
-                                    <View style={{ flex: 1, width: '100%', paddingHorizontal: 20, justifyContent: 'center' }}>
-                                        <Text style={styles.shopname}> {params.name}</Text>
-                                        <Text style={styles.shopabout}> {params.city}</Text>
+                                    <View style={{ flex: 1, width: '100%', paddingHorizontal: 20, justifyContent: 'space-evenly' }}>
+                                        <Text style={styles.shopname}>{params.name}</Text>
+                                        <Text style={{ ...styles.shopabout, color: 'black' }}>{params.city}</Text>
+                                        <Text style={styles.shopabout}>Open: {params.open_time} / <Text style={{ ...styles.shopabout, color: 'red' }}>Close :{params.close_time}</Text></Text>
                                     </View>
                                 </View>
                                 {loadingItems ?
                                     <ActivityIndicator size="large" color={Color.textPrimary} /> :
                                     <View style={{ flex: 1, paddingHorizontal: 10 }}>
-                                        <ListFood Open={(ele) => OpenForumOption(ele)} DataFood={items.allItem} />
+                                        <ListFood Open={(ele) => userData ? OpenForumOption(ele) : alertMessage(0, 'Please ,Login first!')} DataFood={items.allItem} />
                                     </View>
                                 }
                             </View>
                         </View>
                     </View>
-                </ScrollView>
-            }
+                </ScrollView>}
             <Backdrop
                 visible={ShowForumOption}
                 handleOpen={OpenForumOption}
@@ -102,16 +236,16 @@ const ShopProfile = ({ route }) => {
                 }}>
                 {data ?
                     <View style={{
-                        marginTop: -20,
+                        marginTop: -10,
                         paddingTop: 10,
                         width: windowWidth,
-                        height: windowHeight / 2,
+                        height: windowHeight / 1.5,
                         borderTopLeftRadius: 10,
                         borderTopRightRadius: 10,
                         backgroundColor: '#ffffff'
                     }}>
 
-                        <View style={{ width: '100%', height: windowHeight / 2, justifyContent: 'space-between' }}>
+                        <View style={{ width: '100%', height: windowHeight / 1.5, justifyContent: 'space-between' }}>
                             <View style={{
                                 width: '100%',
                                 minHeight: 80,
@@ -133,22 +267,24 @@ const ShopProfile = ({ route }) => {
                                 {data.item_option ?
                                     <View style={{ flex: 1, width: '100%', minHeight: 50, justifyContent: 'center', alignItems: 'center' }}>
                                         {data.item_option.map((item, idx) =>
-                                            <TouchableOpacity key={idx}
+
+                                            <TouchableOpacity onPress={() => (setVariation(item), setSelect(idx))}
+                                                key={idx}
                                                 style={{
                                                     width: '100%', height: 50, flexDirection: "row", borderBottomWidth: 0.3, borderColor: '#e6e6e6',
                                                 }}>
-                                                <View style={{ width: 80, justifyContent: 'center', alignItems: 'center' }}>
+                                                <View style={{ width: 100, justifyContent: 'center', alignItems: 'center' }}>
                                                     <TouchableOpacity onPress={() => (setVariation(item), setSelect(idx))}
                                                         style={{ width: 25, height: 25, borderRadius: 50, borderWidth: 3, justifyContent: 'center', alignItems: 'center' }}>
                                                         <View onPress={() => (setVariation(item), setSelect(idx))}
-                                                            style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: Select == idx ? "black" : 'rgba(0,0,0)' }}>
+                                                            style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: Select == idx ? "black" : 'white' }}>
                                                         </View>
                                                     </TouchableOpacity>
                                                 </View>
-                                                <View style={{ flex: 2, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                                                <View style={{ flex: 2, width: '100%', justifyContent: 'center', alignItems: 'flex-start' }}>
                                                     <Text style={{ fontSize: 14, fontWeight: '400' }}>Size : {item.size}</Text>
                                                 </View>
-                                                <View style={{ flex: 2, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                                                <View style={{ flex: 2, width: '100%', justifyContent: 'center', alignItems: 'flex-start' }}>
                                                     <Text style={{ fontSize: 14, fontWeight: '400' }}>Price : +{item.price}$</Text>
                                                 </View>
                                             </TouchableOpacity>
@@ -156,12 +292,17 @@ const ShopProfile = ({ route }) => {
                                     </View>
                                     : false}
                             </ScrollView>
-                            <View style={{ width: '100%', backgroundColor: '#ffffff', height: 40, marginBottom: 10 }}>
-                                <TouchableOpacity style={{ width: '100%', justifyContent: 'center', alignItems: "center", minHeight: 39, backgroundColor: Color.bgPrimary }}
-                                    onPress={() => AddToCart(data)}>
-                                    <Text style={{ fontSize: 17, color: Color.textPrimary }}>Add To Cart</Text>
-                                </TouchableOpacity>
-                            </View>
+                            <TouchableOpacity style={{
+                                width: '100%',
+                                justifyContent: 'center',
+                                alignItems: "center",
+                                height: 50,
+                                backgroundColor: Color.bgPrimary,
+                                marginBottom: 10
+                            }}
+                                onPress={() => AddToCart(data)}>
+                                <Text style={{ fontSize: 17, color: 'white' }}>Add To Cart</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     : false}
@@ -170,6 +311,26 @@ const ShopProfile = ({ route }) => {
     )
 }
 const styles = StyleSheet.create({
+    Tick: {
+        width: 80,
+        height: 80,
+        borderRadius: 50,
+        backgroundColor: 'rgba(255,215,0,.3)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        zIndex: 100,
+        bottom: 50,
+        right: 20
+    },
+    Tick_1: {
+        width: 60,
+        height: 60,
+        borderRadius: 50,
+        backgroundColor: 'gold',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     boxItem: {
         height: 220,
         width: '47%',
@@ -316,3 +477,11 @@ const styles = StyleSheet.create({
 
 });
 export default ShopProfile;
+    //let Temp = {
+                //    deliveryOrTakeAway: true,
+                //    order_data: null,
+                //    referrerCode: null,
+                //    shop_id: "1",
+                //    total_data: 12.91,
+                //    user_order: 1,
+                //}

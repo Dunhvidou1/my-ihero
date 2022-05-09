@@ -30,15 +30,6 @@ export const Order = {
         });
         return result;
     },
-    createOrder: async (token, data) => {
-        let result = await axios.post('/home-front-restaurant-order', data, {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
-            },
-        });
-        return result;
-    },
 }
 export const Shop = {
     getAllShop: async (sort = 'asc') => {
@@ -79,6 +70,15 @@ export const Address = {
 export const User = {
     getAffiliate: async (token, Page) => {
         let result = await axios.get("/referal_log_affiliater?page=" + Page, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+            }
+        });
+        return result;
+    },
+    createOrderData: async (token, data) => {
+        let result = await axios.post("/home-front-restaurant-order", data, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: "Bearer " + token,

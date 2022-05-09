@@ -1,33 +1,47 @@
 import * as React from "react"
 import Color from "../../constant/Color";
 import { Entypo } from '@expo/vector-icons';
+import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Image, Share } from 'react-native';
 const ProductList = props => {
     const navigation = useNavigation();
+    const userData = useSelector(state => state.users);
     const ProductDetailScreen = (ele) => {
         navigation.navigate("ShopProfile", ele);
     }
+    const onShare = async (id, val) => {
+        try {
+            const result = await Share.share({
+                message: 'https://ihero.dev.khb.asia/restuarant/detail/' + id + '?referal=' + val,
+            });
+        } catch (error) {
+            alert(error.message);
+        }
+    };
     return props.Pro_List ? props.Pro_List.map
         (ele => <TouchableOpacity
             style={styles.boxItem} key={ele.id}
-            onPress={() => ProductDetailScreen(ele)} >
+            onPress={() => (ProductDetailScreen(ele), console.log(ele))} >
             <View style={styles.menuBrand}>
                 <View style={styles.Pro_image}>
                     <Image source={{ uri: ele.cover }} style={styles.imagestyle} />
                 </View>
                 <View style={styles.Pro_detail}>
-                    <Text style={styles.nameBrand}>{ele.name}</Text>
+                    <Text style={styles.nameBrand}>{ele ? ele.name.substring(0, 15) : ''}</Text>
                     <Text style={{ color: Color.textPrimary, fontSize: 12 }}>
                         <Entypo name="location-pin" size={15} color={Color.textPrimary} />
                         {ele.city}
                     </Text>
+                    <Text style={{ fontSize: 12, padding: 5 }}>Open: {ele.open_time} / <Text style={{ fontSize: 12, color: 'red' }}>Close :{ele.close_time}</Text></Text>
                     <View style={styles.aboutshop}>
-                        <TouchableOpacity>
-                            <View style={styles.ContainerContact}>
-                                <Text style={{ color: "#ffffff", fontSize: 12 }}>Contact</Text>
-                            </View>
-                        </TouchableOpacity>
+                        {userData.userData ?
+                            <TouchableOpacity onPress={() => { onShare(ele.id, userData.userData.user.referal_code) }}>
+                                <View style={styles.ContainerContact}>
+                                    <Text style={{ color: "#ffffff", fontSize: 12 }}>     Share    </Text>
+                                </View>
+                            </TouchableOpacity>
+                            : false}
                     </View>
                 </View>
             </View>
@@ -35,7 +49,7 @@ const ProductList = props => {
 }
 const styles = StyleSheet.create({
     boxItem: {
-        height: 90,
+        height: 130,
         width: '98%',
         borderRadius: 7,
         padding: 3,
@@ -83,8 +97,8 @@ const styles = StyleSheet.create({
     nameBrand: {
         fontSize: 16,
         fontWeight: 'bold',
-        padding: 6,
-        color: Color.bgPrimary
+        color: Color.bgPrimary,
+        padding: 5
     },
     pro_price: {
         color: 'red',
@@ -99,7 +113,6 @@ const styles = StyleSheet.create({
         fontSize: 12,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        padding: 6
     },
     ContainerContact: {
         padding: 5,

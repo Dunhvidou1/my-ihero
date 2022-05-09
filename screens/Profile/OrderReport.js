@@ -51,8 +51,7 @@ const OrderReport = ({ navigation }) => {
 	return (
 		<NativeBaseProvider>
 			<View style={styles.container}>
-				{loading ?
-					<ActivityIndicator size="large" color={Color.textPrimary} /> :
+				{loading ? <ActivityIndicator size="large" color={Color.textPrimary} /> :
 					<ScrollView
 						onScrollEndDrag={() => getData()}
 						showsVerticalScrollIndicator={false}

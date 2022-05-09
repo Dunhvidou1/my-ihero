@@ -3,19 +3,21 @@ import {
 	View,
 	ScrollView,
 	StyleSheet,
+	ActivityIndicator
 } from "react-native";
 import Color from "../../constant/Color";
 import { NativeBaseProvider } from "native-base";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import AffiliateComponnent from "../Components/Affliate";
-import { getAffiliate, setAffiliate } from "../../store/user/action";
+import { getAffiliate, setAffiliateData } from "../../store/user/action";
 const Affiliate = ({ navigation }) => {
-	const [loading, setloading] = useState(true);
 	const [Page, setPage] = useState(1);
 	const [Pause, setPause] = useState(null);
+	const [loading, setloading] = useState(true);
+	const [Totalamount, setTotalamount] = useState(0);
 	const userData = useSelector(state => state.users.userData);
-	const AffliateData = useSelector(state => state.users.Affliate);
+	const Data = useSelector(state => state.users.AffliateData);
 	const dispatch = useDispatch();
 	const getData = () => {
 		if (Pause == null) {
@@ -23,7 +25,6 @@ const Affiliate = ({ navigation }) => {
 				if (result.error) {
 					setloading(false);
 				} else {
-					console.log(result)
 					setloading(false);
 					if (result.last_page == Page) {
 						setPause(1)
@@ -32,50 +33,52 @@ const Affiliate = ({ navigation }) => {
 						let P = Page + 1;
 						setPage(P);
 						let Report = [];
-						Report = [...AffliateData, ...result.data];
-						dispatch(setAffiliate(Report));
+						Report = [...Data, ...result.data];
+						dispatch(setAffiliateData(Report));
 					}
+
 				}
 			}));
 		}
 	}
 	useEffect(() => {
 		const unsubscribe = navigation.addListener("focus", async () => {
-			if (userData) { getData(); }
+			if (userData) getData();
+			let sum = 0;
+			//for (let i = 0; i < Data.length; i++) {
+			//	sum += Math.floor(Data[i].amount) 
+			//}
+			//console.log(sum);
+			setTotalamount(sum);
 		})
 		return () => {
 			unsubscribe
-			dispatch(setAffiliate([]));
+			dispatch(setAffiliateData([]));
 		};
 	}, [navigation])
 	return (
 		<NativeBaseProvider>
 			<View style={styles.container}>
-				<ScrollView showsVerticalScrollIndicator={false} >
-					<View style={styles.Header}>
-						<View style={styles.box}>
-							<Text style={{ fontSize: 18, fontWeight: '700', color: Color.textPrimary }}>0 USD</Text>
-							<Text style={{ fontSize: 14, fontWeight: '500', color: Color.textPrimary }}>TOTAL AMOUNTS</Text>
+				{Data.length > 0 ?
+					<ScrollView showsVerticalScrollIndicator={false} style={{ width: '100%', padding: 10 }} >
+						<View style={{ width: '100%', justifyContent: "center" }} >
+							{Data.map((ele, idx) => (
+								<AffiliateComponnent Data={ele} key={idx} />
+							))}
 						</View>
-						<View style={styles.box}>
-							<Text style={{ fontSize: 18, fontWeight: '700', color: Color.textPrimary }}>0</Text>
-							<Text style={{ fontSize: 14, fontWeight: '500', color: Color.textPrimary }}>TOTAL REFERRED</Text>
-						</View>
-					</View>
-					<View style={{ flex: 1, justifyContent: "center" }} >
-						{/*<AffiliateComponnent />*/}
-						<Text>Affiliate</Text>
-					</View>
-				</ScrollView>
-			</View>
-		</NativeBaseProvider>
+					</ScrollView>
+					: <ActivityIndicator size="large" color={Color.textPrimary} />}
+			</View >
+		</NativeBaseProvider >
 	);
 };
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		width: "100%",
-		paddingHorizontal: 10
+		paddingHorizontal: 10,
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 	Header: {
 		width: '100%',

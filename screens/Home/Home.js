@@ -53,7 +53,7 @@ const Home = ({ navigation }) => {
                     </View>
                     <View style={styles.content}>
                         <View style={styles.content1} borderTopLeftRadius={50}>
-                            <View style={{ flex: 1, width: '100%', marginTop: 40 }}>
+                            <View style={{ flex: 1, width: '100%', marginTop: 15 }}>
                                 <ScrollView showsVerticalScrollIndicator={false}>
                                     <View style={{ flex: 9, marginBottom: 10, paddingHorizontal: 13 }}>
                                         <View style={styles.rootproduct}>
@@ -70,7 +70,6 @@ const Home = ({ navigation }) => {
                                             <Tabs align='center' colorScheme="warning" >
                                                 <Tabs.Bar backgroundColor={Color.bgPrimary} >
                                                     <Tabs.Tab>All Restaurants</Tabs.Tab>
-                                                    {/*<Tabs.Tab>Favorite</Tabs.Tab>*/}
                                                     <Tabs.Tab>Top Rating</Tabs.Tab>
                                                 </Tabs.Bar>
                                                 <Tabs.Views>

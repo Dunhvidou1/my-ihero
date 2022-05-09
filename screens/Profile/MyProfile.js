@@ -25,20 +25,21 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
+import { setCredential } from "../../store/user/action";
 import { showMessage } from "react-native-flash-message";
 import { UpdateUserProfile } from '../../store/user/action'
 const height = Dimensions.get('window').height;
 const MyProfile = ({ navigation }) => {
     const [Age, setAge] = useState(null);
     const [Gender, setGender] = useState(3);
-    const [Email, setEmail] = useState(null);
     const [Phone, setPhone] = useState(null);
+    const [Email, setEmail] = useState(null);
     const [Loading, setLoading] = useState(true);
     const [LastName, setLastName] = useState(null);
     const [FirstName, setFirstName] = useState(null);
     const [Showimage, setShowimage] = useState(null);
+    const userData = useSelector(state => state.users);
     const ColorTheme = useSelector(state => state.ColorThemes);
-    const userData = useSelector(state => state.users.userData);
     const dataProfile = useSelector(state => state.users.profileData);
     const dispatch = useDispatch();
     useEffect(() => {
@@ -68,11 +69,21 @@ const MyProfile = ({ navigation }) => {
             fd.append("gender", Gender);
             fd.append("age", Age);
             fd.append("profile", Showimage);
-            dispatch(UpdateUserProfile(fd, userData.token, result => {
+            dispatch(UpdateUserProfile(fd, userData.userData.token, result => {
                 if (result.error) {
                     alertMessage(0, result.error);
                     setLoading(false);
                 } else {
+                    let UserTemp = userData.userData;
+                    UserTemp.user.name = FirstName + ' ' + LastName;
+                    UserTemp.user.first_name = FirstName;
+                    UserTemp.user.last_name = LastName;
+                    UserTemp.user.email = Email;
+                    UserTemp.user.phone = Phone;
+                    UserTemp.user.gender = Gender;
+                    UserTemp.user.age = Age;
+                    UserTemp.user.gender = Gender;
+                    dispatch(setCredential(UserTemp));
                     alertMessage(1, 'Success');
                     setLoading(false);
                 }
@@ -153,6 +164,12 @@ const MyProfile = ({ navigation }) => {
                                             position: "absolute",
                                             bottom: -40,
                                             alignSelf: "center",
+                                            width: 90,
+                                            height: 90,
+                                            borderRadius: 50,
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            backgroundColor: 'rgba(0,0,0,.5)'
                                         }}
                                     >
                                         <ImageBackground
@@ -203,7 +220,7 @@ const MyProfile = ({ navigation }) => {
                                                     borderRadius: 3,
                                                 }}
                                                 defaultValue={FirstName}
-                                                onChangeText={(value) => FirstName ? setFirstName(value) : setFirstName(dataProfile.first_name)}
+                                                onChangeText={(value) => setFirstName(value)}
                                                 width='100%'
                                                 placeholder="Enter First Name"
                                                 height={12}

@@ -14,7 +14,7 @@ const Tabs = () => {
     const ColorTheme = useSelector(state => state.ColorThemes);
     return (
         <Tab.Navigator activeColor={ColorTheme.gold}
-            inactiveColor={Color.textPrimary}
+            inactiveColor={Color.bgPrimary}
             barStyle={{ backgroundColor: Color.bgPrimary }}>
             <Tab.Screen
                 name="Home"
@@ -23,16 +23,6 @@ const Tabs = () => {
                     tabBarLabel: 'Home',
                     tabBarIcon: ({ color }) => (
                         <Entypo name="home" size={24} color={ColorTheme.gold} />
-                    ),
-                }}
-            />
-            <Tab.Screen
-                name="Cart"
-                component={Cart}
-                options={{
-                    tabBarLabel: 'Cart',
-                    tabBarIcon: ({ color }) => (
-                        <Feather name="shopping-cart" size={25} color={ColorTheme.gold} />
                     ),
                 }}
             />

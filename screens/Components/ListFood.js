@@ -1,19 +1,16 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import {
-    Checkbox,
     Actionsheet,
     useDisclose,
 } from "native-base"
 import { useNavigation } from "@react-navigation/native";
-import Color from '../../../constant/Color'
+import Color from '../../constant/Color'
 import { Ionicons } from '@expo/vector-icons';
 import { RadioButton } from "react-native-paper";
 import { useDispatch } from 'react-redux';
-
 import moment from "moment";
-import { View, StyleSheet, Text, TouchableOpacity, Image, ImageBackground, Dimensions } from 'react-native';
-
+import { View, StyleSheet, Text, TouchableOpacity, Image, ImageBackground } from 'react-native';
 const ProductList = props => {
     const navigation = useNavigation();
     const { isOpen, onOpen, onClose } = useDisclose()
@@ -41,7 +38,6 @@ const ProductList = props => {
                         </Text>
                         <View style={styles.aboutshop}>
                             <Text style={styles.pro_price}>$ {ele.price}</Text>
-                            {/*<TouchableOpacity onPress={() => (onOpen(), SetValue(ele))}>*/}
                             <TouchableOpacity onPress={() => props.Open(ele)}>
                                 <Ionicons name="add-circle-sharp" size={34} color="#ff9900" />
                             </TouchableOpacity>

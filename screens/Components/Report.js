@@ -16,7 +16,7 @@ const Report = (props) => {
 									<Text style={styles.title}>Restaurant</Text>
 								</View>
 								<View style={{ flex: 1 }}>
-									<Text style={styles.data}>:{ele.restuarant_name ? ele.restuarant_name : ' No name'}</Text>
+									<Text style={styles.data}>: {ele.restuarant_name ? ele.restuarant_name : ' No name'}</Text>
 								</View>
 							</View>
 							<View style={{ flex: 1, width: '100%', flexDirection: 'row' }}>
@@ -32,7 +32,7 @@ const Report = (props) => {
 									<Text style={styles.title}>Amount(USD)</Text>
 								</View>
 								<View style={{ flex: 1 }}>
-									<Text style={styles.data}>: {ele.amount}</Text>
+									<Text style={{ ...styles.data }}>: USD {ele.amount.toFixed(2)}</Text>
 								</View>
 							</View>
 							<View style={{ flex: 1, width: '100%', flexDirection: 'row' }}>
@@ -40,7 +40,8 @@ const Report = (props) => {
 									<Text style={styles.title}>Recieved	</Text>
 								</View>
 								<View style={{ flex: 1 }}>
-									<Text style={styles.data}>: {ele.is_customer_acept ? 'Ok' : 'Padding'}</Text>
+									<Text style={{ ...styles.data, color: ele.is_customer_acept ? 'green' : 'gold' }}>
+										: {ele.is_customer_acept ? 'Ok' : 'Padding'}</Text>
 								</View>
 							</View>
 						</View>

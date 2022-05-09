@@ -1,10 +1,9 @@
+import Color from "../../constant/Color";
 import React, { useEffect } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredential } from "../../store/user/action";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Color from "../../constant/Color";
-
 const StartUp = ({ navigation }) => {
   const userData = useSelector(state => state.users.userData);
   const dispatch = useDispatch();
