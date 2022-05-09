@@ -1,7 +1,7 @@
 
 import React, { } from 'react';
 import Color from '../../constant/Color';
-import { Feather } from '@expo/vector-icons';
+import { Feather, AntDesign } from '@expo/vector-icons';
 import { NativeBaseProvider } from "native-base";
 import { useDispatch } from 'react-redux';
 import { setOrderData } from '../../store/user/action';
@@ -39,7 +39,9 @@ const Thankyou = ({ route, navigation }) => {
                         </View>
                         <View style={{ width: '100%', minHeight: 40, justifyContent: 'space-between', paddingHorizontal: 20, alignItems: 'center', flexDirection: "row" }}>
                             <Text style={{ fontSize: 15, fontWeight: '500', color: 'gray', }}>{params.delivery}</Text>
-                            <Text style={{ fontSize: 15, fontWeight: '500', color: '#262626', }}>Free</Text>
+                            <Text style={{ fontSize: 15, fontWeight: '500', color: '#262626', }}>
+                                <AntDesign name="checkcircle" size={24} color="gold" />
+                            </Text>
                         </View>
 
                     </View>

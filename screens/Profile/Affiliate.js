@@ -13,19 +13,20 @@ import AffiliateComponnent from "../Components/Affliate";
 import { getAffiliate, setAffiliateData } from "../../store/user/action";
 const Affiliate = ({ navigation }) => {
 	const [Page, setPage] = useState(1);
+	const [Total, setTotal] = useState(0);
 	const [Pause, setPause] = useState(null);
-	const [loading, setloading] = useState(true);
-	const [Totalamount, setTotalamount] = useState(0);
+	const [TotalAmount, setTotalAmount] = useState(0);
 	const userData = useSelector(state => state.users.userData);
 	const Data = useSelector(state => state.users.AffliateData);
 	const dispatch = useDispatch();
 	const getData = () => {
 		if (Pause == null) {
 			dispatch(getAffiliate(userData.token, Page, result => {
+				setTotalAmount(result.amount);
+				setTotal(result.total);
 				if (result.error) {
-					setloading(false);
+					console.log(result.error);
 				} else {
-					setloading(false);
 					if (result.last_page == Page) {
 						setPause(1)
 					}
@@ -44,12 +45,6 @@ const Affiliate = ({ navigation }) => {
 	useEffect(() => {
 		const unsubscribe = navigation.addListener("focus", async () => {
 			if (userData) getData();
-			let sum = 0;
-			//for (let i = 0; i < Data.length; i++) {
-			//	sum += Math.floor(Data[i].amount) 
-			//}
-			//console.log(sum);
-			setTotalamount(sum);
 		})
 		return () => {
 			unsubscribe
@@ -61,6 +56,16 @@ const Affiliate = ({ navigation }) => {
 			<View style={styles.container}>
 				{Data.length > 0 ?
 					<ScrollView showsVerticalScrollIndicator={false} style={{ width: '100%', padding: 10 }} >
+						<View style={styles.Header}>
+							<View style={styles.box}>
+								<Text style={{ fontSize: 18, fontWeight: '700', color: Color.textPrimary }}>{TotalAmount ? TotalAmount : 0.00} USD</Text>
+								<Text style={{ fontSize: 14, fontWeight: '500', color: Color.textPrimary }}>TOTAL AMOUNTS</Text>
+							</View>
+							<View style={styles.box}>
+								<Text style={{ fontSize: 18, fontWeight: '700', color: Color.textPrimary }}>{Total ? Total : 0}</Text>
+								<Text style={{ fontSize: 14, fontWeight: '500', color: Color.textPrimary }}>TOTAL REFERRED</Text>
+							</View>
+						</View>
 						<View style={{ width: '100%', justifyContent: "center" }} >
 							{Data.map((ele, idx) => (
 								<AffiliateComponnent Data={ele} key={idx} />

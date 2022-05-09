@@ -109,11 +109,11 @@ const Dashboard = ({ route, navigation }) => {
                                                 <Text style={styles.textCenter} >Affiliate</Text>
                                                 <AntDesign style={styles.rightIcon} name="right" />
                                             </TouchableOpacity>
-                                            <TouchableOpacity style={styles.borderitem} onPress={() => navigation.navigate("WithDraw")}>
+                                            {/*<TouchableOpacity style={styles.borderitem} onPress={() => navigation.navigate("WithDraw")}>
                                                 <AntDesign name="mail" style={styles.leftIcon} />
                                                 <Text style={styles.textCenter} >WithDraw</Text>
                                                 <AntDesign style={styles.rightIcon} name="right" />
-                                            </TouchableOpacity>
+                                            </TouchableOpacity>*/}
                                             <TouchableOpacity style={styles.borderitem} onPress={() => Logout()}>
                                                 <FontAwesome5 style={styles.leftIcon} name="history" />
                                                 <Text style={styles.textCenter}>Log Out </Text>
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     },
     borderitem: {
         flex: 1,
-        height: 50,
+        height: 60,
         justifyContent: 'flex-start',
         flexDirection: 'row',
         alignItems: 'center'

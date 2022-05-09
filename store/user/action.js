@@ -15,7 +15,6 @@ export const setOrderData = (data) => {
     return { type: SET_ORDERDATA, data: data };
 }
 export const setCredential = (data) => {
-    console.log(data);
     return { type: SET_CREDENTIAL, data: data };
 }
 export const setSearchData = (data) => {
