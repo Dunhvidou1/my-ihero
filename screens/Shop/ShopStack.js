@@ -55,7 +55,6 @@ const Shops = ({ navigation }) => {
                         alert(result.error);
                         setloading(false);
                     } else {
-                        setValue(null)
                         dispatch(setSearchData(result.success));
                         setloading(false);
                     }

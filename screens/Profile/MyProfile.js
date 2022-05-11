@@ -32,6 +32,7 @@ const height = Dimensions.get('window').height;
 const MyProfile = ({ navigation }) => {
     const [Age, setAge] = useState(null);
     const [Gender, setGender] = useState(3);
+    const [image, setImage] = useState(null);
     const [Phone, setPhone] = useState(null);
     const [Email, setEmail] = useState(null);
     const [Loading, setLoading] = useState(true);
@@ -60,6 +61,8 @@ const MyProfile = ({ navigation }) => {
     const Update = () => {
         if (FirstName && LastName && Email && Phone && Gender && Age && Showimage) {
             setLoading(true);
+            let profile = image ? "data:image/" + image.uri.split(".")[image.uri.split(".").length - 1] + ";base64," + image.base64
+                : Showimage;
             let fd = new FormData();
             fd.append("name", FirstName + '-' + LastName);
             fd.append("first_name", FirstName);
@@ -68,7 +71,7 @@ const MyProfile = ({ navigation }) => {
             fd.append("phone", Phone);
             fd.append("gender", Gender);
             fd.append("age", Age);
-            fd.append("profile", Showimage);
+            fd.append("profile", profile);
             dispatch(UpdateUserProfile(fd, userData.userData.token, result => {
                 if (result.error) {
                     alertMessage(0, result.error);
@@ -109,12 +112,14 @@ const MyProfile = ({ navigation }) => {
         });
         if (!result.cancelled) {
             setShowimage(result.uri);
+            setImage(result);
         }
     };
     const alertMessage = (Type, data) => {
         showMessage({
             message: "",
             hideOnPress: 'true',
+            duration: 500,
             renderCustomContent: () => (
                 <View style={{
                     width: '100%',

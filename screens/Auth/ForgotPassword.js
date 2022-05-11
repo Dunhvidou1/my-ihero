@@ -51,6 +51,7 @@ const ForgotPassword = ({ navigation }) => {
     showMessage({
       message: "",
       hideOnPress: 'true',
+      duration: 500,
       renderCustomContent: () => (
         <View style={{
           width: '100%',

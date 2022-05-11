@@ -60,7 +60,7 @@ const ShopProfile = ({ route, navigation }) => {
         showMessage({
             message: "",
             hideOnPress: 'true',
-            duration: 1000,
+            duration: 500,
             renderCustomContent: () => (
                 <View style={{
                     width: '100%',

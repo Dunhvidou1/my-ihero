@@ -36,7 +36,7 @@ export const getUserProfile = (token) => {
                 console.log(response.data.error);
                 dispatch(removeCredential());
             } else {
-                console.log(response.data.success.profile);
+                console.log('Response Data', response.data.success);
                 dispatch(setProfile(response.data.success));
             }
         })
