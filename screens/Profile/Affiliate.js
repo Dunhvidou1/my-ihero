@@ -6,12 +6,14 @@ import {
 	ActivityIndicator
 } from "react-native";
 import Color from "../../constant/Color";
+import { Ionicons } from "@expo/vector-icons";
 import { NativeBaseProvider } from "native-base";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import AffiliateComponnent from "../Components/Affliate";
 import { getAffiliate, setAffiliateData } from "../../store/user/action";
 const Affiliate = ({ navigation }) => {
+	const [loading, setloading] = useState(true);
 	const [Page, setPage] = useState(1);
 	const [Total, setTotal] = useState(0);
 	const [Pause, setPause] = useState(null);
@@ -22,6 +24,7 @@ const Affiliate = ({ navigation }) => {
 	const getData = () => {
 		if (Pause == null) {
 			dispatch(getAffiliate(userData.token, Page, result => {
+				setloading(false);
 				setTotalAmount(result.amount);
 				setTotal(result.total);
 				if (result.error) {
@@ -54,25 +57,29 @@ const Affiliate = ({ navigation }) => {
 	return (
 		<NativeBaseProvider>
 			<View style={styles.container}>
-				{Data.length > 0 ?
-					<ScrollView showsVerticalScrollIndicator={false} style={{ width: '100%', padding: 10 }} >
-						<View style={styles.Header}>
-							<View style={styles.box}>
-								<Text style={{ fontSize: 18, fontWeight: '700', color: Color.textPrimary }}>{TotalAmount ? TotalAmount : 0.00} USD</Text>
-								<Text style={{ fontSize: 14, fontWeight: '500', color: Color.textPrimary }}>TOTAL AMOUNTS</Text>
+				{loading ? <ActivityIndicator size="large" color={Color.textPrimary} /> :
+					Data && Data.length > 0 ?
+						<ScrollView showsVerticalScrollIndicator={false} style={{ width: '100%', padding: 10 }} >
+							<View style={styles.Header}>
+								<View style={styles.box}>
+									<Text style={{ fontSize: 20, fontWeight: '700', color: Color.textPrimary }}>USD {TotalAmount ? TotalAmount : 0.00} </Text>
+									<Text style={{ fontSize: 14, fontWeight: '500', color: Color.textPrimary }}>TOTAL AMOUNT</Text>
+								</View>
+								<View style={styles.box}>
+									<Text style={{ fontSize: 20, fontWeight: '700', color: Color.textPrimary }}>{Total ? Total : 0}</Text>
+									<Text style={{ fontSize: 14, fontWeight: '500', color: Color.textPrimary }}>TOTAL REFERRED</Text>
+								</View>
 							</View>
-							<View style={styles.box}>
-								<Text style={{ fontSize: 18, fontWeight: '700', color: Color.textPrimary }}>{Total ? Total : 0}</Text>
-								<Text style={{ fontSize: 14, fontWeight: '500', color: Color.textPrimary }}>TOTAL REFERRED</Text>
+							<View style={{ width: '100%', justifyContent: "center" }} >
+								{Data.map((ele, idx) => (
+									<AffiliateComponnent Data={ele} key={idx} />
+								))}
 							</View>
-						</View>
-						<View style={{ width: '100%', justifyContent: "center" }} >
-							{Data.map((ele, idx) => (
-								<AffiliateComponnent Data={ele} key={idx} />
-							))}
-						</View>
-					</ScrollView>
-					: <ActivityIndicator size="large" color={Color.textPrimary} />}
+						</ScrollView>
+						: <View style={{ flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+							<Ionicons name="md-folder-open-outline" size={100} color='gray' />
+							<Text style={{ ...styles.DataEmpty, color: 'gray' }}>Result is Empty</Text>
+						</View>}
 			</View >
 		</NativeBaseProvider >
 	);
@@ -84,6 +91,9 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 10,
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	DataEmpty: {
+		fontSize: 25, fontWeight: '300'
 	},
 	Header: {
 		width: '100%',

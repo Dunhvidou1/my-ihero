@@ -169,7 +169,7 @@ const MyProfile = ({ navigation }) => {
                                             borderRadius: 50,
                                             justifyContent: 'center',
                                             alignItems: 'center',
-                                            backgroundColor: 'rgba(0,0,0,.5)'
+                                            backgroundColor: '#e6e6e6'
                                         }}
                                     >
                                         <ImageBackground

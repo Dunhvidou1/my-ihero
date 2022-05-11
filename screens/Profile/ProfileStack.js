@@ -84,7 +84,7 @@ const Profile = ({ navigation }) => {
                         shadowOpacity: 0,
                         borderBottomWidth: 0,
                     },
-                    title: "Order Report",
+                    title: "Your Order",
                     headerTintColor: Color.textPrimary,
                     headerTitleAlign: "center",
                 }} />

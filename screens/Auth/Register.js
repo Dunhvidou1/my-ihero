@@ -9,19 +9,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { showMessage } from "react-native-flash-message";
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { setFirstname, setLastname, setEmail } from '../../store/auth/action';
-import { ImageBackground, View, Text, TouchableOpacity, Keyboard, Pressable, ScrollView, Dimensions } from 'react-native'
+import { ImageBackground, View, Text, TouchableOpacity, Keyboard, Pressable, ScrollView, Dimensions, ActivityIndicator } from 'react-native'
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 const Register = ({ navigation }) => {
   const scrollRef = React.useRef();
   const dispatch = useDispatch();
+  const [Loading, setLoading] = React.useState(false);
   const ColorTheme = useSelector(state => state.ColorThemes);
   const Data = useSelector(state => state.authData);
   const Next = () => {
     let reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (Data.regisFirstname && Data.regisLastname && Data.regisEmail) {
       if (reg.test(Data.regisEmail) == true) {
+        setLoading(true);
         navigation.navigate('RegisterNext');
+        setLoading(false);
       } else {
         alertMessage(0, 'Invalid email!')
       }
@@ -145,6 +148,10 @@ const Register = ({ navigation }) => {
               </View>
             </ScrollView>
           </View>
+          {Loading ?
+            <View style={{ flex: 1, width: "100%", height: '100%', justifyContent: "center", alignItems: "center", position: 'absolute', backgroundColor: 'rgba(0,0,0,.5)' }}  >
+              <ActivityIndicator size="large" color='white' />
+            </View> : false}
         </ImageBackground>
       </Pressable>
     </NativeBaseProvider>

@@ -21,15 +21,13 @@ const Home = ({ navigation }) => {
     const userData = useSelector(state => state.users);
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(getAllShop());
-        dispatch(getTopRate());
-        if (userData.data != null) { dispatch(getFavorite(userData.data.token)); }
-    }, [dispatch]);
-    useEffect(() => {
         const unsubscribe = navigation.addListener("focus", async () => {
-            setTimeout(() => {
+            setLoading(true)
+            dispatch(getAllShop());
+            dispatch(getTopRate(result => {
                 setLoading(false);
-            }, 1000);
+            }));
+            if (userData.data != null) { dispatch(getFavorite(userData.data.token)); }
         })
         return unsubscribe;
     }, [navigation])

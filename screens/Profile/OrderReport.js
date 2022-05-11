@@ -1,4 +1,5 @@
 import {
+	Text,
 	View,
 	ScrollView,
 	StyleSheet,
@@ -6,6 +7,7 @@ import {
 } from "react-native";
 import Color from '../../constant/Color';
 import Report from "../Components/Report";
+import { Ionicons } from "@expo/vector-icons";
 import { NativeBaseProvider } from "native-base";
 import React, { useState, useEffect } from "react";
 import { setOrder } from "../../store/order/action";
@@ -52,16 +54,23 @@ const OrderReport = ({ navigation }) => {
 		<NativeBaseProvider>
 			<View style={styles.container}>
 				{loading ? <ActivityIndicator size="large" color={Color.textPrimary} /> :
-					<ScrollView
-						onScrollEndDrag={() => getData()}
-						showsVerticalScrollIndicator={false}
-						style={{ flex: 1, width: '100%', paddingTop: 10 }} >
-						<View style={{ flex: 1, height: '100%', width: '100%' }} >
-							{DataReport ? <Report ReportVal={DataReport} /> : false}
+					DataReport && DataReport.length > 0 ?
+						<ScrollView
+							onScrollEndDrag={() => getData()}
+							showsVerticalScrollIndicator={false}
+							style={{ flex: 1, width: '100%', paddingTop: 10 }} >
+							<View style={{ flex: 1, height: '100%', width: '100%' }} >
+								<Report ReportVal={DataReport} />
+
+							</View>
+						</ScrollView>
+						: <View style={{ flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+							<Ionicons name="md-folder-open-outline" size={100} color='gray' />
+							<Text style={{ ...styles.DataEmpty, color: 'gray' }}>Result is Empty</Text>
 						</View>
-					</ScrollView>}
+				}
 			</View>
-		</NativeBaseProvider>
+		</NativeBaseProvider >
 	);
 };
 const styles = StyleSheet.create({
@@ -73,5 +82,8 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		paddingHorizontal: 10
 	},
+	DataEmpty: {
+		fontSize: 25, fontWeight: '300'
+	}
 });
 export default OrderReport;

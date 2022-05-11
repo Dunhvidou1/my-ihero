@@ -36,6 +36,7 @@ export const getUserProfile = (token) => {
                 console.log(response.data.error);
                 dispatch(removeCredential());
             } else {
+                console.log(response.data.success.profile);
                 dispatch(setProfile(response.data.success));
             }
         })
@@ -58,6 +59,7 @@ export const logout = (token) => {
             if (response.data.error) {
                 console.log(response.data.error);
             } else {
+                dispatch(setCredential(null));
                 console.log('Success')
             }
         })
@@ -69,9 +71,10 @@ export const removeCredential = () => {
         dispatch(setCredential(null));
     }
 }
-export const getDashboardCustomer = (token) => {
+export const getDashboardCustomer = (token, callback) => {
     return dispatch => {
         api.User.getDashboardCustomer(token).then(response => {
+            callback(response.data)
             if (response.data.error) {
                 dispatch(removeCredential());
             } else {

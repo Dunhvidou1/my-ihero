@@ -9,10 +9,11 @@ export const getAllShop = () => {
         });
     }
 }
-export const getTopRate = () => {
+export const getTopRate = (callback) => {
     return dispatch => {
         api.Shop.getTopRateShop().then(response => {
             if (response.data.success) {
+                callback(response.data);
                 dispatch({ type: TOP_RATE, data: response.data.success });
             }
         })

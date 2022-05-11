@@ -12,6 +12,7 @@ import {
   ScrollView,
   ImageBackground,
   TouchableOpacity,
+  ActivityIndicator
 } from 'react-native';
 import * as React from 'react';
 import { Feather } from '@expo/vector-icons';
@@ -26,6 +27,7 @@ const Register = ({ navigation }) => {
   const dispatch = useDispatch();
   const scrollRef = React.useRef();
   const [Cp, setCp] = React.useState(null)
+  const [Loading, setLoading] = React.useState(false);
   const ColorTheme = useSelector(state => state.ColorThemes);
   const Data = useSelector(state => state.authData);
   const Sex = useSelector(state => state.authData.regisGender);
@@ -40,7 +42,9 @@ const Register = ({ navigation }) => {
         fd.append("phone", Data.regisPhone);
         fd.append("password", Data.regisPassword);
         fd.append("password_confirmation", Data.regisPassword);
+        setLoading(true)
         dispatch(register(fd, result => {
+          setLoading(false)
           if (result.error) {
             alert(result.error);
           } else {
@@ -183,6 +187,10 @@ const Register = ({ navigation }) => {
               </View>
             </ScrollView>
           </View>
+          {Loading ?
+            <View style={{ flex: 1, width: "100%", height: '100%', justifyContent: "center", alignItems: "center", position: 'absolute', backgroundColor: 'rgba(0,0,0,.5)' }}  >
+              <ActivityIndicator size="large" color='white' />
+            </View> : false}
         </ImageBackground>
       </NativeBaseProvider >
     </Pressable >

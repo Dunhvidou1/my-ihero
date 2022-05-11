@@ -6,7 +6,7 @@ const Report = (props) => {
 	const navigation = useNavigation();
 	return props.ReportVal.map((ele, idx) =>
 	(
-		<TouchableOpacity style={styles.borderitem} key={idx}>
+		<View style={styles.borderitem} key={idx}>
 			<View style={styles.menuBrand}>
 				<Box bg="white" shadow={2} rounded="lg" width="99%" padding={3} mb={2} mx='auto' justifyContent="center" >
 					<VStack space={1} height={90}>
@@ -48,7 +48,7 @@ const Report = (props) => {
 					</VStack>
 				</Box>
 			</View>
-		</TouchableOpacity>
+		</View>
 	)
 	)
 }

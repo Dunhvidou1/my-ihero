@@ -5,7 +5,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 const AffiliateComponnent = (props) => {
 	const navigation = useNavigation();
 	return (
-		<TouchableOpacity style={styles.borderitem}    >
+		<View style={styles.borderitem}    >
 			<View style={styles.menuBrand}>
 				<Box bg="white" shadow={2} rounded="lg" width="99%" padding={3} mb={2} mx='auto' justifyContent="center" >
 					<VStack space={1} height={90}>
@@ -46,7 +46,7 @@ const AffiliateComponnent = (props) => {
 					</VStack>
 				</Box>
 			</View>
-		</TouchableOpacity>
+		</View>
 	)
 }
 const styles = StyleSheet.create({

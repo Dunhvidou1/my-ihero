@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import React from 'react'
 import Color from '../../constant/Color';
+import Default from '../Assets/Default.png'
 import { logout } from '../../store/user/action';
 import { useDispatch, useSelector } from 'react-redux';
 import { List, NativeBaseProvider, } from "native-base";
@@ -17,22 +18,23 @@ import { setCustomerDashboard } from '../../store/user/action';
 import { getUserProfile, getDashboardCustomer } from '../../store/user/action';
 import { AntDesign, Ionicons, FontAwesome5, Fontisto, Feather } from '@expo/vector-icons';
 const Dashboard = ({ route, navigation }) => {
+    const [Load, setLoad] = React.useState(true);
+    const [Loading, setLoading] = React.useState(false);
     const userData = useSelector(state => state.users);
+    const dataProfile = useSelector(state => state.users.profileData);
     const customerDashboard = useSelector(state => state.users.customerDashboard);
-    const ColorTheme = useSelector(state => state.ColorThemes);
     const dispatch = useDispatch();
     React.useEffect(() => {
         const unsubscribe = navigation.addListener("focus", () => {
-            if (userData) {
-                dispatch(getUserProfile(userData.userData.token));
-                dispatch(getDashboardCustomer(userData.userData.token));
-            }
+            dispatch(getUserProfile(userData.userData.token));
+            dispatch(getDashboardCustomer(userData.userData.token, result => {
+                setLoad(false);
+            }));
         })
         return () => {
-            unsubscribe
+            unsubscribe;
             dispatch(setCustomerDashboard(null));
         };
-
     }, [])
     const Logout = () =>
         Alert.alert(
@@ -44,12 +46,20 @@ const Dashboard = ({ route, navigation }) => {
                     onPress: () => false,
                     style: "cancel"
                 },
-                { text: "OK", onPress: () => dispatch(logout(userData.userData.token)) }
+                {
+                    text: "OK", onPress: () =>
+                    (
+                        dispatch(logout(userData.userData.token),
+                            setLoading(true)
+                            //navigation.navigate('StartUp')
+                        )
+                    )
+                }
             ]
         );
     return (
         <View style={styles.container}>
-            {customerDashboard && userData.userData ?
+            {customerDashboard && dataProfile ?
                 <View style={styles.container1}>
                     <View style={styles.header}>
                         <View style={{ flex: 2, flexDirection: 'row', alignItems: 'flex-start' }}>
@@ -63,13 +73,13 @@ const Dashboard = ({ route, navigation }) => {
                                     backgroundColor: 'rgba(0,0,0,.2)'
                                 }}>
                                     <ActivityIndicator size="small" color='gray' style={{ position: "absolute" }} />
-                                    <Image source={{ uri: userData.userData ? userData.userData.user.profile : '' }} style={styles.userImg} />
+                                    <Image source={dataProfile.profile ? { uri: dataProfile.profile } : Default} style={styles.userImg} />
                                 </View>
                             </View>
-                            <TouchableOpacity style={styles.header_Detail} >
-                                <Text style={styles.username}  >{userData.userData ? userData.userData.user.name : ""}</Text>
-                                <Text style={styles.useremail}>{userData.userData ? userData.userData.user.email : ""}</Text>
-                                <Text style={styles.useremail}>{userData.userData ? userData.userData.user.address : ""}</Text>
+                            <TouchableOpacity style={styles.header_Detail} onPress={() => navigation.navigate("MyProfile")}>
+                                <Text style={styles.username}  >{dataProfile ? dataProfile.name : ""}</Text>
+                                <Text style={styles.useremail}>{dataProfile ? dataProfile.email : ""}</Text>
+                                <Text style={styles.useremail}>{dataProfile ? dataProfile.address : ""}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -109,11 +119,6 @@ const Dashboard = ({ route, navigation }) => {
                                                 <Text style={styles.textCenter} >Affiliate</Text>
                                                 <AntDesign style={styles.rightIcon} name="right" />
                                             </TouchableOpacity>
-                                            {/*<TouchableOpacity style={styles.borderitem} onPress={() => navigation.navigate("WithDraw")}>
-                                                <AntDesign name="mail" style={styles.leftIcon} />
-                                                <Text style={styles.textCenter} >WithDraw</Text>
-                                                <AntDesign style={styles.rightIcon} name="right" />
-                                            </TouchableOpacity>*/}
                                             <TouchableOpacity style={styles.borderitem} onPress={() => Logout()}>
                                                 <FontAwesome5 style={styles.leftIcon} name="history" />
                                                 <Text style={styles.textCenter}>Log Out </Text>
@@ -126,7 +131,11 @@ const Dashboard = ({ route, navigation }) => {
                         </View>
                     </View>
                 </View >
-                : <ActivityIndicator size="large" color={Color.textPrimary} />}
+                : < ActivityIndicator size="large" color={Color.textPrimary} />}
+            {Loading ?
+                <View style={{ flex: 1, width: "100%", height: '100%', justifyContent: "center", alignItems: "center", position: 'absolute', backgroundColor: 'rgba(0,0,0,.2)' }}  >
+                    <ActivityIndicator size="large" color='white' />
+                </View> : false}
         </View >
     )
 }
@@ -167,6 +176,7 @@ const styles = StyleSheet.create({
         height: '100%',
         paddingTop: 20,
         flexDirection: 'column',
+        paddingHorizontal: 20
     },
     header_center: {
         flex: 3,
@@ -191,7 +201,7 @@ const styles = StyleSheet.create({
         height: 60,
         justifyContent: 'flex-start',
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
 
     },
     titleCart: {
@@ -225,7 +235,6 @@ const styles = StyleSheet.create({
         color: Color.bgPrimary,
     },
     rightIcon: {
-        top: 3,
         right: 10,
         fontSize: 17,
         position: 'absolute',

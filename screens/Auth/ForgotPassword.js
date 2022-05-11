@@ -12,6 +12,7 @@ import {
   Dimensions,
   ImageBackground,
   TouchableOpacity,
+  ActivityIndicator
 } from 'react-native';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,18 +24,24 @@ const windowHeight = Dimensions.get('window').height;
 const ForgotPassword = ({ navigation }) => {
   const dispatch = useDispatch();
   const scrollRef = React.useRef();
+  const [Loading, setLoading] = React.useState(false);
   const Data = useSelector(state => state.authData);
   const ColorTheme = useSelector(state => state.ColorThemes);
   const send = () => {
     if (Data.forgotEmail) {
       let fd = new FormData();
       fd.append("email", Data.forgotEmail);
+      setLoading(true)
       dispatch(forgotpassword(fd, result => {
+        setLoading(false)
         if (result.error) {
-          alert(result.error);
+          console.log(result.error);
         } else {
-          alertMessage(1, 'Success!')
+          setTimeout(() => {
+            navigation.navigate('Login')
+          }, 1000);
         }
+        alertMessage(1, 'Success!')
       }))
     } else {
       alertMessage(0, 'Field required!')
@@ -116,6 +123,10 @@ const ForgotPassword = ({ navigation }) => {
               </View>
             </ScrollView>
           </View>
+          {Loading ?
+            <View style={{ flex: 1, width: "100%", height: '100%', justifyContent: "center", alignItems: "center", position: 'absolute', backgroundColor: 'rgba(0,0,0,.5)' }}  >
+              <ActivityIndicator size="large" color='white' />
+            </View> : false}
         </ImageBackground>
       </NativeBaseProvider >
     </Pressable>

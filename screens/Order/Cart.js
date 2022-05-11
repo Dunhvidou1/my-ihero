@@ -61,7 +61,6 @@ const ScreenCart = ({ route, navigation }) => {
                 setLoading(false);
                 alertMessage(0, result.error);
             } else {
-                alertMessage(1, 'Success');
                 setLoading(false);
                 navigation.navigate('Thankyou', ParaData);
             }

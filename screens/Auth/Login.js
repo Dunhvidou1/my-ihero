@@ -17,13 +17,12 @@ import { Feather, AntDesign } from '@expo/vector-icons';
 import { showMessage } from "react-native-flash-message";
 import { Icon, Input, NativeBaseProvider, } from 'native-base';
 const windowHeight = Dimensions.get('window').height;
-const windowWidth = Dimensions.get('window').width;
 const HomeScreen = ({ navigation }) => {
   const scrollRef = useRef();
   const dispatch = useDispatch();
-  const [email, setEmail] = useState('customer@gmail.com');
+  const [email, setEmail] = useState(null);
   const [Loading, setLoading] = useState(false);
-  const [password, setPassword] = useState('123123');
+  const [password, setPassword] = useState(null);
   const ColorTheme = useSelector(state => state.ColorThemes);
   const FunLogin = () => {
     if (email && password) {
@@ -35,6 +34,7 @@ const HomeScreen = ({ navigation }) => {
       dispatch(checkLogin(fd, result => {
         if (result.error) {
           setLoading(false);
+          console.log(result);
           alertMessage(0, 'Invalid email and password')
         }
       }));
@@ -91,9 +91,9 @@ const HomeScreen = ({ navigation }) => {
               ref={scrollRef}
               onContentSizeChange={() => scrollRef.current.scrollToEnd({ animated: true })}>
               <View style={{ flex: 1, width: '100%', height: windowHeight, justifyContent: 'center', padding: 10, paddingTop: 30 }}>
-                <Text style={{ color: ColorTheme.gold, fontSize: 25, fontWeight: '700', paddingVertical: 20 }}>Sign in</Text>
+                <Text style={{ color: ColorTheme.gold, fontSize: 25, fontWeight: '700', paddingVertical: 20 }}>Log in</Text>
                 <Text style={{ fontSize: 14, color: "#e6e6e6", paddingBottom: 20 }}>
-                  Enter Your Phone number or Email address for Sign in ,Enjoy your food
+                  Enter Your Phone Email address and password for Sign in ,Enjoy your food
                 </Text>
                 <View style={{ width: '100%' }}>
                   <View style={{ borderColor: 'white', borderWidth: 0.3, marginBottom: 10, borderRadius: 5 }}>
