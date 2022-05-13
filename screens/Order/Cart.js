@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import moment from 'moment';
 import Color from '../../constant/Color';
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setOrderData } from '../../store/user/action';
@@ -79,7 +79,7 @@ const ScreenCart = ({ route, navigation }) => {
                     alignItems: 'center',
                     paddingBottom: 10
                 }}>
-                    <View style={{ backgroundColor: Type == 0 ? 'red' : 'green', borderRadius: 20, padding: 10 }}>
+                    <View style={{ backgroundColor: Type == 0 ? 'red' : '#4BB543', borderRadius: 20, padding: 10 }}>
                         <Text
                             style={{
                                 textAlign: 'center',
@@ -106,6 +106,11 @@ const ScreenCart = ({ route, navigation }) => {
             }
         });
     }
+    const Delete = (idx) => {
+        OrderData.splice(idx, 1);
+        console.log(OrderData)
+        dispatch(setOrderData(OrderData));
+    }
     return (
         <NativeBaseProvider >
             <View style={styles.container}>
@@ -126,7 +131,8 @@ const ScreenCart = ({ route, navigation }) => {
                                 <View style={{ width: "100%", paddingHorizontal: 10, paddingVertical: 20 }}>
                                     {OrderData.length > 0 ?
                                         OrderData.map((ele, idx) => (
-                                            <View key={idx}
+                                            <View
+                                                key={idx}
                                                 style={{
                                                     width: '100%', minHeight: 50, flexDirection: "row", alignItems: 'flex-start', marginBottom: 10,
                                                     borderBottomWidth: 0.3,
@@ -140,7 +146,11 @@ const ScreenCart = ({ route, navigation }) => {
                                                     flex: 1, minHeight: 80, paddingHorizontal: 20,
                                                     justifyContent: 'space-between', alignItems: 'flex-start'
                                                 }}>
-                                                    <Text style={{ fontSize: 17, color: '#4d4d4d', fontWeight: '700', marginBottom: 10 }}>{ele.name}</Text>
+                                                    <View style={{ width: '100%', flexDirection: "row", justifyContent: 'space-between' }}>
+                                                        <View style={{ flex: 1, width: '100%' }}>
+                                                            <Text style={{ fontSize: 17, color: '#4d4d4d', fontWeight: '700', marginBottom: 10 }}>{ele.name}</Text>
+                                                        </View>
+                                                    </View>
                                                     <Text style={{ fontSize: 14, color: 'red', fontWeight: '500', }}>USD {ele.price}</Text>
                                                     <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-start', marginVertical: 10 }}>
                                                         <TouchableOpacity style={{ flex: 1, width: '100%', justifyContent: 'center' }}>
@@ -164,6 +174,7 @@ const ScreenCart = ({ route, navigation }) => {
                                                             <Text style={{ fontSize: 12, color: 'gray' }}>+USD {ele.option.price}</Text>
                                                         </TouchableOpacity>
                                                     </View>
+
                                                 </View>
                                             </View>
                                         ))
@@ -240,7 +251,7 @@ const ScreenCart = ({ route, navigation }) => {
                                 alignItems: 'center',
                                 backgroundColor: Color.bgPrimary
                             }}>
-                            <Text style={{ color: 'white', fontSize: 16, fontWeight: '400' }}>CheckOut</Text>
+                            <Text style={{ color: 'white', fontSize: 16, fontWeight: '400' }}>Submit</Text>
                         </TouchableOpacity>
                     </View>
                 }

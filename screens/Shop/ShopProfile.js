@@ -69,7 +69,7 @@ const ShopProfile = ({ route, navigation }) => {
                     alignItems: 'center',
                     paddingBottom: 10
                 }}>
-                    <View style={{ backgroundColor: Type == 0 ? 'red' : 'green', borderRadius: 20, padding: 10 }}>
+                    <View style={{ backgroundColor: Type == 0 ? 'red' : '#4BB543', borderRadius: 20, padding: 10 }}>
                         <Text
                             style={{
                                 textAlign: 'center',
@@ -115,7 +115,7 @@ const ShopProfile = ({ route, navigation }) => {
                             newData.push(Temp);
                             newData.splice(index, 1);
                             dispatch(setOrderData(newData));
-                            alertMessage(1, 'Successful')
+                            alertMessage(1, 'Success!')
                         } else if (element.option.size != Variation.size) {
                             let Temp = {
                                 "image": element.image,
@@ -128,7 +128,7 @@ const ShopProfile = ({ route, navigation }) => {
                             }
                             newData.push(Temp);
                             dispatch(setOrderData(newData));
-                            alertMessage(1, 'Successful');
+                            alertMessage(1, 'Success!');
                         }
                     } else if (index == newData.length - 1) {
                         let order_data = {
@@ -142,7 +142,7 @@ const ShopProfile = ({ route, navigation }) => {
                         };
                         newData.push(order_data);
                         dispatch(setOrderData(newData));
-                        alertMessage(1, 'Successful')
+                        alertMessage(1, 'Success!')
                     }
                 })
             } else {
@@ -211,7 +211,7 @@ const ShopProfile = ({ route, navigation }) => {
                                 {loadingItems ?
                                     <ActivityIndicator size="large" color={Color.textPrimary} /> :
                                     <View style={{ flex: 1, paddingHorizontal: 10 }}>
-                                        <ListFood Open={(ele) => userData ? OpenForumOption(ele) : alertMessage(0, 'Please ,Login first!')} DataFood={items.allItem} />
+                                        <ListFood Open={(ele) => userData ? OpenForumOption(ele) : alertMessage(0, 'Please ,login first!')} DataFood={items.allItem} />
                                     </View>
                                 }
                             </View>

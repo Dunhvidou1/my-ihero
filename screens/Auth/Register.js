@@ -45,7 +45,7 @@ const Register = ({ navigation }) => {
           alignItems: 'center',
           paddingBottom: 10
         }}>
-          <View style={{ backgroundColor: Type == 0 ? 'red' : 'green', borderRadius: 20, padding: 10 }}>
+          <View style={{ backgroundColor: Type == 0 ? 'red' : '#4BB543', borderRadius: 20, padding: 10 }}>
             <Text
               style={{
                 textAlign: 'center',

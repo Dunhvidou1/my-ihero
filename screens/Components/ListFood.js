@@ -39,7 +39,7 @@ const ProductList = props => {
                         <View style={styles.aboutshop}>
                             <Text style={styles.pro_price}>$ {ele.price}</Text>
                             <TouchableOpacity onPress={() => props.Open(ele)}>
-                                <Ionicons name="add-circle-sharp" size={34} color="#ff9900" />
+                                <Ionicons name="add-circle-sharp" size={40} color="#ff9900" />
                             </TouchableOpacity>
 
                             {data ? (

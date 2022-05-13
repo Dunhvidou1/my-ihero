@@ -33,6 +33,7 @@ const ForgotPassword = ({ navigation }) => {
       fd.append("email", Data.forgotEmail);
       setLoading(true)
       dispatch(forgotpassword(fd, result => {
+        console.log(result)
         setLoading(false)
         if (result.error) {
           console.log(result.error);
@@ -41,7 +42,7 @@ const ForgotPassword = ({ navigation }) => {
             navigation.navigate('Login')
           }, 1000);
         }
-        alertMessage(1, 'Success!')
+        alertMessage(1, 'Success ,please check your mail box!')
       }))
     } else {
       alertMessage(0, 'Field required!')
@@ -60,7 +61,7 @@ const ForgotPassword = ({ navigation }) => {
           alignItems: 'center',
           paddingBottom: 10
         }}>
-          <View style={{ backgroundColor: Type == 0 ? 'red' : 'green', borderRadius: 20, padding: 10 }}>
+          <View style={{ backgroundColor: Type == 0 ? 'red' : '#4BB543', borderRadius: 20, padding: 10 }}>
             <Text
               style={{
                 textAlign: 'center',

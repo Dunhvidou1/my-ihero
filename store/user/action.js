@@ -32,11 +32,10 @@ export const setProfile = (data) => {
 export const getUserProfile = (token) => {
     return dispatch => {
         api.User.getUserProfile(token).then(response => {
+            console.log(token, response.data)
             if (response.data.error) {
-                console.log(response.data.error);
                 dispatch(removeCredential());
             } else {
-                console.log('Response Data', response.data.success);
                 dispatch(setProfile(response.data.success));
             }
         })

@@ -35,6 +35,7 @@ const MyProfile = ({ navigation }) => {
     const [image, setImage] = useState(null);
     const [Phone, setPhone] = useState(null);
     const [Email, setEmail] = useState(null);
+    const [UpdateLoading, setUpdateLoading] = useState(false);
     const [Loading, setLoading] = useState(true);
     const [LastName, setLastName] = useState(null);
     const [FirstName, setFirstName] = useState(null);
@@ -60,7 +61,7 @@ const MyProfile = ({ navigation }) => {
     }, [])
     const Update = () => {
         if (FirstName && LastName && Email && Phone && Gender && Age && Showimage) {
-            setLoading(true);
+            setUpdateLoading(true);
             let profile = image ? "data:image/" + image.uri.split(".")[image.uri.split(".").length - 1] + ";base64," + image.base64
                 : Showimage;
             let fd = new FormData();
@@ -72,10 +73,12 @@ const MyProfile = ({ navigation }) => {
             fd.append("gender", Gender);
             fd.append("age", Age);
             fd.append("profile", profile);
+            console.log(fd);
             dispatch(UpdateUserProfile(fd, userData.userData.token, result => {
+                console.log(result);
                 if (result.error) {
                     alertMessage(0, result.error);
-                    setLoading(false);
+                    setUpdateLoading(false);
                 } else {
                     let UserTemp = userData.userData;
                     UserTemp.user.name = FirstName + ' ' + LastName;
@@ -88,7 +91,7 @@ const MyProfile = ({ navigation }) => {
                     UserTemp.user.gender = Gender;
                     dispatch(setCredential(UserTemp));
                     alertMessage(1, 'Success');
-                    setLoading(false);
+                    setUpdateLoading(false);
                 }
             }));
         } else {
@@ -128,7 +131,7 @@ const MyProfile = ({ navigation }) => {
                     alignItems: 'center',
                     paddingBottom: 10
                 }}>
-                    <View style={{ backgroundColor: Type == 0 ? 'red' : 'green', borderRadius: 20, padding: 10 }}>
+                    <View style={{ backgroundColor: Type == 0 ? 'red' : '#4BB543', borderRadius: 20, padding: 10 }}>
                         <Text
                             style={{
                                 textAlign: 'center',
@@ -343,9 +346,15 @@ const MyProfile = ({ navigation }) => {
                                             />
                                         </View>
                                     </View>
-                                    <TouchableOpacity style={{ ...styles.BtnSave, backgroundColor: ColorTheme.ColorDefault }} onPress={() => Update()} >
-                                        <Text style={{ fontSize: 15, fontWeight: '500', color: 'white' }}>Save</Text>
-                                    </TouchableOpacity>
+                                    {UpdateLoading ?
+                                        <TouchableOpacity style={{ ...styles.BtnSave, backgroundColor: ColorTheme.ColorDefault }}   >
+                                            <ActivityIndicator size="small" color='white' />
+                                        </TouchableOpacity>
+                                        :
+                                        <TouchableOpacity style={{ ...styles.BtnSave, backgroundColor: ColorTheme.ColorDefault }} onPress={() => Update()} >
+                                            <Text style={{ fontSize: 15, fontWeight: '500', color: 'white' }}>Save</Text>
+                                        </TouchableOpacity>
+                                    }
                                 </View>
                             </View>
                         </ScrollView>

@@ -22,7 +22,7 @@ const ProductList = props => {
     return props.Pro_List ? props.Pro_List.map
         (ele => <TouchableOpacity
             style={styles.boxItem} key={ele.id}
-            onPress={() => (ProductDetailScreen(ele), console.log(ele))} >
+            onPress={() => (ProductDetailScreen(ele))} >
             <View style={styles.menuBrand}>
                 <View style={styles.Pro_image}>
                     <Image source={{ uri: ele.cover }} style={styles.imagestyle} />
